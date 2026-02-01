@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Database schema, Drizzle ORM, Better Auth email/password, split-screen auth UI, route protection
+- [x] 01-01-PLAN.md -- Database schema, Drizzle ORM, Better Auth email/password, split-screen auth UI, route protection
 - [ ] 01-02-PLAN.md -- Custodial wallet creation on signup, AES-256-GCM encryption, dashboard wallet widget with balance
 - [ ] 01-03-PLAN.md -- Google/Twitter OAuth, TOTP 2FA setup and enforcement, SOL withdrawal flow with address book
 
@@ -193,7 +193,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Authentication & Wallets | 0/3 | Not started | - |
+| 1. Authentication & Wallets | 1/3 | In progress | - |
 | 2. Bonding Curve Smart Contract | 0/4 | Not started | - |
 | 3. Creator Onboarding & Token Launch | 0/4 | Not started | - |
 | 4. Content Infrastructure | 0/5 | Not started | - |
