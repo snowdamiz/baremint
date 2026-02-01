@@ -13,7 +13,7 @@ Baremint delivers a crypto-native creator platform where creators launch SPL tok
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Authentication & Wallets** - Users can sign up, log in, and have a custodial Solana wallet
-- [ ] **Phase 2: Bonding Curve Smart Contract** - On-chain program for token creation, trading, burns, vesting, and fees deployed to devnet
+- [x] **Phase 2: Bonding Curve Smart Contract** - On-chain program for token creation, trading, burns, vesting, and fees deployed to devnet
 - [ ] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
 - [ ] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
 - [ ] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
@@ -54,10 +54,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Anchor project scaffold, state accounts, errors, and GlobalConfig initialization
-- [ ] 02-02-PLAN.md -- Bonding curve math module, create_token, buy, and sell instructions
-- [ ] 02-03-PLAN.md -- burn_for_access, vesting (claim_vested), fee withdrawal, and revoke_vesting instructions
-- [ ] 02-04-PLAN.md -- Comprehensive test suite (bankrun) and devnet deployment
+- [x] 02-01-PLAN.md -- Anchor project scaffold, state accounts, errors, and GlobalConfig initialization
+- [x] 02-02-PLAN.md -- Bonding curve math module, create_token, buy, and sell instructions
+- [x] 02-03-PLAN.md -- burn_for_access, vesting (claim_vested), fee withdrawal, and revoke_vesting instructions
+- [x] 02-04-PLAN.md -- Comprehensive test suite (bankrun) and devnet deployment
 
 ### Phase 3: Creator Onboarding & Token Launch
 **Goal**: Verified creators can set up profiles and launch their own SPL token with anti-rug protections enforced
@@ -194,7 +194,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Authentication & Wallets | 3/3 | Complete | 2026-02-01 |
-| 2. Bonding Curve Smart Contract | 0/4 | Not started | - |
+| 2. Bonding Curve Smart Contract | 4/4 | Complete | 2026-02-01 |
 | 3. Creator Onboarding & Token Launch | 0/4 | Not started | - |
 | 4. Content Infrastructure | 0/5 | Not started | - |
 | 5. Token-Gated Content | 0/3 | Not started | - |

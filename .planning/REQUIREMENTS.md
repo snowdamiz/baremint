@@ -63,8 +63,8 @@
 
 ### Anti-Rug Protections
 
-- [ ] **SAFE-01**: Creator's 10% allocation is locked with enforced vesting (30d cliff + 60d linear)
-- [ ] **SAFE-02**: 90-day cooldown between token launches is enforced
+- [x] **SAFE-01**: Creator's 10% allocation is locked with enforced vesting (30d cliff + 60d linear)
+- [x] **SAFE-02**: 90-day cooldown between token launches is enforced
 - [ ] **SAFE-03**: KYC verification status and vesting schedule are visible on creator profiles
 - [ ] **SAFE-04**: Anti-rug protections are transparent and displayed to viewers before purchasing
 
@@ -146,8 +146,8 @@
 | DISC-03 | Phase 9 | Pending |
 | DISC-04 | Phase 9 | Pending |
 | DISC-05 | Phase 9 | Pending |
-| SAFE-01 | Phase 2 | Pending |
-| SAFE-02 | Phase 2 | Pending |
+| SAFE-01 | Phase 2 | Complete |
+| SAFE-02 | Phase 2 | Complete |
 | SAFE-03 | Phase 3 | Pending |
 | SAFE-04 | Phase 3 | Pending |
 
