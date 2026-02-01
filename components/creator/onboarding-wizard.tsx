@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ProfileStep, type ProfileData } from "@/components/creator/steps/profile-step";
+import { KycStep } from "@/components/creator/steps/kyc-step";
 import { toast } from "sonner";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,14 +20,17 @@ type StepId = (typeof STEPS)[number]["id"];
 interface OnboardingWizardProps {
   initialStep?: StepId;
   existingProfile?: ProfileData | null;
+  initialKycStatus?: string;
 }
 
 export function OnboardingWizard({
   initialStep = "profile",
   existingProfile,
+  initialKycStatus = "none",
 }: OnboardingWizardProps) {
   const [currentStep, setCurrentStep] = useState<StepId>(initialStep);
   const [saving, setSaving] = useState(false);
+  const [kycStatus, setKycStatus] = useState(initialKycStatus);
   const [profileData, setProfileData] = useState<ProfileData>(
     existingProfile ?? {
       displayName: "",
@@ -146,14 +150,11 @@ export function OnboardingWizard({
         )}
 
         {currentStep === "kyc" && (
-          <div className="py-12 text-center">
-            <h2 className="text-lg font-semibold">Identity Verification</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              KYC verification will be available soon. This step verifies your
-              identity to protect your audience.
-            </p>
-            <p className="mt-4 text-xs text-muted-foreground">Coming soon</p>
-          </div>
+          <KycStep
+            kycStatus={kycStatus}
+            onStatusChange={setKycStatus}
+            onNext={() => setCurrentStep("token-config")}
+          />
         )}
 
         {currentStep === "token-config" && (

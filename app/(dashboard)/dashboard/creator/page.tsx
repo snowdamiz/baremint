@@ -60,6 +60,7 @@ export default async function CreatorPage() {
       <OnboardingWizard
         initialStep={initialStep}
         existingProfile={existingProfile}
+        initialKycStatus={profile?.kycStatus ?? "none"}
       />
     </div>
   );
