@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { db } from "@/lib/db";
 import { post, media } from "@/lib/db/schema";
-import { eq, and, desc, count } from "drizzle-orm";
+import { eq, and, desc, count, inArray, ne } from "drizzle-orm";
 
 /**
  * Create a new draft post for a creator.
@@ -43,6 +43,34 @@ export async function updateDraftPost(
         eq(post.id, postId),
         eq(post.creatorProfileId, creatorProfileId),
         eq(post.status, "draft"),
+      ),
+    )
+    .returning();
+
+  return updated ?? null;
+}
+
+/**
+ * Update a published post's text content. Only text is editable (not media).
+ * Cannot edit posts that are under_review or removed.
+ * Returns the updated post or null if not found/not editable/not owned.
+ */
+export async function updatePublishedPost(
+  postId: string,
+  creatorProfileId: string,
+  content: string,
+) {
+  const [updated] = await db
+    .update(post)
+    .set({
+      content,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(post.id, postId),
+        eq(post.creatorProfileId, creatorProfileId),
+        inArray(post.status, ["draft", "published"]),
       ),
     )
     .returning();
@@ -182,7 +210,8 @@ export async function getPostById(postId: string) {
 /**
  * Soft-delete a post by setting status to "removed".
  * Only works if the creator owns the post.
- * Does NOT hard-delete for legal compliance.
+ * Also marks all attached media as "failed" to prevent public access.
+ * Does NOT hard-delete media from R2 for legal compliance.
  */
 export async function deletePost(postId: string, creatorProfileId: string) {
   const [updated] = await db
@@ -196,5 +225,15 @@ export async function deletePost(postId: string, creatorProfileId: string) {
     )
     .returning();
 
-  return updated ?? null;
+  if (!updated) return null;
+
+  // Mark all attached media as failed so they are not publicly queryable
+  await db
+    .update(media)
+    .set({ status: "failed" })
+    .where(
+      and(eq(media.postId, postId), ne(media.status, "failed")),
+    );
+
+  return updated;
 }

@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   getPostById,
   updateDraftPost,
+  updatePublishedPost,
   deletePost,
 } from "@/lib/content/post-queries";
 
@@ -90,10 +91,14 @@ export async function PATCH(
     );
   }
 
-  const updated = await updateDraftPost(id, profile.id, parsed.data.content);
+  // Try draft update first, then published post update
+  const updated =
+    (await updateDraftPost(id, profile.id, parsed.data.content)) ??
+    (await updatePublishedPost(id, profile.id, parsed.data.content));
+
   if (!updated) {
     return Response.json(
-      { error: "Post not found or not a draft" },
+      { error: "Post not found or cannot be edited" },
       { status: 404 },
     );
   }
