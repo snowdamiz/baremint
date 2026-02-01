@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 9 (Content Infrastructure)
-Plan: 4 of 5 in current phase (04-04 running in parallel)
-Status: In progress
-Last activity: 2026-02-01 — Completed 04-05-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 04-04-PLAN.md (phase 4 complete)
 
-Progress: [███████████████░░░░░░░░░░░░░░░░░░░░░] 15/35 (~43%)
+Progress: [████████████████░░░░░░░░░░░░░░░░░░░░] 16/35 (~46%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: ~6 minutes
-- Total execution time: ~84 minutes
+- Total execution time: ~90 minutes
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [███████████████░░░░░░░░
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
-| 4. Content Infrastructure | 4/5 | ~16 min | ~4 min |
+| 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (~3 min), 04-02 (~4 min), 04-03 (~5 min), 04-05 (~4 min)
+- Last 5 plans: 04-02 (~4 min), 04-03 (~5 min), 04-04 (~6 min), 04-05 (~4 min)
 
 *Updated after each plan completion*
 
@@ -101,6 +101,9 @@ Recent decisions affecting current work:
 - [04-03]: video_quality: basic and max_resolution_tier: 1080p for cost control
 - [04-03]: Mux SDK lacks max_duration_seconds on upload params; enforce via dashboard or post-transcoding
 - [04-03]: Always return 200 after Mux webhook signature verification to prevent retry storms
+- [04-04]: XHR for media uploads instead of fetch to enable progress tracking
+- [04-04]: Poll GET /api/media/[id] every 5s for video processing status
+- [04-04]: Used existing /dashboard/creator/[id] route instead of plan's /creator/[slug]
 - [04-05]: Reuse kycStatus="suspended" for strike 3 consequence (no new schema column)
 - [04-05]: Admin check via ADMIN_EMAILS env var for MVP (no roles table)
 - [04-05]: Soft-delete cascade marks attached media as "failed" (preserved in R2)
@@ -127,5 +130,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 04-05-PLAN.md
+Stopped at: Completed 04-04-PLAN.md (Phase 4 complete)
 Resume file: None
