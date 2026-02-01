@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 5 of 9 (Token-Gated Content)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 05-01-PLAN.md
+Last activity: 2026-02-01 — Completed 05-02-PLAN.md
 
-Progress: [█████████████████░░░░░░░░░░░░░░░░░░░] 17/35 (~49%)
+Progress: [██████████████████░░░░░░░░░░░░░░░░░░] 18/35 (~51%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
+- Total plans completed: 18
 - Average duration: ~5 minutes
-- Total execution time: ~93 minutes
+- Total execution time: ~96 minutes
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [█████████████████░░░░░░
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
-| 5. Token-Gated Content | 1/3 | ~3 min | ~3 min |
+| 5. Token-Gated Content | 2/3 | ~6 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (~5 min), 04-04 (~6 min), 04-05 (~4 min), 05-01 (~3 min)
+- Last 5 plans: 04-04 (~6 min), 04-05 (~4 min), 05-01 (~3 min), 05-02 (~3 min)
 
 *Updated after each plan completion*
 
@@ -112,6 +112,9 @@ Recent decisions affecting current work:
 - [05-01]: Access level defaults to public; gated requires threshold + launched token
 - [05-01]: Token threshold stored as text (BigInt string) matching amountLamports pattern
 - [05-01]: Two-step publish dialog: compose content -> select access level
+- [05-02]: Video blur generation is non-fatal in webhook (try/catch, continues on error)
+- [05-02]: Mux JWT signing keys optional -- client works without them for non-gated video
+- [05-02]: MUX_PRIVATE_KEY stored as base64, decoded to ASCII at runtime
 
 ### Pending Todos
 
@@ -124,6 +127,7 @@ Recent decisions affecting current work:
 - Set MUX_TOKEN_ID, MUX_TOKEN_SECRET, MUX_WEBHOOK_SECRET for Mux video
 - Configure Mux webhook endpoint pointing to /api/webhooks/mux
 - Set ADMIN_EMAILS env var with comma-separated admin email addresses
+- Set MUX_SIGNING_KEY_ID and MUX_PRIVATE_KEY for gated video playback tokens
 
 ### Blockers/Concerns
 
@@ -134,5 +138,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 05-01-PLAN.md
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
