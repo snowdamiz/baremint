@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 3 of 9 (Creator Onboarding & Token Launch)
-Plan: 3 of 4 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 03-03-PLAN.md
+Plan: 4 of 4 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 03-04-PLAN.md
 
-Progress: [██████████░░░░░░░░░░░░░░░░░░░░░░░░░] 10/35 (~29%)
+Progress: [███████████░░░░░░░░░░░░░░░░░░░░░░░░] 11/35 (~31%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: ~6 minutes
-- Total execution time: ~64 minutes
+- Total execution time: ~68 minutes
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [██████████░░░░░░░░░░░░░
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
-| 3. Creator Onboarding | 3/4 | ~13 min | ~4 min |
+| 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-04 (~13 min), 03-01 (~5 min), 03-02 (~3 min), 03-03 (~5 min)
+- Last 5 plans: 03-01 (~5 min), 03-02 (~3 min), 03-03 (~5 min), 03-04 (~4 min)
 
 *Updated after each plan completion*
 
@@ -85,6 +85,10 @@ Recent decisions affecting current work:
 - [03-03]: Anchor IDL discriminator used directly for create_token instruction
 - [03-03]: canvas-confetti loaded via dynamic import() to avoid SSR issues
 - [03-03]: Token image defaults to creator avatar; custom image optional via toggle
+- [03-04]: KYC badge renders nothing for unverified (no stigmatizing "unverified" label)
+- [03-04]: Cooldown/sell restriction info private to creator only (not on public profile)
+- [03-04]: Vesting timeline calculates from launchedAt with 30d cliff + 60d linear
+- [03-04]: Public creator profile is server component for SEO
 
 ### Pending Todos
 
@@ -103,5 +107,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 03-03-PLAN.md (Token launch flow)
+Stopped at: Completed 03-04-PLAN.md (Phase 3 complete)
 Resume file: None
