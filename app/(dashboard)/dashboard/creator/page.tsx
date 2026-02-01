@@ -2,9 +2,10 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { creatorProfile } from "@/lib/db/schema";
+import { creatorProfile, creatorToken } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { OnboardingWizard } from "@/components/creator/onboarding-wizard";
+import { CreatorOwnProfile } from "@/components/creator/creator-own-profile";
 import type { ProfileData } from "@/components/creator/steps/profile-step";
 
 export default async function CreatorPage() {
@@ -20,6 +21,22 @@ export default async function CreatorPage() {
   const profile = await db.query.creatorProfile.findFirst({
     where: eq(creatorProfile.userId, session.user.id),
   });
+
+  // If creator has a token, show their own profile view
+  if (profile) {
+    const token = await db.query.creatorToken.findFirst({
+      where: eq(creatorToken.creatorProfileId, profile.id),
+    });
+
+    if (token) {
+      return (
+        <CreatorOwnProfile
+          profile={profile}
+          token={token}
+        />
+      );
+    }
+  }
 
   // Determine initial step based on profile state
   let initialStep: "profile" | "kyc" | "token-config" = "profile";
