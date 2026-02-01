@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 2 of 9 (Bonding Curve Smart Contract)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 02-02-PLAN.md
+Last activity: 2026-02-01 — Completed 02-03-PLAN.md
 
-Progress: [█████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 5/35 (~14%)
+Progress: [██████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 6/35 (~17%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~7 minutes
-- Total execution time: ~35 minutes
+- Total plans completed: 6
+- Average duration: ~6 minutes
+- Total execution time: ~38 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
-| 2. Bonding Curve | 2/4 | ~19 min | ~10 min |
+| 2. Bonding Curve | 3/4 | ~22 min | ~7 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (~3 min), 01-03 (~8 min), 02-01 (~14 min), 02-02 (~5 min)
-- Trend: 02-02 fast -- pure Rust implementation with no toolchain issues
+- Last 5 plans: 01-03 (~8 min), 02-01 (~14 min), 02-02 (~5 min), 02-03 (~3 min)
+- Trend: 02-03 very fast -- straightforward instruction implementation following established patterns
 
 *Updated after each plan completion*
 
@@ -64,6 +64,10 @@ Recent decisions affecting current work:
 - [02-02]: All SOL in bonding_curve PDA -- fees tracked via accrual fields, no separate vaults
 - [02-02]: Sell uses lamport manipulation (program owns PDA), buy uses system_program::transfer CPI
 - [02-02]: Buyer must pre-create ATA client-side before buy instruction
+- [02-03]: Burn-for-access is purely deflationary -- no SOL returned to viewer, fees extracted from reserves
+- [02-03]: Fee withdrawal uses lamport manipulation (same pattern as sell)
+- [02-03]: Vesting claims snap to weekly windows (floor division)
+- [02-03]: Revoke vesting is idempotent (returns Ok if already revoked)
 
 ### Pending Todos
 
@@ -77,6 +81,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-01T09:57:22Z
-Stopped at: Completed 02-02-PLAN.md (Core trading instructions: math, create_token, buy, sell)
+Last session: 2026-02-01T10:04:04Z
+Stopped at: Completed 02-03-PLAN.md (Burn, vesting & fees instructions -- 9/9 instructions complete)
 Resume file: None
