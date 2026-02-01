@@ -1,4 +1,4 @@
-# Phase 3: User Setup - Cloudflare R2
+# Phase 3: User Setup
 
 ## Cloudflare R2 Storage
 
@@ -66,3 +66,65 @@ After configuring, the app should be able to:
 - Without R2 configured, the image upload flow will fail gracefully with an error toast
 - The profile form and wizard still work without R2 -- only image uploads require it
 - For local development, you can use R2 directly (no local alternative needed since R2 has a free tier)
+
+---
+
+## Sumsub KYC Verification
+
+Baremint uses Sumsub for creator identity verification (KYC). Creators must pass KYC before launching a token to prevent anonymous rug-pulls.
+
+### Prerequisites
+
+- A Sumsub account (https://sumsub.com -- has a test/sandbox mode)
+- Access to the Sumsub Dashboard
+
+### Steps
+
+#### 1. Create an App Token
+
+1. Go to **Sumsub Dashboard** -> **Developers** -> **App Tokens**
+2. Click **Generate new token**
+3. Copy the **App Token** (this is `SUMSUB_APP_TOKEN`)
+4. Copy the **Secret Key** (shown only once -- this is `SUMSUB_SECRET_KEY`)
+
+#### 2. Create a Verification Level
+
+1. Go to **Sumsub Dashboard** -> **Verification Levels**
+2. Create a new level or use the default `basic-kyc-level`
+3. Configure it with:
+   - **ID document** check (passport, driver's license, or national ID)
+   - **Liveness check** (selfie verification)
+4. Note the level name -- it must match the `levelName` parameter in the code (default: `basic-kyc-level`)
+
+#### 3. Configure Webhook
+
+1. Go to **Sumsub Dashboard** -> **Developers** -> **Webhooks**
+2. Add a new webhook endpoint: `https://<YOUR_DOMAIN>/api/sumsub/webhook`
+3. Select events: **Applicant reviewed** (at minimum)
+4. Copy the **Secret key** for webhook verification (this is `SUMSUB_WEBHOOK_SECRET`)
+5. For local development, use a tunnel service (e.g., ngrok) to expose your local server
+
+### Environment Variables
+
+Add these to your `.env` file:
+
+```env
+SUMSUB_APP_TOKEN=<your-app-token>
+SUMSUB_SECRET_KEY=<your-secret-key>
+SUMSUB_WEBHOOK_SECRET=<your-webhook-secret>
+```
+
+### Verification
+
+After configuring, the app should be able to:
+- Show the Sumsub verification widget on the KYC step of the creator wizard
+- Complete ID document upload and liveness check within the app
+- Receive webhook callbacks that update KYC status to approved/rejected
+- Poll KYC status manually via the "Check Status" button
+
+### Notes
+
+- Without Sumsub credentials, the KYC widget will show a configuration error (expected in development)
+- The onboarding wizard still renders without Sumsub -- only the verification step requires it
+- For testing, use Sumsub's sandbox mode which provides test document images
+- Webhook delivery can be delayed; the manual "Check Status" button is the fallback

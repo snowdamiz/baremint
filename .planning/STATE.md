@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 3 of 9 (Creator Onboarding & Token Launch)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 03-01-PLAN.md
+Last activity: 2026-02-01 — Completed 03-02-PLAN.md
 
-Progress: [████████░░░░░░░░░░░░░░░░░░░░░░░░░░░] 8/35 (~23%)
+Progress: [█████████░░░░░░░░░░░░░░░░░░░░░░░░░░] 9/35 (~26%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: ~7 minutes
-- Total execution time: ~56 minutes
+- Total execution time: ~59 minutes
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [████████░░░░░░░░░░░░░░░
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
-| 3. Creator Onboarding | 1/4 | ~5 min | ~5 min |
+| 3. Creator Onboarding | 2/4 | ~8 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (~5 min), 02-03 (~3 min), 02-04 (~13 min), 03-01 (~5 min)
+- Last 5 plans: 02-03 (~3 min), 02-04 (~13 min), 03-01 (~5 min), 03-02 (~3 min)
 
 *Updated after each plan completion*
 
@@ -77,6 +77,10 @@ Recent decisions affecting current work:
 - [03-01]: useState for wizard step management (single-page flow, no route-based steps)
 - [03-01]: Display name immutable after creation to prevent impersonation
 - [03-01]: Image output as WebP at 0.85 quality (avatar 400x400, banner 1200x400)
+- [03-02]: Dynamic import for Sumsub WebSDK to avoid SSR hydration errors
+- [03-02]: User ID as Sumsub externalUserId for applicant mapping
+- [03-02]: Return 200 on webhook processing errors to prevent Sumsub retry storms
+- [03-02]: Timing-safe HMAC comparison for webhook signature verification
 
 ### Pending Todos
 
@@ -84,6 +88,7 @@ Recent decisions affecting current work:
 - Set TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET for Twitter OAuth
 - Fund devnet wallet and deploy program (when airdrop faucet available)
 - Configure Cloudflare R2 for image uploads (see 03-USER-SETUP.md)
+- Configure Sumsub KYC credentials (see 03-USER-SETUP.md)
 
 ### Blockers/Concerns
 
@@ -94,5 +99,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 03-01-PLAN.md (creator profile foundation)
+Stopped at: Completed 03-02-PLAN.md (Sumsub KYC verification)
 Resume file: None
