@@ -22,8 +22,8 @@ The recommended approach is: use React state (useState) for wizard step manageme
 | `@sumsub/websdk-react` | 2.6.x | Embedded KYC verification widget | Official React wrapper for Sumsub Web SDK 2.0 |
 | `react-image-crop` | 11.x | In-browser image cropping (avatar circle + banner rectangle) | Lightweight (<5KB gzip), zero dependencies, supports `circularCrop`, aspect ratio |
 | `canvas-confetti` | 1.9.x | Celebration confetti on successful token launch | Lightweight, supports web worker offloading, respects `prefers-reduced-motion` |
-| `@aws-sdk/client-s3` | 3.x | Image upload to S3-compatible storage | Standard for presigned URL pattern |
-| `@aws-sdk/s3-request-presigner` | 3.x | Generate presigned upload URLs | Pairs with client-s3 for direct browser uploads |
+| `@aws-sdk/client-s3` | 3.x | Image upload to Cloudflare R2 (S3-compatible API) | Standard for presigned URL pattern; R2 has zero egress fees |
+| `@aws-sdk/s3-request-presigner` | 3.x | Generate presigned upload URLs | Pairs with client-s3 for direct browser-to-R2 uploads |
 
 ### Supporting
 | Library | Version | Purpose | When to Use |
@@ -37,7 +37,7 @@ The recommended approach is: use React state (useState) for wizard step manageme
 |------------|-----------|----------|
 | `react-image-crop` | `react-easy-crop` | react-easy-crop has more built-in UI but is heavier; react-image-crop is more flexible and lighter |
 | `canvas-confetti` | `react-confetti-explosion` | CSS-only (0 deps) but less customizable; canvas-confetti is more dramatic for a "launch ceremony" |
-| S3 presigned URLs | Server action file upload to disk | Disk storage doesn't scale; S3 is production-ready from day one |
+| R2 presigned URLs | Server action file upload to disk | Disk storage doesn't scale; R2 is production-ready from day one with zero egress fees |
 | useState for wizard | zustand with persist | Overkill for a single-page wizard; zustand adds complexity without benefit here since the wizard doesn't span routes |
 
 **Installation:**
@@ -218,8 +218,8 @@ export function KycStep({ accessToken, onComplete, onTokenExpired }) {
 // All PDA addresses are derived from the mint address using seeds from the smart contract
 ```
 
-### Pattern 4: Image Upload with Presigned URLs
-**What:** Server generates S3 presigned URL, client uploads directly to S3, stores URL in DB
+### Pattern 4: Image Upload with Presigned URLs (Cloudflare R2)
+**What:** Server generates R2 presigned URL, client uploads directly to R2, stores URL in DB
 **When to use:** Avatar, banner, and token image uploads
 **Example:**
 ```typescript
@@ -227,22 +227,29 @@ export function KycStep({ accessToken, onComplete, onTokenExpired }) {
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const s3 = new S3Client({ region: process.env.AWS_REGION });
+const r2 = new S3Client({
+  region: "auto",
+  endpoint: process.env.R2_ENDPOINT!,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
+  },
+});
 
 export async function getPresignedUploadUrl(userId: string, fileType: string, purpose: "avatar" | "banner" | "token") {
   const key = `uploads/${purpose}/${userId}/${crypto.randomUUID()}.${fileType.split("/")[1]}`;
   const command = new PutObjectCommand({
-    Bucket: process.env.S3_BUCKET!,
+    Bucket: process.env.R2_BUCKET!,
     Key: key,
     ContentType: fileType,
   });
-  const url = await getSignedUrl(s3, command, { expiresIn: 300 });
-  return { uploadUrl: url, publicUrl: `${process.env.CDN_URL}/${key}` };
+  const url = await getSignedUrl(r2, command, { expiresIn: 300 });
+  return { uploadUrl: url, publicUrl: `${process.env.R2_PUBLIC_URL}/${key}` };
 }
 ```
 
 ### Anti-Patterns to Avoid
-- **Storing images in the database:** Use object storage (S3/R2). DB blobs are slow and expensive.
+- **Storing images in the database:** Use object storage (R2). DB blobs are slow and expensive.
 - **Building Solana transactions client-side for custodial wallets:** The private key is encrypted server-side; all transaction building must happen server-side.
 - **Polling Sumsub for KYC status:** Use webhooks instead. Polling wastes API calls and introduces latency.
 - **Putting file validation only on the client:** Always validate file type, size, and dimensions server-side before generating presigned URLs.
@@ -256,7 +263,7 @@ export async function getPresignedUploadUrl(userId: string, fileType: string, pu
 | Image cropping | Canvas manipulation code | react-image-crop | Touch support, aspect ratio, circular crop, accessibility |
 | Confetti animation | Custom particle system | canvas-confetti | Web worker support, reduced-motion respect, proven performance |
 | HMAC request signing | Manual crypto concatenation | Helper function (see code example) | Easy to get wrong -- timestamp, method, path, body order matters |
-| File upload to cloud | Streaming through Next.js server | S3 presigned URLs | Direct browser-to-S3 upload avoids server bandwidth bottleneck |
+| File upload to cloud | Streaming through Next.js server | R2 presigned URLs | Direct browser-to-R2 upload avoids server bandwidth bottleneck |
 | Webhook signature verification | Trust Sumsub IP addresses | HMAC-SHA256 digest comparison | IPs change; signature is cryptographically secure |
 | Step indicator UI | Custom progress dots | shadcn/ui components (combine Separator + badges) | Consistent with existing design system |
 
@@ -458,7 +465,7 @@ export function LaunchSuccessStep({ tokenName, tickerSymbol }) {
 |--------------|------------------|--------------|--------|
 | Sumsub WebSDK 1.0 | WebSDK 2.0 (mandatory) | Oct 2025 | Must use v2.0; v1.0 no longer functions |
 | `@solana/web3.js` v1 for transactions | `@solana/kit` v5 with pipe() pattern | 2024-2025 | Project already uses kit v5; continue this pattern |
-| Store files on disk in Next.js `/public` | S3/R2 presigned URL upload | Standard practice | Scales to production; no filesystem dependency |
+| Store files on disk in Next.js `/public` | R2 presigned URL upload | Standard practice | Scales to production; no filesystem dependency; zero egress fees |
 | react-hook-form for multi-step | useState for simple wizards, RHF for complex forms | Current | For a wizard with mostly non-form steps (image upload, KYC embed), useState is simpler |
 
 **Deprecated/outdated:**
@@ -467,10 +474,11 @@ export function LaunchSuccessStep({ tokenName, tickerSymbol }) {
 
 ## Open Questions
 
-1. **S3 bucket vs Cloudflare R2 vs Vercel Blob**
-   - What we know: All three work with the presigned URL pattern. R2 has zero egress fees. Vercel Blob is simplest to set up.
-   - What's unclear: Which the project will use in production (hosting platform not yet decided)
-   - Recommendation: Implement against S3 API (compatible with R2). Use environment variables for bucket/region so it's swappable. For local dev, could use MinIO or just store files temporarily.
+1. **Image storage: Cloudflare R2** (DECIDED)
+   - Using Cloudflare R2 for all image uploads (avatars, banners, token images)
+   - R2 uses S3-compatible API via @aws-sdk/client-s3 with custom endpoint
+   - Zero egress fees for serving images
+   - For local dev, could use MinIO as R2-compatible alternative or just use R2 directly
 
 2. **Sumsub KYC Level Configuration**
    - What we know: Need "Basic KYC" level (government ID + liveness selfie). The levelName is passed to the access token API.
