@@ -108,3 +108,45 @@ export const withdrawal = pgTable("withdrawal", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   confirmedAt: timestamp("confirmed_at"),
 });
+
+// ──────────────────────────────────────────────
+// Creator tables (Phase 3)
+// ──────────────────────────────────────────────
+
+export const creatorProfile = pgTable("creator_profile", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id)
+    .unique(),
+  displayName: text("display_name").notNull(),
+  bio: text("bio"),
+  avatarUrl: text("avatar_url"),
+  bannerUrl: text("banner_url"),
+  socialTwitter: text("social_twitter"),
+  socialInstagram: text("social_instagram"),
+  socialYoutube: text("social_youtube"),
+  socialWebsite: text("social_website"),
+  kycStatus: text("kyc_status").notNull().default("none"), // none | pending | approved | rejected
+  kycApplicantId: text("kyc_applicant_id"),
+  kycRejectionReason: text("kyc_rejection_reason"),
+  lastTokenLaunchAt: timestamp("last_token_launch_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const creatorToken = pgTable("creator_token", {
+  id: text("id").primaryKey(),
+  creatorProfileId: text("creator_profile_id")
+    .notNull()
+    .references(() => creatorProfile.id),
+  tokenName: text("token_name").notNull(),
+  tickerSymbol: text("ticker_symbol").notNull(),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  mintAddress: text("mint_address").notNull().unique(),
+  bondingCurveAddress: text("bonding_curve_address").notNull(),
+  vestingAddress: text("vesting_address").notNull(),
+  txSignature: text("tx_signature").notNull(),
+  launchedAt: timestamp("launched_at").notNull().defaultNow(),
+});
