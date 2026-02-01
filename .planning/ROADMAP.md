@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Authentication & Wallets** - Users can sign up, log in, and have a custodial Solana wallet
 - [x] **Phase 2: Bonding Curve Smart Contract** - On-chain program for token creation, trading, burns, vesting, and fees deployed to devnet
 - [x] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
-- [ ] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
+- [x] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
 - [ ] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
 - [ ] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
 - [ ] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
@@ -91,11 +91,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- Content data model (post, media, moderation, strike tables) and text post CRUD API with draft auto-save
-- [ ] 04-02-PLAN.md -- Image upload pipeline (R2 presigned URLs, CSAM scanning via Hive, Sharp optimization to responsive WebP)
-- [ ] 04-03-PLAN.md -- Video upload and Mux transcoding pipeline (R2 first for CSAM scan, then Mux direct upload with webhooks)
-- [ ] 04-04-PLAN.md -- Post composer UI, media upload components, post feed and creator profile integration
-- [ ] 04-05-PLAN.md -- Post editing/deletion, admin moderation queue, and 3-strike system
+- [x] 04-01-PLAN.md -- Content data model (post, media, moderation, strike tables) and text post CRUD API with draft auto-save
+- [x] 04-02-PLAN.md -- Image upload pipeline (R2 presigned URLs, CSAM scanning via Hive, Sharp optimization to responsive WebP)
+- [x] 04-03-PLAN.md -- Video upload and Mux transcoding pipeline (R2 first for CSAM scan, then Mux direct upload with webhooks)
+- [x] 04-04-PLAN.md -- Post composer UI, media upload components, post feed and creator profile integration
+- [x] 04-05-PLAN.md -- Post editing/deletion, admin moderation queue, and 3-strike system
 
 ### Phase 5: Token-Gated Content
 **Goal**: Viewers holding sufficient creator tokens can access gated content; others see a locked placeholder
@@ -196,7 +196,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 1. Authentication & Wallets | 3/3 | Complete | 2026-02-01 |
 | 2. Bonding Curve Smart Contract | 4/4 | Complete | 2026-02-01 |
 | 3. Creator Onboarding & Token Launch | 4/4 | Complete | 2026-02-01 |
-| 4. Content Infrastructure | 0/5 | Not started | - |
+| 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
 | 5. Token-Gated Content | 0/3 | Not started | - |
 | 6. Token Trading | 0/5 | Not started | - |
 | 7. Burn-to-Unlock Premium Content | 0/3 | Not started | - |
