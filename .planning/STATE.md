@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 2 - Bonding Curve Smart Contract
+**Current focus:** Phase 2 complete -- ready for Phase 3
 
 ## Current Position
 
 Phase: 2 of 9 (Bonding Curve Smart Contract)
-Plan: 3 of 4 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 02-03-PLAN.md
+Plan: 4 of 4 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 -- Completed 02-04-PLAN.md
 
-Progress: [██████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 6/35 (~17%)
+Progress: [████████░░░░░░░░░░░░░░░░░░░░░░░░░░░] 7/35 (~20%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: ~6 minutes
-- Total execution time: ~38 minutes
+- Total plans completed: 7
+- Average duration: ~7 minutes
+- Total execution time: ~51 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
-| 2. Bonding Curve | 3/4 | ~22 min | ~7 min |
+| 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (~8 min), 02-01 (~14 min), 02-02 (~5 min), 02-03 (~3 min)
-- Trend: 02-03 very fast -- straightforward instruction implementation following established patterns
+- Last 5 plans: 02-01 (~14 min), 02-02 (~5 min), 02-03 (~3 min), 02-04 (~13 min)
+- Trend: 02-04 longer due to 52-test suite requiring iterative debugging of BigInt types, rounding edge cases, and bankrun quirks
 
 *Updated after each plan completion*
 
@@ -68,19 +68,26 @@ Recent decisions affecting current work:
 - [02-03]: Fee withdrawal uses lamport manipulation (same pattern as sell)
 - [02-03]: Vesting claims snap to weekly windows (floor division)
 - [02-03]: Revoke vesting is idempotent (returns Ok if already revoked)
+- [02-04]: Constant-product round-trip can return 1 lamport more than deposited (integer rounding)
+- [02-04]: Weekly vesting snapping means max ~93.3% claimable (8 of 8.57 weeks)
+- [02-04]: First claimable vesting window is cliff + 7 days (day 37), not cliff itself
+- [02-04]: Bankrun tests require --runInBand for stability (native code race conditions)
+- [02-04]: Devnet deployment pending SOL funding (airdrop rate-limited)
 
 ### Pending Todos
 
 - Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET for Google OAuth
 - Set TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET for Twitter OAuth
+- Fund devnet wallet and deploy program (when airdrop faucet available)
 
 ### Blockers/Concerns
 
 - Phase 4 needs phase-level research (PhotoDNA access, NCMEC reporting, video transcoding)
 - Audit firm selection needed before Phase 2 smart contract can go to mainnet
+- Vesting weekly snapping leaves ~6.7% of allocation permanently locked (design decision to document)
 
 ## Session Continuity
 
-Last session: 2026-02-01T10:04:04Z
-Stopped at: Completed 02-03-PLAN.md (Burn, vesting & fees instructions -- 9/9 instructions complete)
+Last session: 2026-02-01T10:20:00Z
+Stopped at: Completed 02-04-PLAN.md (52-test suite, Phase 2 complete)
 Resume file: None
