@@ -2,6 +2,8 @@ import { getMuxClient } from "@/lib/mux/client";
 import { db } from "@/lib/db";
 import { media, post } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import sharp from "sharp";
+import { uploadToR2 } from "@/lib/media/image-processing";
 import type {
   VideoAssetReadyWebhookEvent,
   VideoAssetErroredWebhookEvent,
@@ -107,6 +109,39 @@ async function handleAssetReady(event: VideoAssetReadyWebhookEvent) {
     ? Math.round(asset.duration)
     : null;
 
+  // Generate video blur placeholder from Mux thumbnail
+  // This runs before marking media as ready so the blur variant is available
+  // when content gating checks happen. Errors are non-fatal.
+  let updatedVariants = (mediaRecord.variants as Record<string, string>) ?? {};
+  try {
+    const thumbnailUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg?width=400`;
+    const thumbResponse = await fetch(thumbnailUrl);
+    if (thumbResponse.ok) {
+      const thumbBuffer = Buffer.from(await thumbResponse.arrayBuffer());
+      const blurBuffer = await sharp(thumbBuffer)
+        .resize(40, undefined, { fit: "inside", withoutEnlargement: true })
+        .blur(20)
+        .resize(400, undefined, {
+          fit: "inside",
+          withoutEnlargement: true,
+          kernel: "cubic",
+        })
+        .webp({ quality: 60 })
+        .toBuffer();
+
+      const blurKey = `content/${mediaRecord.creatorProfileId}/${mediaId}/blur.webp`;
+      await uploadToR2(blurKey, blurBuffer, "image/webp");
+
+      const publicUrlBase = process.env.R2_PUBLIC_URL?.replace(/\/$/, "");
+      if (publicUrlBase) {
+        updatedVariants = { ...updatedVariants, blur: `${publicUrlBase}/${blurKey}` };
+      }
+    }
+  } catch (error) {
+    console.error(`Failed to generate video blur placeholder for media ${mediaId}:`, error);
+    // Non-fatal: continue without blur variant
+  }
+
   // Update media record
   await db
     .update(media)
@@ -115,6 +150,7 @@ async function handleAssetReady(event: VideoAssetReadyWebhookEvent) {
       muxPlaybackId: playbackId,
       duration,
       status: "ready",
+      variants: updatedVariants,
     })
     .where(eq(media.id, mediaId));
 

@@ -117,6 +117,23 @@ export async function processUploadedImage(
     variants[suffix] = `${cleanPublicUrl}/${variantKey}`;
   }
 
+  // Generate blur variant for content gating placeholders
+  // Always generated since access level is set at publish time, not upload time.
+  // The blur URL is safe to be public (heavily blurred, no detail visible).
+  const blurKey = `${keyDir}blur.webp`;
+  const blurBuffer = await sharp(imageBuffer)
+    .resize(40, undefined, { fit: "inside", withoutEnlargement: true })
+    .blur(20)
+    .resize(400, undefined, {
+      fit: "inside",
+      withoutEnlargement: true,
+      kernel: "cubic",
+    })
+    .webp({ quality: 60 })
+    .toBuffer();
+  await uploadToR2(blurKey, blurBuffer, "image/webp");
+  variants["blur"] = `${cleanPublicUrl}/${blurKey}`;
+
   return {
     variants,
     width: originalWidth,
