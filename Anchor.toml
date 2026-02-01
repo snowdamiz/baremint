@@ -1,0 +1,22 @@
+[toolchain]
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+baremint = "FTAssMPiQ8EQUeJA4Rnu6c71maCrUCdnvGetWnVdTXTG"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx jest --forceExit"
+
+[test]
+startup_wait = 5000
+shutdown_wait = 2000
