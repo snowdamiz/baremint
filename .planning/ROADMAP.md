@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Authentication & Wallets** - Users can sign up, log in, and have a custodial Solana wallet
 - [x] **Phase 2: Bonding Curve Smart Contract** - On-chain program for token creation, trading, burns, vesting, and fees deployed to devnet
-- [ ] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
+- [x] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
 - [ ] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
 - [ ] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
 - [ ] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
@@ -73,10 +73,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- Creator profile DB schema, S3 image upload, profile API, onboarding wizard with profile step and image cropping
-- [ ] 03-02-PLAN.md -- Sumsub KYC integration (HMAC token generation, webhook handler, embedded WebSDK step)
-- [ ] 03-03-PLAN.md -- Token launch flow (on-chain create_token transaction, launch API with 90-day cooldown, config/review/success wizard steps)
-- [ ] 03-04-PLAN.md -- Anti-rug transparency UI (KYC badge, vesting timeline, public creator profile, cooldown display)
+- [x] 03-01-PLAN.md -- Creator profile DB schema, R2 image upload, profile API, onboarding wizard with profile step and image cropping
+- [x] 03-02-PLAN.md -- Sumsub KYC integration (HMAC token generation, webhook handler, embedded WebSDK step)
+- [x] 03-03-PLAN.md -- Token launch flow (on-chain create_token transaction, launch API with 90-day cooldown, config/review/success wizard steps)
+- [x] 03-04-PLAN.md -- Anti-rug transparency UI (KYC badge, vesting timeline, public creator profile, cooldown display)
 
 ### Phase 4: Content Infrastructure
 **Goal**: Creators can publish text, image, and video content with automated CSAM scanning before any content goes live
@@ -195,7 +195,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 |-------|----------------|--------|-----------|
 | 1. Authentication & Wallets | 3/3 | Complete | 2026-02-01 |
 | 2. Bonding Curve Smart Contract | 4/4 | Complete | 2026-02-01 |
-| 3. Creator Onboarding & Token Launch | 0/4 | Not started | - |
+| 3. Creator Onboarding & Token Launch | 4/4 | Complete | 2026-02-01 |
 | 4. Content Infrastructure | 0/5 | Not started | - |
 | 5. Token-Gated Content | 0/3 | Not started | - |
 | 6. Token Trading | 0/5 | Not started | - |

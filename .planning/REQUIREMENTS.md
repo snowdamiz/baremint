@@ -17,11 +17,11 @@
 
 ### Creator Profiles & KYC
 
-- [ ] **CRTR-01**: User can switch to creator role and set up a profile (bio, avatar, banner)
-- [ ] **CRTR-02**: Creator can complete KYC verification via Sumsub before launching a token
-- [ ] **CRTR-03**: Creator can launch their own SPL token on a permanent bonding curve
-- [ ] **CRTR-04**: Creator receives 10% token allocation with 30-day cliff + 60-day linear vest
-- [ ] **CRTR-05**: Creator cannot launch a new token for 90 days after their last launch
+- [x] **CRTR-01**: User can switch to creator role and set up a profile (bio, avatar, banner)
+- [x] **CRTR-02**: Creator can complete KYC verification via Sumsub before launching a token
+- [x] **CRTR-03**: Creator can launch their own SPL token on a permanent bonding curve
+- [x] **CRTR-04**: Creator receives 10% token allocation with 30-day cliff + 60-day linear vest
+- [x] **CRTR-05**: Creator cannot launch a new token for 90 days after their last launch
 - [ ] **CRTR-06**: Creator can view earnings dashboard (burns, trade fees, tips, total revenue)
 - [ ] **CRTR-07**: Creator can claim vested tokens according to schedule
 - [ ] **CRTR-08**: Creator can withdraw accumulated trade fee earnings (SOL)
@@ -65,8 +65,8 @@
 
 - [x] **SAFE-01**: Creator's 10% allocation is locked with enforced vesting (30d cliff + 60d linear)
 - [x] **SAFE-02**: 90-day cooldown between token launches is enforced
-- [ ] **SAFE-03**: KYC verification status and vesting schedule are visible on creator profiles
-- [ ] **SAFE-04**: Anti-rug protections are transparent and displayed to viewers before purchasing
+- [x] **SAFE-03**: KYC verification status and vesting schedule are visible on creator profiles
+- [x] **SAFE-04**: Anti-rug protections are transparent and displayed to viewers before purchasing
 
 ## v2 Requirements
 
@@ -115,11 +115,11 @@
 | AUTH-05 | Phase 1 | Complete |
 | AUTH-06 | Phase 1 | Complete |
 | AUTH-07 | Phase 1 | Complete |
-| CRTR-01 | Phase 3 | Pending |
-| CRTR-02 | Phase 3 | Pending |
-| CRTR-03 | Phase 3 | Pending |
-| CRTR-04 | Phase 3 | Pending |
-| CRTR-05 | Phase 3 | Pending |
+| CRTR-01 | Phase 3 | Complete |
+| CRTR-02 | Phase 3 | Complete |
+| CRTR-03 | Phase 3 | Complete |
+| CRTR-04 | Phase 3 | Complete |
+| CRTR-05 | Phase 3 | Complete |
 | CRTR-06 | Phase 8 | Pending |
 | CRTR-07 | Phase 8 | Pending |
 | CRTR-08 | Phase 8 | Pending |
@@ -148,8 +148,8 @@
 | DISC-05 | Phase 9 | Pending |
 | SAFE-01 | Phase 2 | Complete |
 | SAFE-02 | Phase 2 | Complete |
-| SAFE-03 | Phase 3 | Pending |
-| SAFE-04 | Phase 3 | Pending |
+| SAFE-03 | Phase 3 | Complete |
+| SAFE-04 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 42 total
@@ -158,4 +158,4 @@
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-01-31 after roadmap creation*
+*Last updated: 2026-02-01 after Phase 3 completion*
