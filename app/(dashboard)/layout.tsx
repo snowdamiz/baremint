@@ -33,6 +33,18 @@ export default async function DashboardLayout({
           >
             Dashboard
           </a>
+          <a
+            href="/dashboard/withdraw"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            Withdraw
+          </a>
+          <a
+            href="/dashboard/settings"
+            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            Settings
+          </a>
         </nav>
         {walletData && (
           <div className="border-t p-4">

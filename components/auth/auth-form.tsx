@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { OAuthButtons } from "./oauth-buttons";
 
 type AuthStep = "email" | "login" | "signup";
 
@@ -108,22 +109,14 @@ export function AuthForm() {
 
   return (
     <div className="space-y-6">
-      {/* OAuth placeholder -- will be wired in Plan 03 */}
-      {/* <div className="space-y-3">
-        <Button variant="outline" className="w-full" disabled>
-          Continue with Google
-        </Button>
-        <Button variant="outline" className="w-full" disabled>
-          Continue with Twitter
-        </Button>
-      </div>
+      <OAuthButtons />
 
       <div className="relative">
         <Separator />
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
           or
         </span>
-      </div> */}
+      </div>
 
       {step === "email" && (
         <form onSubmit={handleEmailSubmit} className="space-y-4">
