@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 5 - Token-Gated Content
+**Current focus:** Phase 5 - Token-Gated Content (Complete)
 
 ## Current Position
 
 Phase: 5 of 9 (Token-Gated Content)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 05-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-01 — Completed 05-03-PLAN.md
 
-Progress: [██████████████████░░░░░░░░░░░░░░░░░░] 18/35 (~51%)
+Progress: [███████████████████░░░░░░░░░░░░░░░░░] 19/35 (~54%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
+- Total plans completed: 19
 - Average duration: ~5 minutes
-- Total execution time: ~96 minutes
+- Total execution time: ~99 minutes
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [██████████████████░░░░░
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
-| 5. Token-Gated Content | 2/3 | ~6 min | ~3 min |
+| 5. Token-Gated Content | 3/3 | ~9 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-04 (~6 min), 04-05 (~4 min), 05-01 (~3 min), 05-02 (~3 min)
+- Last 5 plans: 04-05 (~4 min), 05-01 (~3 min), 05-02 (~3 min), 05-03 (~3 min)
 
 *Updated after each plan completion*
 
@@ -115,6 +115,10 @@ Recent decisions affecting current work:
 - [05-02]: Video blur generation is non-fatal in webhook (try/catch, continues on error)
 - [05-02]: Mux JWT signing keys optional -- client works without them for non-gated video
 - [05-02]: MUX_PRIVATE_KEY stored as base64, decoded to ASCII at runtime
+- [05-03]: Gated media API never returns original variant URLs or playback IDs to unauthorized viewers
+- [05-03]: Unlock dialog buy/burn buttons show sonner toast "coming soon" (not disabled)
+- [05-03]: PostFeed fetches gated media data lazily after initial post list load
+- [05-03]: Locked media uses native img for blur URLs (public CDN, no Next Image optimization needed)
 
 ### Pending Todos
 
@@ -138,5 +142,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 05-02-PLAN.md
+Stopped at: Completed 05-03-PLAN.md (Phase 5 complete)
 Resume file: None
