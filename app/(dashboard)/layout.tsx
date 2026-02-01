@@ -1,81 +1,92 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { getWalletData } from "@/lib/solana/get-wallet-data";
-import { WalletWidget } from "@/components/wallet/wallet-widget";
+"use client";
 
-export default async function DashboardLayout({
-  children,
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Home, Search, PlusSquare, Wallet, Settings, User, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { BottomNav } from "@/components/ui/bottom-nav";
+
+const sidebarItems = [
+    { href: "/dashboard", icon: Home, label: "Home" },
+    { href: "/dashboard/explore", icon: Search, label: "Explore" },
+    { href: "/dashboard/create", icon: PlusSquare, label: "Create" },
+    { href: "/dashboard/withdraw", icon: Wallet, label: "Wallet" },
+    { href: "/dashboard/creator", icon: Sparkles, label: "Creator" },
+    { href: "/dashboard/settings", icon: Settings, label: "Settings" },
+];
+
+export default function DashboardLayout({
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+    const pathname = usePathname();
 
-  if (!session) {
-    redirect("/auth");
-  }
+    return (
+        <div className="flex min-h-screen bg-background">
+            {/* Desktop Sidebar */}
+            <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r bg-card">
+                {/* Logo */}
+                <div className="flex h-16 items-center px-6 border-b">
+                    <Link href="/dashboard" className="flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                            <span className="font-bold text-primary-foreground text-sm">B</span>
+                        </div>
+                        <span className="font-semibold text-lg">Baremint</span>
+                    </Link>
+                </div>
 
-  const walletData = await getWalletData(session.user.id);
+                {/* Navigation */}
+                <nav className="flex-1 px-3 py-4 space-y-1">
+                    {sidebarItems.map((item) => {
+                        const isActive =
+                            pathname === item.href ||
+                            (item.href !== "/dashboard" && pathname.startsWith(item.href));
 
-  return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r bg-sidebar text-sidebar-foreground">
-        <div className="flex h-14 items-center border-b px-4">
-          <span className="text-lg font-semibold">Baremint</span>
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={cn(
+                                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                                    isActive
+                                        ? "bg-primary/10 text-primary"
+                                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                                )}
+                            >
+                                <item.icon className="h-5 w-5" />
+                                {item.label}
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                {/* Profile quick access */}
+                <div className="border-t p-3">
+                    <Link
+                        href="/dashboard/profile"
+                        className={cn(
+                            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                            pathname === "/dashboard/profile"
+                                ? "bg-primary/10 text-primary"
+                                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                        )}
+                    >
+                        <User className="h-5 w-5" />
+                        Profile
+                    </Link>
+                </div>
+            </aside>
+
+            {/* Main Content */}
+            <main className="flex-1 md:ml-64">
+                <div className="mx-auto max-w-2xl px-4 py-6 pb-24 md:pb-6">
+                    {children}
+                </div>
+            </main>
+
+            {/* Mobile Bottom Nav */}
+            <BottomNav />
         </div>
-        <nav className="flex-1 p-4 space-y-1">
-          <a
-            href="/dashboard"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium bg-sidebar-accent text-sidebar-accent-foreground"
-          >
-            Dashboard
-          </a>
-          <a
-            href="/dashboard/withdraw"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-          >
-            Withdraw
-          </a>
-          <a
-            href="/dashboard/settings"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-          >
-            Settings
-          </a>
-        </nav>
-        {walletData && (
-          <div className="border-t p-4">
-            <WalletWidget
-              publicKey={walletData.publicKey}
-              solBalance={walletData.solBalance}
-              usdBalance={walletData.usdBalance}
-            />
-          </div>
-        )}
-      </aside>
-
-      {/* Main content */}
-      <main className="flex-1">
-        <div className="flex h-14 items-center border-b px-6 md:hidden">
-          <span className="text-lg font-semibold">Baremint</span>
-        </div>
-        <div className="p-6">
-          {/* Mobile wallet widget */}
-          {walletData && (
-            <div className="mb-6 md:hidden">
-              <WalletWidget
-                publicKey={walletData.publicKey}
-                solBalance={walletData.solBalance}
-                usdBalance={walletData.usdBalance}
-              />
-            </div>
-          )}
-          {children}
-        </div>
-      </main>
-    </div>
-  );
+    );
 }
