@@ -3,6 +3,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const MAX_CONTENT_LENGTH = 5 * 1024 * 1024; // 5MB
+export const MAX_CONTENT_IMAGE_SIZE = 25 * 1024 * 1024; // 25MB for content images
 const PRESIGN_EXPIRES_SECONDS = 900; // 15 minutes
 
 const ALLOWED_CONTENT_TYPES = [
@@ -11,9 +12,17 @@ const ALLOWED_CONTENT_TYPES = [
   "image/webp",
 ] as const;
 
+export const CONTENT_MEDIA_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "video/mp4",
+  "video/quicktime",
+] as const;
+
 type AllowedContentType = (typeof ALLOWED_CONTENT_TYPES)[number];
 
-function getR2Client() {
+export function getR2Client() {
   const endpoint = process.env.R2_ENDPOINT;
   const accessKeyId = process.env.R2_ACCESS_KEY_ID;
   const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
@@ -34,11 +43,13 @@ function getR2Client() {
   });
 }
 
-function getExtensionFromContentType(contentType: string): string {
+export function getExtensionFromContentType(contentType: string): string {
   const map: Record<string, string> = {
     "image/jpeg": "jpg",
     "image/png": "png",
     "image/webp": "webp",
+    "video/mp4": "mp4",
+    "video/quicktime": "mov",
   };
   return map[contentType] || "bin";
 }
@@ -93,4 +104,50 @@ export async function generatePresignedUploadUrl(
     publicUrl: `${publicUrl.replace(/\/$/, "")}/${key}`,
     key,
   };
+}
+
+export function isContentMediaType(
+  contentType: string,
+): contentType is (typeof CONTENT_MEDIA_TYPES)[number] {
+  return (CONTENT_MEDIA_TYPES as readonly string[]).includes(contentType);
+}
+
+/**
+ * Generate a presigned URL for uploading content media (images/video) to R2.
+ *
+ * Key pattern: content/{creatorProfileId}/{mediaId}/original.{ext}
+ * Uses 25MB limit for images.
+ */
+export async function generateContentMediaUploadUrl(
+  creatorProfileId: string,
+  contentType: string,
+  mediaId: string,
+): Promise<{ uploadUrl: string; key: string }> {
+  if (!isContentMediaType(contentType)) {
+    throw new Error(
+      `Invalid content type: ${contentType}. Allowed: ${CONTENT_MEDIA_TYPES.join(", ")}`,
+    );
+  }
+
+  const bucket = process.env.R2_BUCKET;
+  if (!bucket) {
+    throw new Error("R2 storage not configured. Set R2_BUCKET.");
+  }
+
+  const ext = getExtensionFromContentType(contentType);
+  const key = `content/${creatorProfileId}/${mediaId}/original.${ext}`;
+
+  const client = getR2Client();
+  const command = new PutObjectCommand({
+    Bucket: bucket,
+    Key: key,
+    ContentType: contentType,
+    ContentLength: MAX_CONTENT_IMAGE_SIZE,
+  });
+
+  const uploadUrl = await getSignedUrl(client, command, {
+    expiresIn: PRESIGN_EXPIRES_SECONDS,
+  });
+
+  return { uploadUrl, key };
 }
