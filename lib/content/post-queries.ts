@@ -82,8 +82,18 @@ export async function updatePublishedPost(
  * Publish a post. Text-only posts transition directly to "published".
  * Posts with media transition to "processing" unless all media is "ready".
  * Only works on drafts owned by the creator.
+ *
+ * For gated posts, accessLevel, tokenThreshold, and creatorTokenId are stored.
  */
-export async function publishPost(postId: string, creatorProfileId: string) {
+export async function publishPost(
+  postId: string,
+  creatorProfileId: string,
+  options?: {
+    accessLevel?: "public" | "hold_gated" | "burn_gated";
+    tokenThreshold?: string | null;
+    creatorTokenId?: string | null;
+  },
+) {
   // Verify ownership and draft status
   const existing = await db.query.post.findFirst({
     where: and(
@@ -113,10 +123,14 @@ export async function publishPost(postId: string, creatorProfileId: string) {
   }
 
   const now = new Date();
+  const accessLevel = options?.accessLevel ?? "public";
   const [updated] = await db
     .update(post)
     .set({
       status: newStatus,
+      accessLevel,
+      tokenThreshold: accessLevel !== "public" ? (options?.tokenThreshold ?? null) : null,
+      creatorTokenId: accessLevel !== "public" ? (options?.creatorTokenId ?? null) : null,
       publishedAt: newStatus === "published" ? now : null,
       updatedAt: now,
     })
@@ -140,6 +154,9 @@ export async function getPublishedPosts(
       creatorProfileId: post.creatorProfileId,
       content: post.content,
       status: post.status,
+      accessLevel: post.accessLevel,
+      tokenThreshold: post.tokenThreshold,
+      creatorTokenId: post.creatorTokenId,
       publishedAt: post.publishedAt,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,

@@ -10,11 +10,22 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { MediaUpload } from "@/components/content/media-upload";
 import { VideoUpload } from "@/components/content/video-upload";
-import { ImageIcon, Video, Loader2 } from "lucide-react";
+import {
+  ImageIcon,
+  Video,
+  Loader2,
+  Globe,
+  Lock,
+  Flame,
+  ArrowLeft,
+} from "lucide-react";
 
 type MediaType = "image" | "video";
+type AccessLevel = "public" | "hold_gated" | "burn_gated";
+type PublishStep = "compose" | "access";
 
 interface AttachedMedia {
   localId: string;
@@ -33,6 +44,32 @@ interface PostComposerProps {
   onPublished: (post: { id: string; content: string | null; status: string }) => void;
 }
 
+const ACCESS_LEVEL_OPTIONS: {
+  value: AccessLevel;
+  label: string;
+  description: string;
+  icon: typeof Globe;
+}[] = [
+  {
+    value: "public",
+    label: "Public",
+    description: "Anyone can view this post",
+    icon: Globe,
+  },
+  {
+    value: "hold_gated",
+    label: "Hold-Gated",
+    description: "Viewers must hold tokens to unlock",
+    icon: Lock,
+  },
+  {
+    value: "burn_gated",
+    label: "Burn-Gated",
+    description: "Viewers must burn tokens to unlock (one-time purchase)",
+    icon: Flame,
+  },
+];
+
 export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps) {
   const [content, setContent] = useState("");
   const [attachedMedia, setAttachedMedia] = useState<AttachedMedia[]>([]);
@@ -41,6 +78,11 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
   const [isPublishing, setIsPublishing] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  // Access level state
+  const [publishStep, setPublishStep] = useState<PublishStep>("compose");
+  const [accessLevel, setAccessLevel] = useState<AccessLevel>("public");
+  const [tokenThreshold, setTokenThreshold] = useState("");
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -139,6 +181,9 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
       setIsPublishing(false);
       setSaveStatus("idle");
       setHasUnsavedChanges(false);
+      setPublishStep("compose");
+      setAccessLevel("public");
+      setTokenThreshold("");
       if (saveTimerRef.current) {
         clearTimeout(saveTimerRef.current);
       }
@@ -253,16 +298,25 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
       m.status === "processing",
   );
 
-  // Publish post
-  const handlePublish = useCallback(async () => {
-    if (isPublishing || !allMediaReady) return;
-
-    setIsPublishing(true);
-
+  // Validate token threshold for gated posts
+  const isThresholdValid = useCallback((value: string): boolean => {
+    if (!value.trim()) return false;
     try {
-      // Ensure draft is saved first
-      let currentPostId = postId;
-      if (!currentPostId) {
+      const n = BigInt(value.trim());
+      return n > BigInt(0);
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Move to access level step (save draft first if needed)
+  const handleGoToAccessStep = useCallback(async () => {
+    if (!allMediaReady) return;
+
+    // Ensure draft is saved first
+    let currentPostId = postId;
+    if (!currentPostId) {
+      try {
         const res = await fetch("/api/posts", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -273,18 +327,53 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
         const data = await res.json();
         currentPostId = data.post.id;
         setPostId(currentPostId);
-      } else if (hasUnsavedChanges) {
+        setHasUnsavedChanges(false);
+      } catch (err) {
+        console.error("Draft save failed:", err);
+        alert("Failed to save draft before publishing");
+        return;
+      }
+    } else if (hasUnsavedChanges) {
+      try {
         await fetch(`/api/posts/${currentPostId}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ content }),
         });
+        setHasUnsavedChanges(false);
+      } catch (err) {
+        console.error("Draft save failed:", err);
+        alert("Failed to save draft before publishing");
+        return;
       }
+    }
 
-      // Publish
+    setPublishStep("access");
+  }, [allMediaReady, postId, content, hasUnsavedChanges]);
+
+  // Publish post with access level
+  const handlePublish = useCallback(async () => {
+    if (isPublishing) return;
+
+    // Validate threshold for gated posts
+    if (accessLevel !== "public" && !isThresholdValid(tokenThreshold)) {
+      alert("Please enter a valid positive integer for the token threshold");
+      return;
+    }
+
+    setIsPublishing(true);
+
+    try {
       const publishRes = await fetch(
-        `/api/posts/${currentPostId}/publish`,
-        { method: "POST" },
+        `/api/posts/${postId}/publish`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            accessLevel,
+            ...(accessLevel !== "public" ? { tokenThreshold: tokenThreshold.trim() } : {}),
+          }),
+        },
       );
 
       if (!publishRes.ok) {
@@ -303,10 +392,10 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
     }
   }, [
     isPublishing,
-    allMediaReady,
     postId,
-    content,
-    hasUnsavedChanges,
+    accessLevel,
+    tokenThreshold,
+    isThresholdValid,
     onPublished,
     onClose,
   ]);
@@ -322,138 +411,242 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
     onClose();
   }, [hasUnsavedChanges, content, attachedMedia, onClose]);
 
-  const canPublish =
+  const canGoToAccess =
     (content.trim().length > 0 || attachedMedia.length > 0) &&
     allMediaReady &&
     !isPublishing;
 
+  const canPublish =
+    accessLevel === "public" || isThresholdValid(tokenThreshold);
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Create Post</DialogTitle>
-          <DialogDescription>
-            Share an update with your supporters.
-          </DialogDescription>
-        </DialogHeader>
+        {publishStep === "compose" ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Create Post</DialogTitle>
+              <DialogDescription>
+                Share an update with your supporters.
+              </DialogDescription>
+            </DialogHeader>
 
-        {/* Text input */}
-        <div className="space-y-4">
-          <div className="relative">
-            <Textarea
-              ref={textareaRef}
-              value={content}
-              onChange={handleTextChange}
-              placeholder="What's on your mind?"
-              className="min-h-[120px] resize-none border-0 p-0 text-base shadow-none focus-visible:ring-0"
-              rows={4}
-            />
+            {/* Text input */}
+            <div className="space-y-4">
+              <div className="relative">
+                <Textarea
+                  ref={textareaRef}
+                  value={content}
+                  onChange={handleTextChange}
+                  placeholder="What's on your mind?"
+                  className="min-h-[120px] resize-none border-0 p-0 text-base shadow-none focus-visible:ring-0"
+                  rows={4}
+                />
 
-            {/* Save status indicator */}
-            {saveStatus !== "idle" && (
-              <div className="absolute right-0 bottom-0 text-xs text-muted-foreground">
-                {saveStatus === "saving" && (
-                  <span className="flex items-center gap-1">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    Saving...
-                  </span>
+                {/* Save status indicator */}
+                {saveStatus !== "idle" && (
+                  <div className="absolute right-0 bottom-0 text-xs text-muted-foreground">
+                    {saveStatus === "saving" && (
+                      <span className="flex items-center gap-1">
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        Saving...
+                      </span>
+                    )}
+                    {saveStatus === "saved" && <span>Saved</span>}
+                  </div>
                 )}
-                {saveStatus === "saved" && <span>Saved</span>}
               </div>
-            )}
-          </div>
 
-          {/* Attached media previews */}
-          {attachedMedia.length > 0 && (
-            <div className="space-y-3">
-              {attachedMedia.map((m) =>
-                m.type === "image" ? (
-                  <MediaUpload
-                    key={m.localId}
-                    file={m.file}
-                    postId={postId ?? undefined}
-                    onUploaded={(data) => handleImageUploaded(m.localId, data)}
-                    onRemove={() => removeMedia(m.localId)}
-                  />
-                ) : (
-                  <VideoUpload
-                    key={m.localId}
-                    file={m.file}
-                    postId={postId ?? undefined}
-                    onUploaded={(data) => handleVideoUploaded(m.localId, data)}
-                    onRemove={() => removeMedia(m.localId)}
-                  />
-                ),
+              {/* Attached media previews */}
+              {attachedMedia.length > 0 && (
+                <div className="space-y-3">
+                  {attachedMedia.map((m) =>
+                    m.type === "image" ? (
+                      <MediaUpload
+                        key={m.localId}
+                        file={m.file}
+                        postId={postId ?? undefined}
+                        onUploaded={(data) => handleImageUploaded(m.localId, data)}
+                        onRemove={() => removeMedia(m.localId)}
+                      />
+                    ) : (
+                      <VideoUpload
+                        key={m.localId}
+                        file={m.file}
+                        postId={postId ?? undefined}
+                        onUploaded={(data) => handleVideoUploaded(m.localId, data)}
+                        onRemove={() => removeMedia(m.localId)}
+                      />
+                    ),
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
-          {/* Media processing warning */}
-          {anyMediaProcessing && (
-            <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
-              <Loader2 className="h-3 w-3 animate-spin" />
-              Media processing... Publishing will be available when complete.
-            </div>
-          )}
-
-          {/* Action bar */}
-          <div className="flex items-center justify-between border-t pt-4">
-            {/* Media buttons */}
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => imageInputRef.current?.click()}
-                type="button"
-              >
-                <ImageIcon className="h-4 w-4" />
-                Add Image
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => videoInputRef.current?.click()}
-                type="button"
-              >
-                <Video className="h-4 w-4" />
-                Add Video
-              </Button>
-            </div>
-
-            {/* Publish button */}
-            <Button
-              onClick={handlePublish}
-              disabled={!canPublish}
-              type="button"
-            >
-              {isPublishing ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Publishing...
-                </>
-              ) : (
-                "Publish"
+              {/* Media processing warning */}
+              {anyMediaProcessing && (
+                <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Media processing... Publishing will be available when complete.
+                </div>
               )}
-            </Button>
-          </div>
 
-          {/* Hidden file inputs */}
-          <input
-            ref={imageInputRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            className="hidden"
-            onChange={handleImageSelect}
-            multiple
-          />
-          <input
-            ref={videoInputRef}
-            type="file"
-            accept="video/mp4,video/quicktime"
-            className="hidden"
-            onChange={handleVideoSelect}
-          />
-        </div>
+              {/* Action bar */}
+              <div className="flex items-center justify-between border-t pt-4">
+                {/* Media buttons */}
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => imageInputRef.current?.click()}
+                    type="button"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                    Add Image
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => videoInputRef.current?.click()}
+                    type="button"
+                  >
+                    <Video className="h-4 w-4" />
+                    Add Video
+                  </Button>
+                </div>
+
+                {/* Publish button (goes to access step) */}
+                <Button
+                  onClick={handleGoToAccessStep}
+                  disabled={!canGoToAccess}
+                  type="button"
+                >
+                  Publish
+                </Button>
+              </div>
+
+              {/* Hidden file inputs */}
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={handleImageSelect}
+                multiple
+              />
+              <input
+                ref={videoInputRef}
+                type="file"
+                accept="video/mp4,video/quicktime"
+                className="hidden"
+                onChange={handleVideoSelect}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Set Access Level</DialogTitle>
+              <DialogDescription>
+                Choose who can view this post.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              {/* Access level options */}
+              <div className="space-y-2">
+                {ACCESS_LEVEL_OPTIONS.map((option) => {
+                  const Icon = option.icon;
+                  const isSelected = accessLevel === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => {
+                        setAccessLevel(option.value);
+                        if (option.value === "public") {
+                          setTokenThreshold("");
+                        }
+                      }}
+                      className={`flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-colors ${
+                        isSelected
+                          ? "border-primary bg-primary/5"
+                          : "border-border hover:border-muted-foreground/30"
+                      }`}
+                    >
+                      <div
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                          isSelected
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium">{option.label}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {option.description}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Token threshold input (for gated posts) */}
+              {accessLevel !== "public" && (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="token-threshold"
+                    className="text-sm font-medium"
+                  >
+                    Minimum tokens required
+                  </label>
+                  <Input
+                    id="token-threshold"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="e.g. 1000"
+                    value={tokenThreshold}
+                    onChange={(e) => setTokenThreshold(e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {accessLevel === "hold_gated"
+                      ? "How many tokens must viewers hold to access this post?"
+                      : "How many tokens must viewers burn to unlock this post?"}
+                  </p>
+                </div>
+              )}
+
+              {/* Action buttons */}
+              <div className="flex items-center justify-between border-t pt-4">
+                <Button
+                  variant="ghost"
+                  onClick={() => setPublishStep("compose")}
+                  type="button"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </Button>
+
+                <Button
+                  onClick={handlePublish}
+                  disabled={!canPublish || isPublishing}
+                  type="button"
+                >
+                  {isPublishing ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Publishing...
+                    </>
+                  ) : (
+                    "Publish"
+                  )}
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
