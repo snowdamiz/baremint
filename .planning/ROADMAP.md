@@ -34,12 +34,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can enable TOTP-based two-factor authentication on their account
   4. User sees a Solana wallet address and SOL balance on their dashboard immediately after signup
   5. User can withdraw SOL to an external Solana wallet address and see the transaction confirmed
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Database schema and authentication system (Neon Postgres, Drizzle ORM, Better Auth)
-- [ ] 01-02: Custodial wallet creation and encrypted key storage (AES-256-GCM)
-- [ ] 01-03: OAuth providers, 2FA, wallet balance display, and SOL withdrawals
+- [ ] 01-01-PLAN.md -- Database schema, Drizzle ORM, Better Auth email/password, split-screen auth UI, route protection
+- [ ] 01-02-PLAN.md -- Custodial wallet creation on signup, AES-256-GCM encryption, dashboard wallet widget with balance
+- [ ] 01-03-PLAN.md -- Google/Twitter OAuth, TOTP 2FA setup and enforcement, SOL withdrawal flow with address book
 
 ### Phase 2: Bonding Curve Smart Contract
 **Goal**: A fully tested Anchor program on devnet implements token creation, buy/sell via bonding curve, burn-for-access, vesting, and fee distribution
