@@ -19,9 +19,9 @@ Progress: [██████████████░░░░░░░░░
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
+- Total plans completed: 14
 - Average duration: ~6 minutes
-- Total execution time: ~75 minutes
+- Total execution time: ~80 minutes
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [██████████████░░░░░░░░░
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
-| 4. Content Infrastructure | 2/5 | ~7 min | ~4 min |
+| 4. Content Infrastructure | 3/5 | ~12 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (~5 min), 03-04 (~4 min), 04-01 (~3 min), 04-02 (~4 min)
+- Last 5 plans: 03-04 (~4 min), 04-01 (~3 min), 04-02 (~4 min), 04-03 (~5 min)
 
 *Updated after each plan completion*
 
@@ -97,6 +97,10 @@ Recent decisions affecting current work:
 - [04-02]: Original image preserved in R2 (never deleted after processing)
 - [04-02]: Responsive variants: sm(400px), md(800px), lg(1200px) as WebP quality 80
 - [04-02]: Content media key pattern: content/{creatorProfileId}/{mediaId}/original.{ext}
+- [04-03]: Two-phase video upload: R2 first (CSAM scan), then Mux (transcoding)
+- [04-03]: video_quality: basic and max_resolution_tier: 1080p for cost control
+- [04-03]: Mux SDK lacks max_duration_seconds on upload params; enforce via dashboard or post-transcoding
+- [04-03]: Always return 200 after Mux webhook signature verification to prevent retry storms
 
 ### Pending Todos
 
@@ -106,6 +110,8 @@ Recent decisions affecting current work:
 - Configure Cloudflare R2 for image uploads (see 03-USER-SETUP.md)
 - Configure Sumsub KYC credentials (see 03-USER-SETUP.md)
 - Set HIVE_CSAM_API_KEY for CSAM scanning (contact sales@thehive.ai)
+- Set MUX_TOKEN_ID, MUX_TOKEN_SECRET, MUX_WEBHOOK_SECRET for Mux video
+- Configure Mux webhook endpoint pointing to /api/webhooks/mux
 
 ### Blockers/Concerns
 
@@ -116,5 +122,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 04-02-PLAN.md
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
