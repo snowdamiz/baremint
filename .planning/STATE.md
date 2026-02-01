@@ -10,28 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 2 of 9 (Bonding Curve Smart Contract)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — Phase 1 complete
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 02-01-PLAN.md
 
-Progress: [███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 3/35 (~9%)
+Progress: [████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 4/35 (~11%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: ~6 minutes
-- Total execution time: ~16 minutes
+- Total plans completed: 4
+- Average duration: ~8 minutes
+- Total execution time: ~30 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
+| 2. Bonding Curve | 1/4 | ~14 min | ~14 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~5 min), 01-02 (~3 min), 01-03 (~8 min)
-- Trend: Steady (01-03 larger scope)
+- Last 5 plans: 01-01 (~5 min), 01-02 (~3 min), 01-03 (~8 min), 02-01 (~14 min)
+- Trend: 02-01 longer due to Solana/Anchor toolchain installation
 
 *Updated after each plan completion*
 
@@ -56,6 +57,9 @@ Recent decisions affecting current work:
 - [01-03]: URL search params for withdrawal review page (stateless navigation)
 - [Orchestrator]: Added pg driver for local Postgres dev (auto-detect Neon vs local in lib/db/index.ts)
 - [Orchestrator]: Auth form defaults to login step instead of signup for returning users
+- [02-01]: Pinned blake3=1.5.5 for SBF platform-tools compatibility (edition2024 unsupported)
+- [02-01]: Using Solana CLI v2.3.3 / Anchor CLI v0.32.0 / platform-tools v1.48
+- [02-01]: Program ID: FTAssMPiQ8EQUeJA4Rnu6c71maCrUCdnvGetWnVdTXTG
 
 ### Pending Todos
 
@@ -64,12 +68,11 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- Phase 2 needs phase-level research (Anchor program architecture, bonding curve math, PDA design)
 - Phase 4 needs phase-level research (PhotoDNA access, NCMEC reporting, video transcoding)
 - Audit firm selection needed before Phase 2 smart contract can go to mainnet
 
 ## Session Continuity
 
-Last session: 2026-02-01
-Stopped at: Phase 1 complete, ready to plan Phase 2
+Last session: 2026-02-01T09:48:37Z
+Stopped at: Completed 02-01-PLAN.md (Anchor scaffold + state accounts + initialize)
 Resume file: None
