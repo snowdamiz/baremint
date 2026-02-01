@@ -1,11 +1,27 @@
-export default function DashboardLayout({
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { getWalletData } from "@/lib/solana/get-wallet-data";
+import { WalletWidget } from "@/components/wallet/wallet-widget";
+
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/auth");
+  }
+
+  const walletData = await getWalletData(session.user.id);
+
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar placeholder -- will be expanded with wallet widget in Plan 02 */}
+      {/* Sidebar */}
       <aside className="hidden md:flex w-64 flex-col border-r bg-sidebar text-sidebar-foreground">
         <div className="flex h-14 items-center border-b px-4">
           <span className="text-lg font-semibold">Baremint</span>
@@ -18,6 +34,15 @@ export default function DashboardLayout({
             Dashboard
           </a>
         </nav>
+        {walletData && (
+          <div className="border-t p-4">
+            <WalletWidget
+              publicKey={walletData.publicKey}
+              solBalance={walletData.solBalance}
+              usdBalance={walletData.usdBalance}
+            />
+          </div>
+        )}
       </aside>
 
       {/* Main content */}
@@ -25,7 +50,19 @@ export default function DashboardLayout({
         <div className="flex h-14 items-center border-b px-6 md:hidden">
           <span className="text-lg font-semibold">Baremint</span>
         </div>
-        <div className="p-6">{children}</div>
+        <div className="p-6">
+          {/* Mobile wallet widget */}
+          {walletData && (
+            <div className="mb-6 md:hidden">
+              <WalletWidget
+                publicKey={walletData.publicKey}
+                solBalance={walletData.solBalance}
+                usdBalance={walletData.usdBalance}
+              />
+            </div>
+          )}
+          {children}
+        </div>
       </main>
     </div>
   );
