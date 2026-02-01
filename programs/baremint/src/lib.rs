@@ -54,4 +54,12 @@ pub mod baremint {
     pub fn withdraw_creator_fees(ctx: Context<WithdrawCreatorFees>) -> Result<()> {
         instructions::withdraw_fees::handler_withdraw_creator_fees(ctx)
     }
+
+    pub fn claim_vested(ctx: Context<ClaimVested>) -> Result<()> {
+        instructions::claim_vested::handler(ctx)
+    }
+
+    pub fn revoke_vesting(ctx: Context<RevokeVesting>) -> Result<()> {
+        instructions::revoke_vesting::handler(ctx)
+    }
 }
