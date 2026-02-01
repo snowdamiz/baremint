@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 1 - Authentication & Wallets
+**Current focus:** Phase 1 - Authentication & Wallets (awaiting verification)
 
 ## Current Position
 
 Phase: 1 of 9 (Authentication & Wallets)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-01-31 — Completed 01-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Awaiting human verification (checkpoint)
+Last activity: 2026-02-01 — Completed 01-03-PLAN.md (Tasks 1-2, checkpoint pending)
 
-Progress: [██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 2/35 (~6%)
+Progress: [███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 3/35 (~9%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: ~4 minutes
-- Total execution time: ~8 minutes
+- Total plans completed: 3
+- Average duration: ~6 minutes
+- Total execution time: ~16 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Auth & Wallets | 2/3 | ~8 min | ~4 min |
+| 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~5 min), 01-02 (~3 min)
-- Trend: Accelerating
+- Last 5 plans: 01-01 (~5 min), 01-02 (~3 min), 01-03 (~8 min)
+- Trend: Steady (01-03 larger scope)
 
 *Updated after each plan completion*
 
@@ -50,12 +50,19 @@ Recent decisions affecting current work:
 - [01-02]: Used Node.js crypto for Ed25519 keypair (Web Crypto keys non-extractable)
 - [01-02]: Wallet creation failure does not block user signup (try/catch with logging)
 - [01-02]: BigInt(0) instead of 0n literal due to ES2017 target
+- [01-03]: Used Better Auth socialProviders config for Google/Twitter OAuth
+- [01-03]: 4-step 2FA setup dialog: password -> QR -> verify -> backup codes
+- [01-03]: Server-side auth.api.verifyTOTP before SOL transfer (security-critical)
+- [01-03]: getAddressEncoder().encode() for public key bytes in keypair reconstruction
+- [01-03]: URL search params for withdrawal review page (stateless navigation)
 
 ### Pending Todos
 
 - Configure DATABASE_URL and BETTER_AUTH_SECRET env vars before testing auth flow end-to-end
 - Run `npx drizzle-kit push` to push schema to Neon database once DATABASE_URL is set
 - Set WALLET_ENCRYPTION_KEY env var (64-char hex) for wallet encryption
+- Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET for Google OAuth
+- Set TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET for Twitter OAuth
 
 ### Blockers/Concerns
 
@@ -65,6 +72,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-01-31
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-02-01
+Stopped at: 01-03-PLAN.md checkpoint (human-verify pending)
 Resume file: None
