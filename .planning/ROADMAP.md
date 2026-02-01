@@ -70,13 +70,13 @@ Plans:
   4. Creator receives 10% token allocation with vesting schedule visible on their dashboard
   5. Creator cannot launch a new token within 90 days of their last launch (enforced)
   6. Viewers can see KYC verification badge, vesting schedule, and anti-rug protections on creator profiles
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: Creator profile setup (role switch, bio, avatar, banner upload)
-- [ ] 03-02: Sumsub KYC integration (Web SDK flow, webhook verification, status storage)
-- [ ] 03-03: Token launch flow (SPL token creation via Anchor program, Metaplex metadata, 90-day cooldown)
-- [ ] 03-04: Anti-rug transparency UI (vesting display, KYC badge, cooldown info on profiles)
+- [ ] 03-01-PLAN.md -- Creator profile DB schema, S3 image upload, profile API, onboarding wizard with profile step and image cropping
+- [ ] 03-02-PLAN.md -- Sumsub KYC integration (HMAC token generation, webhook handler, embedded WebSDK step)
+- [ ] 03-03-PLAN.md -- Token launch flow (on-chain create_token transaction, launch API with 90-day cooldown, config/review/success wizard steps)
+- [ ] 03-04-PLAN.md -- Anti-rug transparency UI (KYC badge, vesting timeline, public creator profile, cooldown display)
 
 ### Phase 4: Content Infrastructure
 **Goal**: Creators can publish text, image, and video content with automated CSAM scanning before any content goes live
