@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 5 of 9 (Token-Gated Content)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — Phase 4 complete, verified ✓
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 05-01-PLAN.md
 
-Progress: [████████████████░░░░░░░░░░░░░░░░░░░░] 16/35 (~46%)
+Progress: [█████████████████░░░░░░░░░░░░░░░░░░░] 17/35 (~49%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
-- Average duration: ~6 minutes
-- Total execution time: ~90 minutes
+- Total plans completed: 17
+- Average duration: ~5 minutes
+- Total execution time: ~93 minutes
 
 **By Phase:**
 
@@ -31,9 +31,10 @@ Progress: [████████████████░░░░░░░
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
+| 5. Token-Gated Content | 1/3 | ~3 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (~4 min), 04-03 (~5 min), 04-04 (~6 min), 04-05 (~4 min)
+- Last 5 plans: 04-03 (~5 min), 04-04 (~6 min), 04-05 (~4 min), 05-01 (~3 min)
 
 *Updated after each plan completion*
 
@@ -108,6 +109,9 @@ Recent decisions affecting current work:
 - [04-05]: Admin check via ADMIN_EMAILS env var for MVP (no roles table)
 - [04-05]: Soft-delete cascade marks attached media as "failed" (preserved in R2)
 - [04-05]: 3-strike system: warning -> 7-day restriction -> suspension
+- [05-01]: Access level defaults to public; gated requires threshold + launched token
+- [05-01]: Token threshold stored as text (BigInt string) matching amountLamports pattern
+- [05-01]: Two-step publish dialog: compose content -> select access level
 
 ### Pending Todos
 
@@ -130,5 +134,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Phase 4 complete and verified, ready for Phase 5
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
