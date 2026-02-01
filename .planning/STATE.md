@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 9 (Content Infrastructure)
-Plan: 1 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 04-01-PLAN.md
+Last activity: 2026-02-01 — Completed 04-03-PLAN.md
 
-Progress: [████████████░░░░░░░░░░░░░░░░░░░░░░░] 12/35 (~34%)
+Progress: [██████████████░░░░░░░░░░░░░░░░░░░░░] 14/35 (~40%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: ~6 minutes
-- Total execution time: ~71 minutes
+- Total execution time: ~75 minutes
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [████████████░░░░░░░░░░░
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
-| 4. Content Infrastructure | 1/5 | ~3 min | ~3 min |
+| 4. Content Infrastructure | 2/5 | ~7 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (~3 min), 03-03 (~5 min), 03-04 (~4 min), 04-01 (~3 min)
+- Last 5 plans: 03-03 (~5 min), 03-04 (~4 min), 04-01 (~3 min), 04-02 (~4 min)
 
 *Updated after each plan completion*
 
@@ -93,6 +93,10 @@ Recent decisions affecting current work:
 - [04-01]: Soft-delete posts (status=removed) for legal compliance -- never hard delete
 - [04-01]: Text-only posts publish immediately; posts with media check all media ready status
 - [04-01]: Draft visibility restricted to owner; published posts are public
+- [04-02]: Synchronous scan+process in confirm request (acceptable for MVP, Sharp < 5s for 25MB)
+- [04-02]: Original image preserved in R2 (never deleted after processing)
+- [04-02]: Responsive variants: sm(400px), md(800px), lg(1200px) as WebP quality 80
+- [04-02]: Content media key pattern: content/{creatorProfileId}/{mediaId}/original.{ext}
 
 ### Pending Todos
 
@@ -101,6 +105,7 @@ Recent decisions affecting current work:
 - Fund devnet wallet and deploy program (when airdrop faucet available)
 - Configure Cloudflare R2 for image uploads (see 03-USER-SETUP.md)
 - Configure Sumsub KYC credentials (see 03-USER-SETUP.md)
+- Set HIVE_CSAM_API_KEY for CSAM scanning (contact sales@thehive.ai)
 
 ### Blockers/Concerns
 
@@ -111,5 +116,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 04-01-PLAN.md
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
