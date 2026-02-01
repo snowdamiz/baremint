@@ -5,6 +5,10 @@ import { db } from "@/lib/db";
 import { media, moderationAction, post } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { scanMediaForCSAM } from "@/lib/media/csam-scan";
+import {
+  processUploadedImage,
+  downloadFromR2,
+} from "@/lib/media/image-processing";
 import { getMuxClient } from "@/lib/mux/client";
 
 /**
@@ -175,9 +179,6 @@ async function handleVideoConfirm(mediaRecord: any) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function handleImageConfirm(mediaRecord: any) {
-  // Image handling is the primary responsibility of Plan 04-02.
-  // This provides a minimal implementation that Plan 04-02 can extend
-  // with Sharp processing.
   try {
     // Step 1: Update status to scanning
     await db
@@ -215,43 +216,28 @@ async function handleImageConfirm(mediaRecord: any) {
       return Response.json({ status: "flagged" });
     }
 
-    // Step 3: CSAM scan passed -- process image
-    // Try to use Sharp processing if available (Plan 04-02)
+    // Step 3: CSAM scan passed -- process image with Sharp
     await db
       .update(media)
       .set({ status: "processing" })
       .where(eq(media.id, mediaRecord.id));
 
-    try {
-      const { processUploadedImage, downloadFromR2 } = await import(
-        "@/lib/media/image-processing"
-      );
-      const buffer = await downloadFromR2(mediaRecord.originalKey);
-      const variants = await processUploadedImage(
-        buffer,
-        mediaRecord.originalKey,
-      );
+    const buffer = await downloadFromR2(mediaRecord.originalKey);
+    const { variants, width, height } = await processUploadedImage(
+      buffer,
+      mediaRecord.originalKey,
+    );
 
-      await db
-        .update(media)
-        .set({ status: "ready", variants })
-        .where(eq(media.id, mediaRecord.id));
+    // Step 4: Update media record to ready with variants and dimensions
+    await db
+      .update(media)
+      .set({ status: "ready", variants, width, height })
+      .where(eq(media.id, mediaRecord.id));
 
-      // Check if parent post should be published
-      await maybePublishPost(mediaRecord.postId);
+    // Step 5: Check if parent post should be published
+    await maybePublishPost(mediaRecord.postId);
 
-      return Response.json({ status: "ready", variants });
-    } catch {
-      // If Sharp processing is not available, mark as ready without variants
-      await db
-        .update(media)
-        .set({ status: "ready" })
-        .where(eq(media.id, mediaRecord.id));
-
-      await maybePublishPost(mediaRecord.postId);
-
-      return Response.json({ status: "ready" });
-    }
+    return Response.json({ status: "ready", variants });
   } catch (error) {
     console.error("Image confirm failed:", error);
 
