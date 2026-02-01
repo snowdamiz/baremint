@@ -88,14 +88,14 @@ Plans:
   3. Creator can upload and publish a video post (transcoded to standard formats)
   4. All uploaded media is scanned for CSAM before becoming accessible (flagged content is held for review)
   5. Creator can edit and delete their own posts
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 04-01: Content data model and text post publishing
-- [ ] 04-02: Media upload pipeline (R2 presigned URLs, image optimization with Sharp)
-- [ ] 04-03: Video upload and transcoding pipeline
-- [ ] 04-04: CSAM scanning integration and content moderation queue
-- [ ] 04-05: Post editing, deletion, and content management
+- [ ] 04-01-PLAN.md -- Content data model (post, media, moderation, strike tables) and text post CRUD API with draft auto-save
+- [ ] 04-02-PLAN.md -- Image upload pipeline (R2 presigned URLs, CSAM scanning via Hive, Sharp optimization to responsive WebP)
+- [ ] 04-03-PLAN.md -- Video upload and Mux transcoding pipeline (R2 first for CSAM scan, then Mux direct upload with webhooks)
+- [ ] 04-04-PLAN.md -- Post composer UI, media upload components, post feed and creator profile integration
+- [ ] 04-05-PLAN.md -- Post editing/deletion, admin moderation queue, and 3-strike system
 
 ### Phase 5: Token-Gated Content
 **Goal**: Viewers holding sufficient creator tokens can access gated content; others see a locked placeholder
