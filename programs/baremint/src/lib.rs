@@ -42,4 +42,16 @@ pub mod baremint {
     pub fn sell(ctx: Context<Sell>, token_amount: u64, min_sol_out: u64) -> Result<()> {
         instructions::sell::handler(ctx, token_amount, min_sol_out)
     }
+
+    pub fn burn_for_access(ctx: Context<BurnAccess>) -> Result<()> {
+        instructions::burn_access::handler(ctx)
+    }
+
+    pub fn withdraw_platform_fees(ctx: Context<WithdrawPlatformFees>) -> Result<()> {
+        instructions::withdraw_fees::handler_withdraw_platform_fees(ctx)
+    }
+
+    pub fn withdraw_creator_fees(ctx: Context<WithdrawCreatorFees>) -> Result<()> {
+        instructions::withdraw_fees::handler_withdraw_creator_fees(ctx)
+    }
 }
