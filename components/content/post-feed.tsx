@@ -15,6 +15,9 @@ interface MediaRecord {
   muxPlaybackId: string | null;
   width: number | null;
   height: number | null;
+  blurUrl?: string | null;
+  playbackToken?: string;
+  thumbnailToken?: string;
 }
 
 interface PostData {
@@ -22,11 +25,24 @@ interface PostData {
   creatorProfileId: string;
   content: string | null;
   status: string;
+  accessLevel?: string;
+  tokenThreshold?: string | null;
+  creatorTokenId?: string | null;
+  isLocked?: boolean;
   publishedAt: Date | string | null;
   createdAt: Date | string;
   updatedAt: Date | string;
   media?: MediaRecord[];
   mediaCount?: number;
+}
+
+interface GatedMediaResponse {
+  media: MediaRecord[];
+  isLocked: boolean;
+  accessLevel?: string;
+  requiredBalance?: string;
+  viewerBalance?: string;
+  tokenTicker?: string | null;
 }
 
 interface PostFeedProps {
@@ -38,6 +54,17 @@ interface PostFeedProps {
 
 const PAGE_SIZE = 20;
 
+/** Fetch gated media data for a single post */
+async function fetchGatedMedia(postId: string): Promise<GatedMediaResponse | null> {
+  try {
+    const res = await fetch(`/api/content/${postId}/media`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
 export function PostFeed({
   creatorProfileId,
   creatorName,
@@ -45,12 +72,37 @@ export function PostFeed({
   isOwner,
 }: PostFeedProps) {
   const [publishedPosts, setPublishedPosts] = useState<PostData[]>([]);
+  const [gatedData, setGatedData] = useState<Record<string, GatedMediaResponse>>({});
   const [drafts, setDrafts] = useState<PostData[]>([]);
   const [totalPublished, setTotalPublished] = useState(0);
   const [isLoadingPublished, setIsLoadingPublished] = useState(true);
   const [isLoadingDrafts, setIsLoadingDrafts] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
+
+  // Fetch gated media for posts that need it
+  const fetchGatedMediaForPosts = useCallback(async (posts: PostData[]) => {
+    const gatedPosts = posts.filter(
+      (p) => p.accessLevel && p.accessLevel !== "public",
+    );
+
+    if (gatedPosts.length === 0) return;
+
+    const results = await Promise.all(
+      gatedPosts.map(async (p) => {
+        const data = await fetchGatedMedia(p.id);
+        return { postId: p.id, data };
+      }),
+    );
+
+    setGatedData((prev) => {
+      const next = { ...prev };
+      for (const { postId, data } of results) {
+        if (data) next[postId] = data;
+      }
+      return next;
+    });
+  }, []);
 
   // Fetch published posts
   const fetchPublished = useCallback(
@@ -87,9 +139,16 @@ export function PostFeed({
         );
 
         if (isMore) {
-          setPublishedPosts((prev) => [...prev, ...postsWithMedia]);
+          setPublishedPosts((prev) => {
+            const next = [...prev, ...postsWithMedia];
+            // Fetch gated media for the new posts
+            fetchGatedMediaForPosts(postsWithMedia);
+            return next;
+          });
         } else {
           setPublishedPosts(postsWithMedia);
+          // Fetch gated media for all posts
+          fetchGatedMediaForPosts(postsWithMedia);
         }
         setTotalPublished(data.total);
       } catch (err) {
@@ -99,7 +158,7 @@ export function PostFeed({
         setIsLoadingMore(false);
       }
     },
-    [creatorProfileId],
+    [creatorProfileId, fetchGatedMediaForPosts],
   );
 
   // Fetch drafts (owner only)
@@ -193,6 +252,39 @@ export function PostFeed({
     </div>
   );
 
+  /** Build PostCard props for a post, merging gated data if applicable */
+  function renderPostCard(postItem: PostData) {
+    const gated = gatedData[postItem.id];
+    const isGated = postItem.accessLevel && postItem.accessLevel !== "public";
+
+    // For gated posts, use the gated media data if available
+    const postForCard = gated
+      ? {
+          ...postItem,
+          media: gated.media,
+          isLocked: gated.isLocked,
+        }
+      : postItem;
+
+    return (
+      <PostCard
+        key={postItem.id}
+        post={postForCard}
+        creatorName={creatorName}
+        creatorAvatar={creatorAvatar}
+        isOwner={isOwner}
+        {...(isGated && gated
+          ? {
+              tokenTicker: gated.tokenTicker ?? undefined,
+              requiredBalance: gated.requiredBalance,
+              viewerBalance: gated.viewerBalance,
+              creatorTokenId: postItem.creatorTokenId ?? undefined,
+            }
+          : {})}
+      />
+    );
+  }
+
   const feedContent = (
     <>
       {isLoadingPublished ? (
@@ -201,15 +293,7 @@ export function PostFeed({
         <PublishedEmpty />
       ) : (
         <div className="space-y-4">
-          {publishedPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              creatorName={creatorName}
-              creatorAvatar={creatorAvatar}
-              isOwner={isOwner}
-            />
-          ))}
+          {publishedPosts.map((post) => renderPostCard(post))}
 
           {hasMorePublished && (
             <div className="flex justify-center pt-2">
