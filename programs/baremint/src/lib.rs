@@ -34,4 +34,12 @@ pub mod baremint {
     pub fn create_token(ctx: Context<CreateToken>, burn_sol_price: u64) -> Result<()> {
         instructions::create_token::handler(ctx, burn_sol_price)
     }
+
+    pub fn buy(ctx: Context<Buy>, sol_amount: u64, min_tokens_out: u64) -> Result<()> {
+        instructions::buy::handler(ctx, sol_amount, min_tokens_out)
+    }
+
+    pub fn sell(ctx: Context<Sell>, token_amount: u64, min_sol_out: u64) -> Result<()> {
+        instructions::sell::handler(ctx, token_amount, min_sol_out)
+    }
 }
