@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 9 (Content Infrastructure)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase (04-04 running in parallel)
 Status: In progress
-Last activity: 2026-02-01 — Completed 04-03-PLAN.md
+Last activity: 2026-02-01 — Completed 04-05-PLAN.md
 
-Progress: [██████████████░░░░░░░░░░░░░░░░░░░░░] 14/35 (~40%)
+Progress: [███████████████░░░░░░░░░░░░░░░░░░░░░] 15/35 (~43%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: ~6 minutes
-- Total execution time: ~80 minutes
+- Total execution time: ~84 minutes
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [██████████████░░░░░░░░░
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
-| 4. Content Infrastructure | 3/5 | ~12 min | ~4 min |
+| 4. Content Infrastructure | 4/5 | ~16 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-04 (~4 min), 04-01 (~3 min), 04-02 (~4 min), 04-03 (~5 min)
+- Last 5 plans: 04-01 (~3 min), 04-02 (~4 min), 04-03 (~5 min), 04-05 (~4 min)
 
 *Updated after each plan completion*
 
@@ -101,6 +101,10 @@ Recent decisions affecting current work:
 - [04-03]: video_quality: basic and max_resolution_tier: 1080p for cost control
 - [04-03]: Mux SDK lacks max_duration_seconds on upload params; enforce via dashboard or post-transcoding
 - [04-03]: Always return 200 after Mux webhook signature verification to prevent retry storms
+- [04-05]: Reuse kycStatus="suspended" for strike 3 consequence (no new schema column)
+- [04-05]: Admin check via ADMIN_EMAILS env var for MVP (no roles table)
+- [04-05]: Soft-delete cascade marks attached media as "failed" (preserved in R2)
+- [04-05]: 3-strike system: warning -> 7-day restriction -> suspension
 
 ### Pending Todos
 
@@ -112,6 +116,7 @@ Recent decisions affecting current work:
 - Set HIVE_CSAM_API_KEY for CSAM scanning (contact sales@thehive.ai)
 - Set MUX_TOKEN_ID, MUX_TOKEN_SECRET, MUX_WEBHOOK_SECRET for Mux video
 - Configure Mux webhook endpoint pointing to /api/webhooks/mux
+- Set ADMIN_EMAILS env var with comma-separated admin email addresses
 
 ### Blockers/Concerns
 
@@ -122,5 +127,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 04-03-PLAN.md
+Stopped at: Completed 04-05-PLAN.md
 Resume file: None
