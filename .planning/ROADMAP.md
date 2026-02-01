@@ -51,13 +51,13 @@ Plans:
   3. Burning tokens for content access returns the correct SOL amount from the curve
   4. Creator vesting account enforces 30-day cliff and 60-day linear vest (cannot claim early)
   5. Platform fees and creator fees are collected into separate vaults on every trade
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: Program architecture, PDA design, and GlobalConfig initialization
-- [ ] 02-02: Bonding curve math, create_token, buy, and sell instructions
-- [ ] 02-03: burn_for_access, vesting (claim_vested), and fee withdrawal instructions
-- [ ] 02-04: Comprehensive test suite and devnet deployment
+- [ ] 02-01-PLAN.md -- Anchor project scaffold, state accounts, errors, and GlobalConfig initialization
+- [ ] 02-02-PLAN.md -- Bonding curve math module, create_token, buy, and sell instructions
+- [ ] 02-03-PLAN.md -- burn_for_access, vesting (claim_vested), fee withdrawal, and revoke_vesting instructions
+- [ ] 02-04-PLAN.md -- Comprehensive test suite (bankrun) and devnet deployment
 
 ### Phase 3: Creator Onboarding & Token Launch
 **Goal**: Verified creators can set up profiles and launch their own SPL token with anti-rug protections enforced
