@@ -1,11 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { creatorProfile, creatorToken } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { KycBadge } from "@/components/creator/kyc-badge";
 import { VestingTimeline } from "@/components/creator/vesting-timeline";
+import { PostFeed } from "@/components/content/post-feed";
 import {
   Card,
   CardContent,
@@ -56,6 +58,12 @@ export default async function CreatorPublicProfilePage({
   const token = await db.query.creatorToken.findFirst({
     where: eq(creatorToken.creatorProfileId, profile.id),
   });
+
+  // Determine if the current user is the owner of this profile
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const isOwner = session?.user?.id === profile.userId;
 
   const isVerified = profile.kycStatus === "approved";
   const creatorAllocation = (TOTAL_SUPPLY * CREATOR_ALLOCATION_PERCENT) / 100;
@@ -229,6 +237,14 @@ export default async function CreatorPublicProfilePage({
           </CardContent>
         </Card>
       )}
+
+      {/* Post Feed */}
+      <PostFeed
+        creatorProfileId={profile.id}
+        creatorName={profile.displayName}
+        creatorAvatar={profile.avatarUrl}
+        isOwner={isOwner}
+      />
     </div>
   );
 }
