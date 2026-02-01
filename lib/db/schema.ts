@@ -5,6 +5,7 @@ import {
   boolean,
   integer,
   jsonb,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
 // ──────────────────────────────────────────────
@@ -163,6 +164,9 @@ export const post = pgTable("post", {
     .references(() => creatorProfile.id),
   content: text("content"),
   status: text("status").notNull().default("draft"), // draft | processing | published | under_review | removed
+  accessLevel: text("access_level").notNull().default("public"), // public | hold_gated | burn_gated
+  tokenThreshold: text("token_threshold"), // raw token amount as string (BigInt), required when gated
+  creatorTokenId: text("creator_token_id").references(() => creatorToken.id), // FK to token that gates this post
   publishedAt: timestamp("published_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -215,3 +219,24 @@ export const creatorStrike = pgTable("creator_strike", {
   reason: text("reason").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// ──────────────────────────────────────────────
+// Token gating tables (Phase 5)
+// ──────────────────────────────────────────────
+
+export const tokenBalanceCache = pgTable(
+  "token_balance_cache",
+  {
+    id: text("id").primaryKey(),
+    walletAddress: text("wallet_address").notNull(),
+    mintAddress: text("mint_address").notNull(),
+    balance: text("balance").notNull(), // raw token amount as string (BigInt)
+    checkedAt: timestamp("checked_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("token_balance_cache_wallet_mint_idx").on(
+      table.walletAddress,
+      table.mintAddress,
+    ),
+  ],
+);
