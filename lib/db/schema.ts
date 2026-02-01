@@ -4,6 +4,7 @@ import {
   timestamp,
   boolean,
   integer,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 // ──────────────────────────────────────────────
@@ -149,4 +150,68 @@ export const creatorToken = pgTable("creator_token", {
   vestingAddress: text("vesting_address").notNull(),
   txSignature: text("tx_signature").notNull(),
   launchedAt: timestamp("launched_at").notNull().defaultNow(),
+});
+
+// ──────────────────────────────────────────────
+// Content tables (Phase 4)
+// ──────────────────────────────────────────────
+
+export const post = pgTable("post", {
+  id: text("id").primaryKey(),
+  creatorProfileId: text("creator_profile_id")
+    .notNull()
+    .references(() => creatorProfile.id),
+  content: text("content"),
+  status: text("status").notNull().default("draft"), // draft | processing | published | under_review | removed
+  publishedAt: timestamp("published_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const media = pgTable("media", {
+  id: text("id").primaryKey(),
+  postId: text("post_id").references(() => post.id),
+  creatorProfileId: text("creator_profile_id")
+    .notNull()
+    .references(() => creatorProfile.id),
+  type: text("type").notNull(), // image | video
+  status: text("status").notNull().default("uploading"), // uploading | scanning | processing | ready | flagged | failed
+  originalKey: text("original_key"),
+  variants: jsonb("variants"), // { sm: url, md: url, lg: url }
+  muxAssetId: text("mux_asset_id"),
+  muxPlaybackId: text("mux_playback_id"),
+  muxUploadId: text("mux_upload_id"),
+  duration: integer("duration"), // seconds, video only
+  width: integer("width"),
+  height: integer("height"),
+  mimeType: text("mime_type"),
+  fileSize: integer("file_size"), // bytes
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const moderationAction = pgTable("moderation_action", {
+  id: text("id").primaryKey(),
+  mediaId: text("media_id").references(() => media.id),
+  postId: text("post_id").references(() => post.id),
+  action: text("action").notNull(), // flag_csam | approve | reject | remove
+  reason: text("reason"), // hash_match | classifier | manual
+  confidence: text("confidence"), // CSAM classifier score as string
+  reviewedBy: text("reviewed_by").references(() => user.id),
+  reviewedAt: timestamp("reviewed_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const creatorStrike = pgTable("creator_strike", {
+  id: text("id").primaryKey(),
+  creatorProfileId: text("creator_profile_id")
+    .notNull()
+    .references(() => creatorProfile.id),
+  moderationActionId: text("moderation_action_id")
+    .notNull()
+    .references(() => moderationAction.id),
+  strikeNumber: integer("strike_number").notNull(), // 1, 2, or 3
+  consequence: text("consequence").notNull(), // warning | restriction | suspension
+  reason: text("reason").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
