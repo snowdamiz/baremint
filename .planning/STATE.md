@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 3 of 9 (Creator Onboarding & Token Launch)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 03-02-PLAN.md
+Last activity: 2026-02-01 — Completed 03-03-PLAN.md
 
-Progress: [█████████░░░░░░░░░░░░░░░░░░░░░░░░░░] 9/35 (~26%)
+Progress: [██████████░░░░░░░░░░░░░░░░░░░░░░░░░] 10/35 (~29%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: ~7 minutes
-- Total execution time: ~59 minutes
+- Total plans completed: 10
+- Average duration: ~6 minutes
+- Total execution time: ~64 minutes
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [█████████░░░░░░░░░░░░░░
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
-| 3. Creator Onboarding | 2/4 | ~8 min | ~4 min |
+| 3. Creator Onboarding | 3/4 | ~13 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (~3 min), 02-04 (~13 min), 03-01 (~5 min), 03-02 (~3 min)
+- Last 5 plans: 02-04 (~13 min), 03-01 (~5 min), 03-02 (~3 min), 03-03 (~5 min)
 
 *Updated after each plan completion*
 
@@ -81,6 +81,10 @@ Recent decisions affecting current work:
 - [03-02]: User ID as Sumsub externalUserId for applicant mapping
 - [03-02]: Return 200 on webhook processing errors to prevent Sumsub retry storms
 - [03-02]: Timing-safe HMAC comparison for webhook signature verification
+- [03-03]: PDA derivation uses string seeds matching Anchor IDL
+- [03-03]: Anchor IDL discriminator used directly for create_token instruction
+- [03-03]: canvas-confetti loaded via dynamic import() to avoid SSR issues
+- [03-03]: Token image defaults to creator avatar; custom image optional via toggle
 
 ### Pending Todos
 
@@ -99,5 +103,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 03-02-PLAN.md (Sumsub KYC verification)
+Stopped at: Completed 03-03-PLAN.md (Token launch flow)
 Resume file: None
