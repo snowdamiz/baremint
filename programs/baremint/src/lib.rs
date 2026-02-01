@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 
 pub mod errors;
 pub mod instructions;
+pub mod math;
 pub mod state;
 
 use instructions::*;
@@ -28,5 +29,9 @@ pub mod baremint {
             initial_virtual_token_reserves,
             initial_virtual_sol_reserves,
         )
+    }
+
+    pub fn create_token(ctx: Context<CreateToken>, burn_sol_price: u64) -> Result<()> {
+        instructions::create_token::handler(ctx, burn_sol_price)
     }
 }
