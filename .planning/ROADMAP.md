@@ -106,12 +106,12 @@ Plans:
   2. Creator can set the token hold threshold required to view gated content
   3. Viewer holding enough tokens sees gated content normally; viewer without enough tokens sees a blurred placeholder with "Hold X tokens to unlock"
   4. Access is verified server-side at content request time (not cached from login)
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Access level selection UI and content access rules data model
-- [ ] 05-02: Token balance verification via Helius DAS API with caching
-- [ ] 05-03: Gated content rendering (signed URLs for authorized, blurred placeholders for unauthorized)
+- [ ] 05-01-PLAN.md -- Schema extension (access level, threshold, token balance cache), publish API with access level params, access level step in post composer
+- [ ] 05-02-PLAN.md -- Token balance verification via Helius RPC with DB cache, blur variant generation (image + video), R2 presigned GET URLs, Mux signed playback tokens
+- [ ] 05-03-PLAN.md -- Gated content media API, locked post rendering with blur overlays, unlock dialog with balance info and placeholder buy/burn buttons
 
 ### Phase 6: Token Trading
 **Goal**: Viewers can buy and sell creator tokens through the bonding curve with a full trading interface
@@ -197,7 +197,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 2. Bonding Curve Smart Contract | 4/4 | Complete | 2026-02-01 |
 | 3. Creator Onboarding & Token Launch | 4/4 | Complete | 2026-02-01 |
 | 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
-| 5. Token-Gated Content | 0/3 | Not started | - |
+| 5. Token-Gated Content | 0/3 | Planned | - |
 | 6. Token Trading | 0/5 | Not started | - |
 | 7. Burn-to-Unlock Premium Content | 0/3 | Not started | - |
 | 8. Creator Monetization & Donations | 0/4 | Not started | - |
