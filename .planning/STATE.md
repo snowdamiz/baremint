@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 1 - Authentication & Wallets (awaiting verification)
+**Current focus:** Phase 2 - Bonding Curve Smart Contract
 
 ## Current Position
 
-Phase: 1 of 9 (Authentication & Wallets)
-Plan: 3 of 3 in current phase
-Status: Awaiting human verification (checkpoint)
-Last activity: 2026-02-01 — Completed 01-03-PLAN.md (Tasks 1-2, checkpoint pending)
+Phase: 2 of 9 (Bonding Curve Smart Contract)
+Plan: 0 of 4 in current phase
+Status: Ready to plan
+Last activity: 2026-02-01 — Phase 1 complete
 
 Progress: [███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 3/35 (~9%)
 
@@ -53,14 +53,12 @@ Recent decisions affecting current work:
 - [01-03]: Used Better Auth socialProviders config for Google/Twitter OAuth
 - [01-03]: 4-step 2FA setup dialog: password -> QR -> verify -> backup codes
 - [01-03]: Server-side auth.api.verifyTOTP before SOL transfer (security-critical)
-- [01-03]: getAddressEncoder().encode() for public key bytes in keypair reconstruction
 - [01-03]: URL search params for withdrawal review page (stateless navigation)
+- [Orchestrator]: Added pg driver for local Postgres dev (auto-detect Neon vs local in lib/db/index.ts)
+- [Orchestrator]: Auth form defaults to login step instead of signup for returning users
 
 ### Pending Todos
 
-- Configure DATABASE_URL and BETTER_AUTH_SECRET env vars before testing auth flow end-to-end
-- Run `npx drizzle-kit push` to push schema to Neon database once DATABASE_URL is set
-- Set WALLET_ENCRYPTION_KEY env var (64-char hex) for wallet encryption
 - Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET for Google OAuth
 - Set TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET for Twitter OAuth
 
@@ -73,5 +71,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: 01-03-PLAN.md checkpoint (human-verify pending)
+Stopped at: Phase 1 complete, ready to plan Phase 2
 Resume file: None

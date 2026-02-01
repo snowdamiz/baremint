@@ -12,7 +12,7 @@ Baremint delivers a crypto-native creator platform where creators launch SPL tok
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Authentication & Wallets** - Users can sign up, log in, and have a custodial Solana wallet
+- [x] **Phase 1: Authentication & Wallets** - Users can sign up, log in, and have a custodial Solana wallet
 - [ ] **Phase 2: Bonding Curve Smart Contract** - On-chain program for token creation, trading, burns, vesting, and fees deployed to devnet
 - [ ] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
 - [ ] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
@@ -38,8 +38,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md -- Database schema, Drizzle ORM, Better Auth email/password, split-screen auth UI, route protection
-- [ ] 01-02-PLAN.md -- Custodial wallet creation on signup, AES-256-GCM encryption, dashboard wallet widget with balance
-- [ ] 01-03-PLAN.md -- Google/Twitter OAuth, TOTP 2FA setup and enforcement, SOL withdrawal flow with address book
+- [x] 01-02-PLAN.md -- Custodial wallet creation on signup, AES-256-GCM encryption, dashboard wallet widget with balance
+- [x] 01-03-PLAN.md -- Google/Twitter OAuth, TOTP 2FA setup and enforcement, SOL withdrawal flow with address book
 
 ### Phase 2: Bonding Curve Smart Contract
 **Goal**: A fully tested Anchor program on devnet implements token creation, buy/sell via bonding curve, burn-for-access, vesting, and fee distribution
@@ -193,7 +193,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Authentication & Wallets | 1/3 | In progress | - |
+| 1. Authentication & Wallets | 3/3 | Complete | 2026-02-01 |
 | 2. Bonding Curve Smart Contract | 0/4 | Not started | - |
 | 3. Creator Onboarding & Token Launch | 0/4 | Not started | - |
 | 4. Content Infrastructure | 0/5 | Not started | - |

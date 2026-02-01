@@ -7,13 +7,13 @@
 
 ### Authentication & Wallets
 
-- [ ] **AUTH-01**: User can create account with email and password
-- [ ] **AUTH-02**: User can sign up/log in via Google or Twitter OAuth
-- [ ] **AUTH-03**: User can enable TOTP-based two-factor authentication
-- [ ] **AUTH-04**: Custodial Solana wallet created automatically on signup
-- [ ] **AUTH-05**: Wallet private keys encrypted with AES-256-GCM and stored in database
-- [ ] **AUTH-06**: User can view their SOL balance and token holdings
-- [ ] **AUTH-07**: User can withdraw SOL to an external Solana wallet address
+- [x] **AUTH-01**: User can create account with email and password
+- [x] **AUTH-02**: User can sign up/log in via Google or Twitter OAuth
+- [x] **AUTH-03**: User can enable TOTP-based two-factor authentication
+- [x] **AUTH-04**: Custodial Solana wallet created automatically on signup
+- [x] **AUTH-05**: Wallet private keys encrypted with AES-256-GCM and stored in database
+- [x] **AUTH-06**: User can view their SOL balance and token holdings
+- [x] **AUTH-07**: User can withdraw SOL to an external Solana wallet address
 
 ### Creator Profiles & KYC
 
@@ -108,13 +108,13 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
-| AUTH-05 | Phase 1 | Pending |
-| AUTH-06 | Phase 1 | Pending |
-| AUTH-07 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
+| AUTH-04 | Phase 1 | Complete |
+| AUTH-05 | Phase 1 | Complete |
+| AUTH-06 | Phase 1 | Complete |
+| AUTH-07 | Phase 1 | Complete |
 | CRTR-01 | Phase 3 | Pending |
 | CRTR-02 | Phase 3 | Pending |
 | CRTR-03 | Phase 3 | Pending |
