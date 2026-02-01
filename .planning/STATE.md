@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 2 of 9 (Bonding Curve Smart Contract)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 02-01-PLAN.md
+Last activity: 2026-02-01 — Completed 02-02-PLAN.md
 
-Progress: [████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 4/35 (~11%)
+Progress: [█████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 5/35 (~14%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~8 minutes
-- Total execution time: ~30 minutes
+- Total plans completed: 5
+- Average duration: ~7 minutes
+- Total execution time: ~35 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
-| 2. Bonding Curve | 1/4 | ~14 min | ~14 min |
+| 2. Bonding Curve | 2/4 | ~19 min | ~10 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (~5 min), 01-02 (~3 min), 01-03 (~8 min), 02-01 (~14 min)
-- Trend: 02-01 longer due to Solana/Anchor toolchain installation
+- Last 5 plans: 01-02 (~3 min), 01-03 (~8 min), 02-01 (~14 min), 02-02 (~5 min)
+- Trend: 02-02 fast -- pure Rust implementation with no toolchain issues
 
 *Updated after each plan completion*
 
@@ -60,6 +60,10 @@ Recent decisions affecting current work:
 - [02-01]: Pinned blake3=1.5.5 for SBF platform-tools compatibility (edition2024 unsupported)
 - [02-01]: Using Solana CLI v2.3.3 / Anchor CLI v0.32.0 / platform-tools v1.48
 - [02-01]: Program ID: FTAssMPiQ8EQUeJA4Rnu6c71maCrUCdnvGetWnVdTXTG
+- [02-02]: Fee deducted before curve calc on buy, after curve calc on sell
+- [02-02]: All SOL in bonding_curve PDA -- fees tracked via accrual fields, no separate vaults
+- [02-02]: Sell uses lamport manipulation (program owns PDA), buy uses system_program::transfer CPI
+- [02-02]: Buyer must pre-create ATA client-side before buy instruction
 
 ### Pending Todos
 
@@ -73,6 +77,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-01T09:48:37Z
-Stopped at: Completed 02-01-PLAN.md (Anchor scaffold + state accounts + initialize)
+Last session: 2026-02-01T09:57:22Z
+Stopped at: Completed 02-02-PLAN.md (Core trading instructions: math, create_token, buy, sell)
 Resume file: None
