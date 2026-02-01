@@ -108,54 +108,54 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | - | Pending |
-| AUTH-02 | - | Pending |
-| AUTH-03 | - | Pending |
-| AUTH-04 | - | Pending |
-| AUTH-05 | - | Pending |
-| AUTH-06 | - | Pending |
-| AUTH-07 | - | Pending |
-| CRTR-01 | - | Pending |
-| CRTR-02 | - | Pending |
-| CRTR-03 | - | Pending |
-| CRTR-04 | - | Pending |
-| CRTR-05 | - | Pending |
-| CRTR-06 | - | Pending |
-| CRTR-07 | - | Pending |
-| CRTR-08 | - | Pending |
-| CONT-01 | - | Pending |
-| CONT-02 | - | Pending |
-| CONT-03 | - | Pending |
-| CONT-04 | - | Pending |
-| CONT-05 | - | Pending |
-| CONT-06 | - | Pending |
-| CONT-07 | - | Pending |
-| CONT-08 | - | Pending |
-| TOKN-01 | - | Pending |
-| TOKN-02 | - | Pending |
-| TOKN-03 | - | Pending |
-| TOKN-04 | - | Pending |
-| TOKN-05 | - | Pending |
-| TOKN-06 | - | Pending |
-| TOKN-07 | - | Pending |
-| TOKN-08 | - | Pending |
-| DONA-01 | - | Pending |
-| DONA-02 | - | Pending |
-| DISC-01 | - | Pending |
-| DISC-02 | - | Pending |
-| DISC-03 | - | Pending |
-| DISC-04 | - | Pending |
-| DISC-05 | - | Pending |
-| SAFE-01 | - | Pending |
-| SAFE-02 | - | Pending |
-| SAFE-03 | - | Pending |
-| SAFE-04 | - | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| AUTH-04 | Phase 1 | Pending |
+| AUTH-05 | Phase 1 | Pending |
+| AUTH-06 | Phase 1 | Pending |
+| AUTH-07 | Phase 1 | Pending |
+| CRTR-01 | Phase 3 | Pending |
+| CRTR-02 | Phase 3 | Pending |
+| CRTR-03 | Phase 3 | Pending |
+| CRTR-04 | Phase 3 | Pending |
+| CRTR-05 | Phase 3 | Pending |
+| CRTR-06 | Phase 8 | Pending |
+| CRTR-07 | Phase 8 | Pending |
+| CRTR-08 | Phase 8 | Pending |
+| CONT-01 | Phase 4 | Pending |
+| CONT-02 | Phase 4 | Pending |
+| CONT-03 | Phase 4 | Pending |
+| CONT-04 | Phase 5 | Pending |
+| CONT-05 | Phase 5 | Pending |
+| CONT-06 | Phase 7 | Pending |
+| CONT-07 | Phase 4 | Pending |
+| CONT-08 | Phase 4 | Pending |
+| TOKN-01 | Phase 6 | Pending |
+| TOKN-02 | Phase 6 | Pending |
+| TOKN-03 | Phase 6 | Pending |
+| TOKN-04 | Phase 6 | Pending |
+| TOKN-05 | Phase 5 | Pending |
+| TOKN-06 | Phase 7 | Pending |
+| TOKN-07 | Phase 6 | Pending |
+| TOKN-08 | Phase 6 | Pending |
+| DONA-01 | Phase 8 | Pending |
+| DONA-02 | Phase 8 | Pending |
+| DISC-01 | Phase 9 | Pending |
+| DISC-02 | Phase 9 | Pending |
+| DISC-03 | Phase 9 | Pending |
+| DISC-04 | Phase 9 | Pending |
+| DISC-05 | Phase 9 | Pending |
+| SAFE-01 | Phase 2 | Pending |
+| SAFE-02 | Phase 2 | Pending |
+| SAFE-03 | Phase 3 | Pending |
+| SAFE-04 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 42 total
-- Mapped to phases: 0
-- Unmapped: 42
+- Mapped to phases: 42
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-01-31 after initial definition*
+*Last updated: 2026-01-31 after roadmap creation*
