@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 3 of 9 (Creator Onboarding & Token Launch)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — Phase 2 complete, verified ✓
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 03-01-PLAN.md
 
-Progress: [████████░░░░░░░░░░░░░░░░░░░░░░░░░░░] 7/35 (~20%)
+Progress: [████████░░░░░░░░░░░░░░░░░░░░░░░░░░░] 8/35 (~23%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: ~7 minutes
-- Total execution time: ~51 minutes
+- Total execution time: ~56 minutes
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [████████░░░░░░░░░░░░░░░
 |-------|-------|-------|----------|
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
+| 3. Creator Onboarding | 1/4 | ~5 min | ~5 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (~14 min), 02-02 (~5 min), 02-03 (~3 min), 02-04 (~13 min)
-- Trend: 02-04 longer due to 52-test suite requiring iterative debugging of BigInt types, rounding edge cases, and bankrun quirks
+- Last 5 plans: 02-02 (~5 min), 02-03 (~3 min), 02-04 (~13 min), 03-01 (~5 min)
 
 *Updated after each plan completion*
 
@@ -73,12 +73,17 @@ Recent decisions affecting current work:
 - [02-04]: First claimable vesting window is cliff + 7 days (day 37), not cliff itself
 - [02-04]: Bankrun tests require --runInBand for stability (native code race conditions)
 - [02-04]: Devnet deployment pending SOL funding (airdrop rate-limited)
+- [03-01]: R2 presigned URL upload pattern -- browser uploads directly to R2
+- [03-01]: useState for wizard step management (single-page flow, no route-based steps)
+- [03-01]: Display name immutable after creation to prevent impersonation
+- [03-01]: Image output as WebP at 0.85 quality (avatar 400x400, banner 1200x400)
 
 ### Pending Todos
 
 - Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET for Google OAuth
 - Set TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET for Twitter OAuth
 - Fund devnet wallet and deploy program (when airdrop faucet available)
+- Configure Cloudflare R2 for image uploads (see 03-USER-SETUP.md)
 
 ### Blockers/Concerns
 
@@ -89,5 +94,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Phase 2 complete and verified, ready for Phase 3
+Stopped at: Completed 03-01-PLAN.md (creator profile foundation)
 Resume file: None
