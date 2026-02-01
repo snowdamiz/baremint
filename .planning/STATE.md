@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 9 (Content Infrastructure)
-Plan: 0 of 5 in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — Phase 3 complete, verified ✓
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 04-01-PLAN.md
 
-Progress: [███████████░░░░░░░░░░░░░░░░░░░░░░░░] 11/35 (~31%)
+Progress: [████████████░░░░░░░░░░░░░░░░░░░░░░░] 12/35 (~34%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: ~6 minutes
-- Total execution time: ~68 minutes
+- Total execution time: ~71 minutes
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [███████████░░░░░░░░░░░░
 | 1. Auth & Wallets | 3/3 | ~16 min | ~5 min |
 | 2. Bonding Curve | 4/4 | ~35 min | ~9 min |
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
+| 4. Content Infrastructure | 1/5 | ~3 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (~5 min), 03-02 (~3 min), 03-03 (~5 min), 03-04 (~4 min)
+- Last 5 plans: 03-02 (~3 min), 03-03 (~5 min), 03-04 (~4 min), 04-01 (~3 min)
 
 *Updated after each plan completion*
 
@@ -89,6 +90,9 @@ Recent decisions affecting current work:
 - [03-04]: Cooldown/sell restriction info private to creator only (not on public profile)
 - [03-04]: Vesting timeline calculates from launchedAt with 30d cliff + 60d linear
 - [03-04]: Public creator profile is server component for SEO
+- [04-01]: Soft-delete posts (status=removed) for legal compliance -- never hard delete
+- [04-01]: Text-only posts publish immediately; posts with media check all media ready status
+- [04-01]: Draft visibility restricted to owner; published posts are public
 
 ### Pending Todos
 
@@ -107,5 +111,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Phase 3 complete and verified, ready for Phase 4
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
