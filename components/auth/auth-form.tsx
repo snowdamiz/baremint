@@ -39,11 +39,9 @@ export function AuthForm() {
       return;
     }
 
-    // Try to determine if account exists by attempting sign-in with empty password
-    // Better Auth doesn't have a "check email" endpoint, so we use a UX pattern:
-    // Show signup fields by default, switch to login if user indicates they have an account
-    // For simplicity, provide a toggle -- the form defaults to signup for new emails
-    setStep("signup");
+    // Default to login — returning users are the common case.
+    // New users can click "Create one" to switch to signup.
+    setStep("login");
   }
 
   async function handleSignUp(e: React.FormEvent) {
