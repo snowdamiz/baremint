@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CheckCircle2, ExternalLink } from "lucide-react";
+import { TipDialog } from "@/components/donate/tip-dialog";
 
 const TOTAL_SUPPLY = 1_000_000_000;
 const CREATOR_ALLOCATION_PERCENT = 10;
@@ -115,6 +116,17 @@ export default async function CreatorPublicProfilePage({
           )}
         </div>
       </div>
+
+      {/* Tip Button (only for non-owners when token exists) */}
+      {!isOwner && token && (
+        <div className="px-2">
+          <TipDialog
+            creatorName={profile.displayName}
+            mintAddress={token.mintAddress}
+            tokenTicker={token.tickerSymbol}
+          />
+        </div>
+      )}
 
       {/* Social Links */}
       {(profile.socialTwitter ||

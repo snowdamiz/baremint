@@ -3,7 +3,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
-import { creatorProfile, creatorToken, trade, contentUnlock, post } from "@/lib/db/schema";
+import { creatorProfile, creatorToken, trade, contentUnlock, post, donation } from "@/lib/db/schema";
 import { eq, and, sql } from "drizzle-orm";
 import {
   readBondingCurveAccount,
@@ -13,6 +13,10 @@ import {
   readVestingAccount,
   calculateClaimable,
 } from "@/lib/solana/vesting-read";
+import {
+  buildAndSendWithdrawCreatorFees,
+  buildAndSendClaimVested,
+} from "@/lib/solana/trade";
 
 // ──────────────────────────────────────────────
 // Types
@@ -187,6 +191,151 @@ export async function getCreatorEarnings(
         error instanceof Error
           ? error.message
           : "Failed to fetch earnings data",
+    };
+  }
+}
+
+// ──────────────────────────────────────────────
+// getTipSummary -- aggregate tip stats for creator
+// ──────────────────────────────────────────────
+
+export interface TipSummary {
+  solTotal: string; // lamports as string
+  tokenTotal: string; // raw token amount as string
+  count: number;
+}
+
+export async function getTipSummary(
+  creatorProfileId: string,
+): Promise<TipSummary> {
+  const rows = await db
+    .select({
+      solTotal: sql<string>`COALESCE(SUM(CASE WHEN ${donation.type} = 'sol' THEN CAST(${donation.amount} AS NUMERIC) ELSE 0 END), 0)`,
+      tokenTotal: sql<string>`COALESCE(SUM(CASE WHEN ${donation.type} = 'token' THEN CAST(${donation.amount} AS NUMERIC) ELSE 0 END), 0)`,
+      count: sql<string>`COUNT(*)`,
+    })
+    .from(donation)
+    .where(eq(donation.toCreatorProfileId, creatorProfileId));
+
+  return {
+    solTotal: Math.floor(Number(rows[0].solTotal)).toString(),
+    tokenTotal: Math.floor(Number(rows[0].tokenTotal)).toString(),
+    count: Number(rows[0].count),
+  };
+}
+
+// ──────────────────────────────────────────────
+// withdrawCreatorFees -- withdraw accrued SOL fees
+// ──────────────────────────────────────────────
+
+export async function withdrawCreatorFees(
+  mintAddress: string,
+): Promise<{ success: true; signature: string; amount: string } | { success: false; error: string }> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  // Verify creator owns this token
+  const profile = await db.query.creatorProfile.findFirst({
+    where: eq(creatorProfile.userId, session.user.id),
+  });
+
+  if (!profile) {
+    return { success: false, error: "No creator profile found" };
+  }
+
+  const token = await db.query.creatorToken.findFirst({
+    where: and(
+      eq(creatorToken.creatorProfileId, profile.id),
+      eq(creatorToken.mintAddress, mintAddress),
+    ),
+  });
+
+  if (!token) {
+    return { success: false, error: "Token not found or not owned by you" };
+  }
+
+  try {
+    const result = await buildAndSendWithdrawCreatorFees(
+      session.user.id,
+      mintAddress,
+    );
+
+    return {
+      success: true,
+      signature: result.signature,
+      amount: result.amount.toString(),
+    };
+  } catch (error) {
+    console.error("withdrawCreatorFees error:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to withdraw fees",
+    };
+  }
+}
+
+// ──────────────────────────────────────────────
+// claimVestedTokens -- claim vested creator tokens
+// ──────────────────────────────────────────────
+
+export async function claimVestedTokens(
+  mintAddress: string,
+): Promise<{ success: true; signature: string; amount: string } | { success: false; error: string }> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  // Verify creator owns this token
+  const profile = await db.query.creatorProfile.findFirst({
+    where: eq(creatorProfile.userId, session.user.id),
+  });
+
+  if (!profile) {
+    return { success: false, error: "No creator profile found" };
+  }
+
+  const token = await db.query.creatorToken.findFirst({
+    where: and(
+      eq(creatorToken.creatorProfileId, profile.id),
+      eq(creatorToken.mintAddress, mintAddress),
+    ),
+  });
+
+  if (!token) {
+    return { success: false, error: "Token not found or not owned by you" };
+  }
+
+  try {
+    const result = await buildAndSendClaimVested(
+      session.user.id,
+      mintAddress,
+    );
+
+    return {
+      success: true,
+      signature: result.signature,
+      amount: result.amount.toString(),
+    };
+  } catch (error) {
+    console.error("claimVestedTokens error:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to claim vested tokens",
     };
   }
 }

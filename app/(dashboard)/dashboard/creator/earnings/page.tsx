@@ -10,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getCreatorEarnings } from "@/app/trade/[token]/earnings-actions";
+import { getCreatorEarnings, getTipSummary } from "@/app/trade/[token]/earnings-actions";
+import { getDonationHistory } from "@/app/trade/[token]/donate-actions";
 import {
   ArrowLeft,
   Coins,
@@ -31,6 +32,23 @@ function formatTokens(raw: string, decimals: number = 6): string {
   if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(2)}M`;
   if (val >= 1_000) return `${(val / 1_000).toFixed(2)}K`;
   return val.toFixed(2);
+}
+
+function formatRelativeTime(isoString: string): string {
+  const now = Date.now();
+  const then = new Date(isoString).getTime();
+  const diffMs = now - then;
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return "just now";
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  const diffDay = Math.floor(diffHr / 24);
+  if (diffDay < 30) return `${diffDay}d ago`;
+  return new Date(isoString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function formatDate(isoString: string): string {
@@ -89,7 +107,11 @@ export default async function CreatorEarningsPage() {
     );
   }
 
-  const result = await getCreatorEarnings(token.mintAddress);
+  const [result, tipSummary, tipHistory] = await Promise.all([
+    getCreatorEarnings(token.mintAddress),
+    getTipSummary(profile.id),
+    getDonationHistory(token.mintAddress),
+  ]);
 
   if (!result.success) {
     return (
@@ -279,11 +301,78 @@ export default async function CreatorEarningsPage() {
               <div>
                 <div className="text-sm font-medium">Tips</div>
                 <div className="text-xs text-muted-foreground">
-                  Coming soon
+                  {tipSummary.count > 0
+                    ? `${tipSummary.count} tip${tipSummary.count !== 1 ? "s" : ""} -- ${formatSol(tipSummary.solTotal)} SOL, ${formatTokens(tipSummary.tokenTotal)} ${token.tickerSymbol}`
+                    : "No tips yet"}
                 </div>
               </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent Tips */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Heart className="h-4 w-4 text-pink-500" />
+            Recent Tips
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {tipHistory.length === 0 ? (
+            <p className="text-center text-sm text-muted-foreground py-4">
+              No tips received yet
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {tipHistory.map((tip) => (
+                <div
+                  key={tip.id}
+                  className="flex items-center justify-between rounded-lg border p-3"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                        tip.type === "sol"
+                          ? "bg-purple-500/10"
+                          : "bg-blue-500/10"
+                      }`}
+                    >
+                      {tip.type === "sol" ? (
+                        <Coins className="h-4 w-4 text-purple-500" />
+                      ) : (
+                        <ArrowRightLeft className="h-4 w-4 text-blue-500" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium">
+                        {tip.fromUserName}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {formatRelativeTime(tip.createdAt)}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-medium">
+                      {tip.type === "sol"
+                        ? `${formatSol(tip.amount)} SOL`
+                        : `${formatTokens(tip.amount)} ${token.tickerSymbol}`}
+                    </div>
+                    <a
+                      href={`https://explorer.solana.com/tx/${tip.txSignature}?cluster=devnet`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      View tx
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

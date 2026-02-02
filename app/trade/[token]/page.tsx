@@ -13,6 +13,7 @@ import { TradeForm } from "./trade-form";
 import { TradeHistory } from "./trade-history";
 import { PriceChart } from "./price-chart";
 import { CurveViz } from "./curve-viz";
+import { TipDialog } from "@/components/donate/tip-dialog";
 
 interface TradePageProps {
   params: Promise<{ token: string }>;
@@ -74,6 +75,9 @@ export default async function TradePage({ params }: TradePageProps) {
     }
   }
 
+  // Check if viewer is the creator (don't show tip button for self)
+  const isCreator = session?.user?.id === creator.userId;
+
   // Serialize BigInt values for client components
   const curveData = {
     virtualSolReserves: bondingCurve.virtualSolReserves.toString(),
@@ -119,8 +123,8 @@ export default async function TradePage({ params }: TradePageProps) {
           />
         </div>
 
-        {/* Right column: Trade form */}
-        <div className="lg:sticky lg:top-6 lg:self-start">
+        {/* Right column: Trade form + tip */}
+        <div className="space-y-4 lg:sticky lg:top-6 lg:self-start">
           <TradeForm
             mintAddress={mintAddress}
             tokenName={tokenData.tokenName}
@@ -130,6 +134,13 @@ export default async function TradePage({ params }: TradePageProps) {
             userSolBalance={userSolBalance}
             userTokenBalance={userTokenBalance}
           />
+          {session && !isCreator && (
+            <TipDialog
+              creatorName={creator.displayName}
+              mintAddress={mintAddress}
+              tokenTicker={tokenData.tickerSymbol}
+            />
+          )}
         </div>
       </div>
     </div>
