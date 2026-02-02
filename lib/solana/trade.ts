@@ -29,7 +29,11 @@ import { db } from "@/lib/db";
 import { wallet } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { decryptPrivateKey, getEncryptionKey } from "./keypair";
-import { estimateBuy, estimateSell } from "./bonding-curve-math";
+import {
+  estimateBuy,
+  estimateSell,
+  calculateTokensForSolValue,
+} from "./bonding-curve-math";
 import {
   readBondingCurveAccount,
   readGlobalConfig,
@@ -46,6 +50,7 @@ const SYSTEM_PROGRAM: Address =
 // Anchor IDL discriminators
 const BUY_DISCRIMINATOR = new Uint8Array([102, 6, 61, 18, 1, 218, 235, 234]);
 const SELL_DISCRIMINATOR = new Uint8Array([51, 230, 133, 164, 1, 127, 131, 173]);
+const BURN_FOR_ACCESS_DISCRIMINATOR = new Uint8Array([77, 60, 201, 5, 156, 231, 61, 29]);
 
 function getRpcUrl(): string {
   return process.env.HELIUS_RPC_URL || DEVNET_RPC;
@@ -343,4 +348,93 @@ export async function buildAndSendSell(
     .send();
 
   return { signature: txSignature, estimate };
+}
+
+/**
+ * Build, sign, and send a burn-for-access transaction on the bonding curve.
+ *
+ * Burns tokens from the viewer's account based on the on-chain burn_sol_price.
+ * This is a deflationary burn -- no SOL is returned to the viewer.
+ * Fees are extracted from curve reserves into accrual fields.
+ *
+ * The instruction has NO arguments -- just the 8-byte discriminator.
+ * The on-chain program reads burn_sol_price from the bonding curve and calculates
+ * how many tokens to burn.
+ */
+export async function buildAndSendBurnForAccess(
+  userId: string,
+  mintAddress: string,
+): Promise<{
+  signature: string;
+  tokensBurned: bigint;
+}> {
+  // 1. Get user signer
+  const signer = await getUserSigner(userId);
+
+  // 2. Read on-chain state to calculate expected tokens burned
+  const bondingCurve = await readBondingCurveAccount(mintAddress);
+
+  if (bondingCurve.burnSolPrice === BigInt(0)) {
+    throw new Error("Burn is disabled for this token");
+  }
+
+  // 3. Calculate tokens that will be burned (for return value)
+  const tokensRequired = calculateTokensForSolValue(
+    bondingCurve.virtualSolReserves,
+    bondingCurve.virtualTokenReserves,
+    bondingCurve.burnSolPrice,
+  );
+
+  // 4. Derive PDAs
+  const mintAddr = address(mintAddress);
+  const pdas = await deriveTradePDAs(mintAddr);
+
+  // 5. Derive viewer ATA
+  const [viewerAta] = await findAssociatedTokenPda({
+    owner: signer.address,
+    tokenProgram: TOKEN_PROGRAM,
+    mint: mintAddr,
+  });
+
+  // 6. Build burn_for_access instruction (discriminator only, no args)
+  const burnInstruction: Instruction = {
+    programAddress: PROGRAM_ID,
+    accounts: [
+      // viewer (signer, mut)
+      { address: signer.address, role: AccountRole.WRITABLE_SIGNER },
+      // global_config (readonly)
+      { address: pdas.globalConfig, role: AccountRole.READONLY },
+      // bonding_curve (mut)
+      { address: pdas.bondingCurve, role: AccountRole.WRITABLE },
+      // token_mint (mut -- tokens are burned, supply decreases)
+      { address: mintAddr, role: AccountRole.WRITABLE },
+      // viewer_token_account (mut)
+      { address: viewerAta, role: AccountRole.WRITABLE },
+      // token_program (readonly)
+      { address: TOKEN_PROGRAM, role: AccountRole.READONLY },
+    ],
+    data: BURN_FOR_ACCESS_DISCRIMINATOR,
+  };
+
+  // 7. Build transaction message
+  const rpc = createSolanaRpc(getRpcUrl());
+  const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+  const transactionMessage = pipe(
+    createTransactionMessage({ version: 0 }),
+    (m) => setTransactionMessageFeePayer(signer.address, m),
+    (m) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, m),
+    (m) => appendTransactionMessageInstructions([burnInstruction], m),
+  );
+
+  // 8. Sign and send
+  const signedTransaction =
+    await signTransactionMessageWithSigners(transactionMessage);
+  const base64Tx = getBase64EncodedWireTransaction(signedTransaction);
+
+  const txSignature = await rpc
+    .sendTransaction(base64Tx, { encoding: "base64" })
+    .send();
+
+  return { signature: txSignature, tokensBurned: tokensRequired };
 }

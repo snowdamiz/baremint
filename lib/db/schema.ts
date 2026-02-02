@@ -248,6 +248,29 @@ export const trade = pgTable("trade", {
   confirmedAt: timestamp("confirmed_at"),
 });
 
+// ──────────────────────────────────────────────
+// Burn-to-Unlock tables (Phase 7)
+// ──────────────────────────────────────────────
+
+export const contentUnlock = pgTable(
+  "content_unlock",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id),
+    postId: text("post_id")
+      .notNull()
+      .references(() => post.id),
+    txSignature: text("tx_signature").notNull(),
+    tokensBurned: text("tokens_burned").notNull(), // BigInt string
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("content_unlock_user_post_idx").on(table.userId, table.postId),
+  ],
+);
+
 export const tokenBalanceCache = pgTable(
   "token_balance_cache",
   {

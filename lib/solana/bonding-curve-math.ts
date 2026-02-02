@@ -130,6 +130,27 @@ export function estimateSell(
 }
 
 /**
+ * Calculate how many tokens a given SOL value is worth at current reserves.
+ * Used for burn-for-access pricing.
+ * Rounds UP (ceiling division — protocol-favorable: more tokens burned).
+ * tokens = ceil(solValue * virtualTokenReserves / virtualSolReserves)
+ *
+ * Matches Rust: programs/baremint/src/math.rs::calculate_tokens_for_sol_value
+ */
+export function calculateTokensForSolValue(
+  virtualSolReserves: bigint,
+  virtualTokenReserves: bigint,
+  solValue: bigint,
+): bigint {
+  if (solValue === BigInt(0)) return BigInt(0);
+
+  // Ceiling division: (solValue * virtualTokenReserves + virtualSolReserves - 1) / virtualSolReserves
+  const numerator =
+    solValue * virtualTokenReserves + (virtualSolReserves - BigInt(1));
+  return numerator / virtualSolReserves;
+}
+
+/**
  * Calculate spot price as a rational number (avoids floating point).
  * Price = virtualSolReserves / virtualTokenReserves (SOL per token)
  */
