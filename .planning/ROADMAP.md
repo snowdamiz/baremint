@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
 - [x] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
 - [x] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
-- [ ] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
+- [x] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
 - [ ] **Phase 8: Creator Monetization & Donations** - Creators can view earnings, claim vested tokens, withdraw SOL, and receive tips
 - [ ] **Phase 9: Discovery & Notifications** - Users can browse, search, and rank creators, and receive activity notifications
 
@@ -145,8 +145,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md -- Schema (content_unlock), burn math, transaction builder, burn API routes, access control updates
-- [ ] 07-02-PLAN.md -- Unlock dialog burn flow, post composer burn_gated updates, content refresh after unlock
+- [x] 07-01-PLAN.md -- Schema (content_unlock), burn math, transaction builder, burn API routes, access control updates
+- [x] 07-02-PLAN.md -- Unlock dialog burn flow, post composer burn_gated updates, content refresh after unlock
 
 ### Phase 8: Creator Monetization & Donations
 **Goal**: Creators can view all revenue streams, claim vested tokens, withdraw earnings, and receive tips from viewers
@@ -198,6 +198,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
 | 5. Token-Gated Content | 3/3 | Complete | 2026-02-01 |
 | 6. Token Trading | 5/5 | Complete | 2026-02-02 |
-| 7. Burn-to-Unlock Premium Content | 0/2 | Not started | - |
+| 7. Burn-to-Unlock Premium Content | 2/2 | Complete | 2026-02-02 |
 | 8. Creator Monetization & Donations | 0/4 | Not started | - |
 | 9. Discovery & Notifications | 0/4 | Not started | - |
