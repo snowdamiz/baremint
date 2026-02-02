@@ -18,9 +18,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Settings2, Loader2, ExternalLink } from "lucide-react";
+import { Settings2, Loader2, TrendingUp, TrendingDown } from "lucide-react";
 import { toast } from "sonner";
-import { getQuote, executeBuy, executeSell } from "./actions";
+import { getQuote, executeBuy, executeSell, getHoldings, type HoldingsData } from "./actions";
 
 // ──────────────────────────────────────────────
 // Types
@@ -144,6 +144,7 @@ export function TradeForm({
   const [showReview, setShowReview] = useState(false);
   const [isPending, startTransition] = useTransition();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [holdings, setHoldings] = useState<HoldingsData | null>(null);
 
   // Fetch quote on debounced amount change
   const fetchQuote = useCallback(
@@ -194,6 +195,11 @@ export function TradeForm({
     setAmount("");
     setQuote(null);
   }, [side]);
+
+  // Fetch holdings P&L on mount
+  useEffect(() => {
+    getHoldings(mintAddress).then(setHoldings).catch(() => setHoldings(null));
+  }, [mintAddress]);
 
   const handleAmountChange = (value: string) => {
     // Only allow numeric input with optional decimal
@@ -324,11 +330,6 @@ export function TradeForm({
 
   const canSubmit =
     amount && parseFloat(amount) > 0 && !quoteLoading && !isPending;
-
-  // Current price from initial curve data for holdings value
-  const currentPriceSolPerToken =
-    Number(initialCurveData.virtualSolReserves) /
-    Number(initialCurveData.virtualTokenReserves);
 
   return (
     <div className="space-y-4">
@@ -525,28 +526,12 @@ export function TradeForm({
         </CardContent>
       </Card>
 
-      {/* Holdings card */}
-      {userTokenBalance && BigInt(userTokenBalance) > BigInt(0) && (
-        <Card className="gap-2 py-3">
-          <CardContent>
-            <p className="text-xs font-medium text-muted-foreground">
-              Your Holdings
-            </p>
-            <div className="mt-1 flex items-baseline justify-between">
-              <p className="text-lg font-semibold">
-                {rawToTokens(userTokenBalance)} {tickerSymbol}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                ~
-                {(
-                  (Number(userTokenBalance) / 10 ** TOKEN_DECIMALS) *
-                  currentPriceSolPerToken
-                ).toFixed(4)}{" "}
-                SOL
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Holdings card with P&L */}
+      {holdings && (
+        <HoldingsCard
+          holdings={holdings}
+          tickerSymbol={tickerSymbol}
+        />
       )}
 
       {/* Review dialog for large trades */}
@@ -702,5 +687,87 @@ function QuotePreview({
         </>
       ) : null}
     </div>
+  );
+}
+
+// ──────────────────────────────────────────────
+// Holdings Card sub-component
+// ──────────────────────────────────────────────
+
+function HoldingsCard({
+  holdings,
+  tickerSymbol,
+}: {
+  holdings: HoldingsData;
+  tickerSymbol: string;
+}) {
+  const pnlNum = Number(holdings.pnlPercent);
+  const isPositive = pnlNum >= 0;
+  const unrealizedLamports = BigInt(holdings.unrealizedPnl);
+  const isNegative = unrealizedLamports < BigInt(0);
+  const absUnrealized = isNegative ? -unrealizedLamports : unrealizedLamports;
+
+  // Format SOL values from lamports
+  const formatLamports = (lamports: string) => {
+    const val = BigInt(lamports);
+    const abs = val < BigInt(0) ? -val : val;
+    const whole = abs / BigInt(LAMPORTS_PER_SOL);
+    const frac = abs % BigInt(LAMPORTS_PER_SOL);
+    const fracStr = frac.toString().padStart(9, "0").slice(0, 4);
+    return `${val < BigInt(0) ? "-" : ""}${whole}.${fracStr}`;
+  };
+
+  // Format avg buy price from rational string (num/denom)
+  const formatAvgPrice = (rational: string) => {
+    if (!rational.includes("/")) return rational;
+    const [num, denom] = rational.split("/");
+    const n = Number(num);
+    const d = Number(denom);
+    if (d === 0) return "--";
+    const price = (n / d / LAMPORTS_PER_SOL) * 10 ** TOKEN_DECIMALS;
+    if (price < 0.000001) return price.toExponential(2);
+    return price.toFixed(6);
+  };
+
+  return (
+    <Card className="gap-2 py-3">
+      <CardContent>
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-medium text-muted-foreground">
+            Your Holdings
+          </p>
+          <div
+            className={`flex items-center gap-1 text-xs font-medium ${
+              isPositive ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {isPositive ? (
+              <TrendingUp className="h-3 w-3" />
+            ) : (
+              <TrendingDown className="h-3 w-3" />
+            )}
+            {isPositive ? "+" : ""}
+            {holdings.pnlPercent}%
+          </div>
+        </div>
+        <div className="mt-1 flex items-baseline justify-between">
+          <p className="text-lg font-semibold">
+            {rawToTokens(holdings.netTokens)} {tickerSymbol}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {formatLamports(holdings.currentValueSol)} SOL
+          </p>
+        </div>
+        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+          <span>Avg buy: {formatAvgPrice(holdings.avgBuyPrice)} SOL</span>
+          <span
+            className={isPositive ? "text-green-500" : "text-red-500"}
+          >
+            {isNegative ? "-" : "+"}
+            {formatLamports(absUnrealized.toString())} SOL
+          </span>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
