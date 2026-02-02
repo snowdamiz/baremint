@@ -25,19 +25,10 @@ function getRpcUrl(): string {
 }
 
 /**
- * Build, sign, and send a SOL transfer transaction.
- *
- * @param userId - The user initiating the transfer
- * @param toAddress - Destination Solana address (base58)
- * @param amountLamports - Amount to transfer in lamports
- * @returns The transaction signature and withdrawal record ID
+ * Create a signer from the user's encrypted wallet.
+ * Shared helper used by both SOL transfer and token transfer modules.
  */
-export async function buildAndSendSolTransfer(
-  userId: string,
-  toAddress: string,
-  amountLamports: bigint,
-): Promise<{ signature: string; withdrawalId: string }> {
-  // 1. Get user wallet
+export async function getUserWalletSigner(userId: string) {
   const userWallet = await db.query.wallet.findFirst({
     where: eq(wallet.userId, userId),
   });
@@ -46,25 +37,40 @@ export async function buildAndSendSolTransfer(
     throw new Error("No wallet found for user");
   }
 
-  // 2. Decrypt private key and create signer
   const encryptionKey = getEncryptionKey();
   const privateKeyBytes = decryptPrivateKey(
     userWallet.encryptedPrivateKey,
     encryptionKey,
   );
 
-  // Encode public key address to 32 bytes
   const addressEncoder = getAddressEncoder();
-  const publicKeyBytes = addressEncoder.encode(userWallet.publicKey as Address);
+  const publicKeyBytes = addressEncoder.encode(
+    userWallet.publicKey as Address,
+  );
 
-  // Concatenate private key (32 bytes) + public key (32 bytes) for the full keypair
   const keypairBytes = new Uint8Array(64);
   keypairBytes.set(privateKeyBytes, 0);
   keypairBytes.set(publicKeyBytes, 32);
 
   const signer = await createKeyPairSignerFromBytes(keypairBytes);
+  return signer;
+}
 
-  // 3. Build transaction
+/**
+ * Pure SOL transfer: build, sign, and send without any DB side effects.
+ *
+ * @param userId - The user initiating the transfer
+ * @param toAddress - Destination Solana address (base58)
+ * @param amountLamports - Amount to transfer in lamports
+ * @returns The transaction signature
+ */
+export async function sendSolTransfer(
+  userId: string,
+  toAddress: string,
+  amountLamports: bigint,
+): Promise<{ signature: string }> {
+  const signer = await getUserWalletSigner(userId);
+
   const rpc = createSolanaRpc(getRpcUrl());
   const { value: latestBlockhash } = await rpc
     .getLatestBlockhash()
@@ -83,7 +89,6 @@ export async function buildAndSendSolTransfer(
     (m) => appendTransactionMessageInstruction(transferInstruction, m),
   );
 
-  // 4. Sign and send
   const signedTransaction =
     await signTransactionMessageWithSigners(transactionMessage);
 
@@ -96,12 +101,38 @@ export async function buildAndSendSolTransfer(
     })
     .send();
 
-  // 5. Record withdrawal in database
+  return { signature: txSignature };
+}
+
+/**
+ * Build, sign, and send a SOL transfer transaction (with withdrawal record).
+ *
+ * @param userId - The user initiating the transfer
+ * @param toAddress - Destination Solana address (base58)
+ * @param amountLamports - Amount to transfer in lamports
+ * @returns The transaction signature and withdrawal record ID
+ */
+export async function buildAndSendSolTransfer(
+  userId: string,
+  toAddress: string,
+  amountLamports: bigint,
+): Promise<{ signature: string; withdrawalId: string }> {
+  const { signature: txSignature } = await sendSolTransfer(
+    userId,
+    toAddress,
+    amountLamports,
+  );
+
+  // Record withdrawal in database
+  const userWallet = await db.query.wallet.findFirst({
+    where: eq(wallet.userId, userId),
+  });
+
   const withdrawalId = crypto.randomUUID();
   await db.insert(withdrawal).values({
     id: withdrawalId,
     userId,
-    fromAddress: userWallet.publicKey,
+    fromAddress: userWallet!.publicKey,
     toAddress,
     amountLamports: amountLamports.toString(),
     txSignature,
