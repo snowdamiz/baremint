@@ -31,8 +31,8 @@
 - [x] **CONT-01**: Creator can publish text posts
 - [x] **CONT-02**: Creator can upload and publish image posts
 - [x] **CONT-03**: Creator can upload and publish video posts
-- [ ] **CONT-04**: Creator can set content access level (public, hold-gated, burn-gated/PPV)
-- [ ] **CONT-05**: Creator can set token hold threshold for gated content
+- [x] **CONT-04**: Creator can set content access level (public, hold-gated, burn-gated/PPV)
+- [x] **CONT-05**: Creator can set token hold threshold for gated content
 - [ ] **CONT-06**: Creator can set burn cost for premium/PPV content
 - [x] **CONT-07**: All uploaded content is automatically scanned for CSAM before going live
 - [x] **CONT-08**: Creator can edit and delete their own posts
@@ -43,7 +43,7 @@
 - [ ] **TOKN-02**: Viewer can sell creator tokens back to bonding curve for SOL
 - [ ] **TOKN-03**: Transaction shows fee breakdown (platform fee, creator fee, net amount)
 - [ ] **TOKN-04**: Viewer can view token price chart and bonding curve visualization
-- [ ] **TOKN-05**: Holding sufficient tokens unlocks creator's general feed
+- [x] **TOKN-05**: Holding sufficient tokens unlocks creator's general feed
 - [ ] **TOKN-06**: Burning tokens unlocks premium/PPV content and returns SOL from curve
 - [ ] **TOKN-07**: Platform collects a fee on every buy/sell transaction
 - [ ] **TOKN-08**: Creator earns a fee on every buy/sell of their token
@@ -126,8 +126,8 @@
 | CONT-01 | Phase 4 | Complete |
 | CONT-02 | Phase 4 | Complete |
 | CONT-03 | Phase 4 | Complete |
-| CONT-04 | Phase 5 | Pending |
-| CONT-05 | Phase 5 | Pending |
+| CONT-04 | Phase 5 | Complete |
+| CONT-05 | Phase 5 | Complete |
 | CONT-06 | Phase 7 | Pending |
 | CONT-07 | Phase 4 | Complete |
 | CONT-08 | Phase 4 | Complete |
@@ -135,7 +135,7 @@
 | TOKN-02 | Phase 6 | Pending |
 | TOKN-03 | Phase 6 | Pending |
 | TOKN-04 | Phase 6 | Pending |
-| TOKN-05 | Phase 5 | Pending |
+| TOKN-05 | Phase 5 | Complete |
 | TOKN-06 | Phase 7 | Pending |
 | TOKN-07 | Phase 6 | Pending |
 | TOKN-08 | Phase 6 | Pending |
@@ -158,4 +158,4 @@
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-02-01 after Phase 4 completion*
+*Last updated: 2026-02-01 after Phase 5 completion*

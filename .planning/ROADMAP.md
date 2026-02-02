@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Bonding Curve Smart Contract** - On-chain program for token creation, trading, burns, vesting, and fees deployed to devnet
 - [x] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
 - [x] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
-- [ ] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
+- [x] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
 - [ ] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
 - [ ] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
 - [ ] **Phase 8: Creator Monetization & Donations** - Creators can view earnings, claim vested tokens, withdraw SOL, and receive tips
@@ -109,9 +109,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Schema extension (access level, threshold, token balance cache), publish API with access level params, access level step in post composer
-- [ ] 05-02-PLAN.md -- Token balance verification via Helius RPC with DB cache, blur variant generation (image + video), R2 presigned GET URLs, Mux signed playback tokens
-- [ ] 05-03-PLAN.md -- Gated content media API, locked post rendering with blur overlays, unlock dialog with balance info and placeholder buy/burn buttons
+- [x] 05-01-PLAN.md -- Schema extension (access level, threshold, token balance cache), publish API with access level params, access level step in post composer
+- [x] 05-02-PLAN.md -- Token balance verification via Helius RPC with DB cache, blur variant generation (image + video), R2 presigned GET URLs, Mux signed playback tokens
+- [x] 05-03-PLAN.md -- Gated content media API, locked post rendering with blur overlays, unlock dialog with balance info and placeholder buy/burn buttons
 
 ### Phase 6: Token Trading
 **Goal**: Viewers can buy and sell creator tokens through the bonding curve with a full trading interface
@@ -197,7 +197,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 2. Bonding Curve Smart Contract | 4/4 | Complete | 2026-02-01 |
 | 3. Creator Onboarding & Token Launch | 4/4 | Complete | 2026-02-01 |
 | 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
-| 5. Token-Gated Content | 0/3 | Planned | - |
+| 5. Token-Gated Content | 3/3 | Complete | 2026-02-01 |
 | 6. Token Trading | 0/5 | Not started | - |
 | 7. Burn-to-Unlock Premium Content | 0/3 | Not started | - |
 | 8. Creator Monetization & Donations | 0/4 | Not started | - |
