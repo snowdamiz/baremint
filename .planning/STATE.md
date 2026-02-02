@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 8 of 9 (Creator Monetization & Donations)
-Plan: 3 of 4 in current phase
-Status: In progress
-Last activity: 2026-02-02 — Completed 08-03-PLAN.md
+Plan: 4 of 4 in current phase
+Status: Phase complete
+Last activity: 2026-02-02 — Completed 08-04-PLAN.md
 
-Progress: [████████████████████████████░░░░░░░░░░░] 28/35 (~80%)
+Progress: [██████████████████████████████░░░░░░░░░] 30/35 (~86%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 28
+- Total plans completed: 30
 - Average duration: ~5 minutes
-- Total execution time: ~139 minutes
+- Total execution time: ~144 minutes
 
 **By Phase:**
 
@@ -35,10 +35,10 @@ Progress: [███████████████████████
 | 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
 | 7. Burn-to-Unlock | 2/2 | ~6 min | ~3 min |
 
-| 8. Creator Monetization | 2/4 | ~5 min | ~2.5 min |
+| 8. Creator Monetization | 4/4 | ~10 min | ~2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-05 (~3.5 min), 07-01 (~3 min), 07-02 (~3 min), 08-01 (~3 min), 08-03 (~2 min)
+- Last 5 plans: 07-01 (~3 min), 07-02 (~3 min), 08-01 (~3 min), 08-03 (~2 min), 08-04 (~2.5 min)
 
 *Updated after each plan completion*
 
@@ -150,6 +150,8 @@ Recent decisions affecting current work:
 - [08-01]: Burn count is display-only (fees tracked in creatorFeesAccrued on-chain)
 - [08-03]: Extracted pure sendSolTransfer from withdrawal-coupled buildAndSendSolTransfer for donation reuse
 - [08-03]: Self-tip prevention via wallet address comparison before executing transfer
+- [08-04]: Simple button group for SOL/token toggle instead of shadcn Tabs
+- [08-04]: getTipSummary aggregates SOL and token tips separately in earnings-actions.ts
 
 ### Pending Todos
 
@@ -175,5 +177,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 08-03-PLAN.md
+Stopped at: Completed 08-04-PLAN.md (Phase 8 complete)
 Resume file: None
