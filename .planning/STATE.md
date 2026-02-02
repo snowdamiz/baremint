@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 6 of 9 (Token Trading)
-Plan: 0 of 5 in current phase
-Status: Ready to plan
-Last activity: 2026-02-01 — Phase 5 complete, verified ✓
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-02-02 — Completed 06-01-PLAN.md
 
-Progress: [███████████████████░░░░░░░░░░░░░░░░░] 19/35 (~54%)
+Progress: [████████████████████░░░░░░░░░░░░░░░░] 20/35 (~57%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: ~5 minutes
-- Total execution time: ~99 minutes
+- Total execution time: ~104 minutes
 
 **By Phase:**
 
@@ -32,9 +32,10 @@ Progress: [███████████████████░░░░
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
 | 5. Token-Gated Content | 3/3 | ~9 min | ~3 min |
+| 6. Token Trading | 1/5 | ~5 min | ~5 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-05 (~4 min), 05-01 (~3 min), 05-02 (~3 min), 05-03 (~3 min)
+- Last 5 plans: 05-01 (~3 min), 05-02 (~3 min), 05-03 (~3 min), 06-01 (~5 min)
 
 *Updated after each plan completion*
 
@@ -119,6 +120,10 @@ Recent decisions affecting current work:
 - [05-03]: Unlock dialog buy/burn buttons show sonner toast "coming soon" (not disabled)
 - [05-03]: PostFeed fetches gated media data lazily after initial post list load
 - [05-03]: Locked media uses native img for blur URLs (public CDN, no Next Image optimization needed)
+- [06-01]: All trading math uses BigInt (no floating point) to match on-chain Rust precision
+- [06-01]: Full GlobalConfig deserialization (all fields, not just fee_bps)
+- [06-01]: Price per token stored as rational string (num/denom) to avoid precision loss
+- [06-01]: getQuote is unauthenticated (public pricing data), executeBuy/executeSell require auth
 
 ### Pending Todos
 
@@ -141,6 +146,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-01
-Stopped at: Phase 5 complete and verified, ready for Phase 6
+Last session: 2026-02-02
+Stopped at: Completed 06-01-PLAN.md
 Resume file: None
