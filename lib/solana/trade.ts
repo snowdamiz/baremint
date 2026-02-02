@@ -38,6 +38,10 @@ import {
   readBondingCurveAccount,
   readGlobalConfig,
 } from "./bonding-curve-read";
+import {
+  readVestingAccount,
+  calculateClaimable,
+} from "./vesting-read";
 
 const DEVNET_RPC = "https://api.devnet.solana.com";
 const PROGRAM_ID: Address =
@@ -51,6 +55,10 @@ const SYSTEM_PROGRAM: Address =
 const BUY_DISCRIMINATOR = new Uint8Array([102, 6, 61, 18, 1, 218, 235, 234]);
 const SELL_DISCRIMINATOR = new Uint8Array([51, 230, 133, 164, 1, 127, 131, 173]);
 const BURN_FOR_ACCESS_DISCRIMINATOR = new Uint8Array([77, 60, 201, 5, 156, 231, 61, 29]);
+// sha256("global:withdraw_creator_fees") first 8 bytes
+const WITHDRAW_CREATOR_FEES_DISCRIMINATOR = new Uint8Array([8, 30, 213, 18, 121, 105, 129, 222]);
+// sha256("global:claim_vested") first 8 bytes
+const CLAIM_VESTED_DISCRIMINATOR = new Uint8Array([208, 190, 166, 114, 203, 225, 140, 208]);
 
 function getRpcUrl(): string {
   return process.env.HELIUS_RPC_URL || DEVNET_RPC;
@@ -437,4 +445,207 @@ export async function buildAndSendBurnForAccess(
     .send();
 
   return { signature: txSignature, tokensBurned: tokensRequired };
+}
+
+/**
+ * Build, sign, and send a withdraw_creator_fees transaction.
+ *
+ * Withdraws accumulated creator trade fee SOL from the bonding curve PDA
+ * to the creator's wallet. Only the token creator can call this.
+ * Instruction has no arguments -- just the 8-byte discriminator.
+ */
+export async function buildAndSendWithdrawCreatorFees(
+  userId: string,
+  mintAddress: string,
+): Promise<{
+  signature: string;
+  amount: bigint;
+}> {
+  // 1. Get user signer
+  const signer = await getUserSigner(userId);
+
+  // 2. Read on-chain bonding curve state
+  const bondingCurve = await readBondingCurveAccount(mintAddress);
+
+  // 3. Verify creator
+  if (signer.address !== bondingCurve.creator) {
+    throw new Error("Only the token creator can withdraw fees");
+  }
+
+  // 4. Verify fees > 0
+  if (bondingCurve.creatorFeesAccrued === BigInt(0)) {
+    throw new Error("No fees to withdraw");
+  }
+
+  const amount = bondingCurve.creatorFeesAccrued;
+
+  // 5. Derive bonding curve PDA
+  const mintAddr = address(mintAddress);
+  const addressEncoder = getAddressEncoder();
+  const mintBytes = addressEncoder.encode(mintAddr);
+
+  const [bondingCurvePda] = await getProgramDerivedAddress({
+    programAddress: PROGRAM_ID,
+    seeds: ["bonding_curve", mintBytes],
+  });
+
+  // 6. Build withdraw_creator_fees instruction (discriminator only, no args)
+  const withdrawInstruction: Instruction = {
+    programAddress: PROGRAM_ID,
+    accounts: [
+      // creator (signer, mut)
+      { address: signer.address, role: AccountRole.WRITABLE_SIGNER },
+      // bonding_curve (mut)
+      { address: bondingCurvePda, role: AccountRole.WRITABLE },
+      // token_mint (readonly)
+      { address: mintAddr, role: AccountRole.READONLY },
+    ],
+    data: WITHDRAW_CREATOR_FEES_DISCRIMINATOR,
+  };
+
+  // 7. Build transaction message
+  const rpc = createSolanaRpc(getRpcUrl());
+  const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+  const transactionMessage = pipe(
+    createTransactionMessage({ version: 0 }),
+    (m) => setTransactionMessageFeePayer(signer.address, m),
+    (m) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, m),
+    (m) => appendTransactionMessageInstructions([withdrawInstruction], m),
+  );
+
+  // 8. Sign and send
+  const signedTransaction =
+    await signTransactionMessageWithSigners(transactionMessage);
+  const base64Tx = getBase64EncodedWireTransaction(signedTransaction);
+
+  const txSignature = await rpc
+    .sendTransaction(base64Tx, { encoding: "base64" })
+    .send();
+
+  return { signature: txSignature, amount };
+}
+
+/**
+ * Build, sign, and send a claim_vested transaction.
+ *
+ * Claims vested creator tokens from the vesting PDA to the creator's ATA.
+ * Only the token creator can call this.
+ * Instruction has no arguments -- just the 8-byte discriminator.
+ * Includes an idempotent create-ATA instruction to ensure the creator's
+ * token account exists.
+ */
+export async function buildAndSendClaimVested(
+  userId: string,
+  mintAddress: string,
+): Promise<{
+  signature: string;
+  amount: bigint;
+}> {
+  // 1. Get user signer
+  const signer = await getUserSigner(userId);
+
+  // 2. Read on-chain state
+  const [vesting, globalConfig] = await Promise.all([
+    readVestingAccount(mintAddress),
+    readGlobalConfig(),
+  ]);
+
+  if (!vesting) {
+    throw new Error("No vesting account found for this token");
+  }
+
+  // 3. Verify creator
+  if (signer.address !== vesting.creator) {
+    throw new Error("Only the token creator can claim vested tokens");
+  }
+
+  // 4. Calculate claimable
+  const claimable = calculateClaimable(vesting, globalConfig);
+  if (claimable === BigInt(0)) {
+    throw new Error("No tokens available to claim");
+  }
+
+  // 5. Derive PDAs
+  const mintAddr = address(mintAddress);
+  const addressEncoder = getAddressEncoder();
+  const mintBytes = addressEncoder.encode(mintAddr);
+
+  const [globalConfigPda] = await getProgramDerivedAddress({
+    programAddress: PROGRAM_ID,
+    seeds: ["global_config"],
+  });
+
+  const [vestingAccountPda] = await getProgramDerivedAddress({
+    programAddress: PROGRAM_ID,
+    seeds: ["vesting", mintBytes],
+  });
+
+  const [vestingTokenAccountPda] = await getProgramDerivedAddress({
+    programAddress: PROGRAM_ID,
+    seeds: ["vesting_tokens", mintBytes],
+  });
+
+  // 6. Derive creator ATA
+  const [creatorAta] = await findAssociatedTokenPda({
+    owner: signer.address,
+    tokenProgram: TOKEN_PROGRAM,
+    mint: mintAddr,
+  });
+
+  // 7. Build create-ATA-idempotent instruction (ensure creator ATA exists)
+  const createAtaIx =
+    await getCreateAssociatedTokenIdempotentInstructionAsync({
+      payer: signer,
+      owner: signer.address,
+      mint: mintAddr,
+    });
+
+  // 8. Build claim_vested instruction (discriminator only, no args)
+  const claimInstruction: Instruction = {
+    programAddress: PROGRAM_ID,
+    accounts: [
+      // creator (signer, mut)
+      { address: signer.address, role: AccountRole.WRITABLE_SIGNER },
+      // global_config (readonly)
+      { address: globalConfigPda, role: AccountRole.READONLY },
+      // vesting_account (mut)
+      { address: vestingAccountPda, role: AccountRole.WRITABLE },
+      // token_mint (readonly)
+      { address: mintAddr, role: AccountRole.READONLY },
+      // vesting_token_account (mut)
+      { address: vestingTokenAccountPda, role: AccountRole.WRITABLE },
+      // creator_token_account (mut)
+      { address: creatorAta, role: AccountRole.WRITABLE },
+      // token_program (readonly)
+      { address: TOKEN_PROGRAM, role: AccountRole.READONLY },
+    ],
+    data: CLAIM_VESTED_DISCRIMINATOR,
+  };
+
+  // 9. Build transaction message
+  const rpc = createSolanaRpc(getRpcUrl());
+  const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
+
+  const transactionMessage = pipe(
+    createTransactionMessage({ version: 0 }),
+    (m) => setTransactionMessageFeePayer(signer.address, m),
+    (m) => setTransactionMessageLifetimeUsingBlockhash(latestBlockhash, m),
+    (m) =>
+      appendTransactionMessageInstructions(
+        [createAtaIx, claimInstruction],
+        m,
+      ),
+  );
+
+  // 10. Sign and send
+  const signedTransaction =
+    await signTransactionMessageWithSigners(transactionMessage);
+  const base64Tx = getBase64EncodedWireTransaction(signedTransaction);
+
+  const txSignature = await rpc
+    .sendTransaction(base64Tx, { encoding: "base64" })
+    .send();
+
+  return { signature: txSignature, amount: claimable };
 }
