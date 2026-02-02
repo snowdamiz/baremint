@@ -55,11 +55,11 @@
 
 ### Discovery
 
-- [ ] **DISC-01**: User can browse creators on a homepage feed
-- [ ] **DISC-02**: User can search for creators by name or category
-- [ ] **DISC-03**: User can view token leaderboard ranked by market cap/volume
-- [ ] **DISC-04**: User receives in-app notifications for new content from held creators
-- [ ] **DISC-05**: User receives notifications for token activity (trades, burns on their tokens)
+- [x] **DISC-01**: User can browse creators on a homepage feed
+- [x] **DISC-02**: User can search for creators by name or category
+- [x] **DISC-03**: User can view token leaderboard ranked by market cap/volume
+- [x] **DISC-04**: User receives in-app notifications for new content from held creators
+- [x] **DISC-05**: User receives notifications for token activity (trades, burns on their tokens)
 
 ### Anti-Rug Protections
 
@@ -141,11 +141,11 @@
 | TOKN-08 | Phase 6 | Complete |
 | DONA-01 | Phase 8 | Complete |
 | DONA-02 | Phase 8 | Complete |
-| DISC-01 | Phase 9 | Pending |
-| DISC-02 | Phase 9 | Pending |
-| DISC-03 | Phase 9 | Pending |
-| DISC-04 | Phase 9 | Pending |
-| DISC-05 | Phase 9 | Pending |
+| DISC-01 | Phase 9 | Complete |
+| DISC-02 | Phase 9 | Complete |
+| DISC-03 | Phase 9 | Complete |
+| DISC-04 | Phase 9 | Complete |
+| DISC-05 | Phase 9 | Complete |
 | SAFE-01 | Phase 2 | Complete |
 | SAFE-02 | Phase 2 | Complete |
 | SAFE-03 | Phase 3 | Complete |
@@ -158,4 +158,4 @@
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-02-01 after Phase 5 completion*
+*Last updated: 2026-02-02 after Phase 9 completion*

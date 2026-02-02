@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
 - [x] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
 - [x] **Phase 8: Creator Monetization & Donations** - Creators can view earnings, claim vested tokens, withdraw SOL, and receive tips
-- [ ] **Phase 9: Discovery & Notifications** - Users can browse, search, and rank creators, and receive activity notifications
+- [x] **Phase 9: Discovery & Notifications** - Users can browse, search, and rank creators, and receive activity notifications
 
 ## Phase Details
 
@@ -179,10 +179,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 09-01-PLAN.md -- Creator browse feed, category field, dashboard homepage with real data (replaces mock)
-- [ ] 09-02-PLAN.md -- Full-text search with tsvector/GIN index, explore page with debounced search
-- [ ] 09-03-PLAN.md -- Token leaderboard with 24h volume SQL aggregation, sortable rankings
-- [ ] 09-04-PLAN.md -- Notification system (DB table, webhook/publish fan-out, bell badge, polling, notifications page)
+- [x] 09-01-PLAN.md -- Creator browse feed, category field, dashboard homepage with real data (replaces mock)
+- [x] 09-02-PLAN.md -- Full-text search with tsvector/GIN index, explore page with debounced search
+- [x] 09-03-PLAN.md -- Token leaderboard with 24h volume SQL aggregation, sortable rankings
+- [x] 09-04-PLAN.md -- Notification system (DB table, webhook/publish fan-out, bell badge, polling, notifications page)
 
 ## Progress
 
@@ -200,4 +200,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 6. Token Trading | 5/5 | Complete | 2026-02-02 |
 | 7. Burn-to-Unlock Premium Content | 2/2 | Complete | 2026-02-02 |
 | 8. Creator Monetization & Donations | 4/4 | Complete | 2026-02-02 |
-| 9. Discovery & Notifications | 0/4 | Not started | - |
+| 9. Discovery & Notifications | 4/4 | Complete | 2026-02-02 |
