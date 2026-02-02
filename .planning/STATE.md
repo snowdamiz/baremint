@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 8 of 9 (Creator Monetization & Donations)
-Plan: 0 of 4 in current phase
-Status: Ready to plan
-Last activity: 2026-02-02 — Phase 7 complete, verified ✓
+Plan: 3 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-02 — Completed 08-03-PLAN.md
 
-Progress: [██████████████████████████░░░░░░░░░░░░] 26/35 (~74%)
+Progress: [████████████████████████████░░░░░░░░░░░] 28/35 (~80%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 26
+- Total plans completed: 27
 - Average duration: ~5 minutes
-- Total execution time: ~134 minutes
+- Total execution time: ~137 minutes
 
 **By Phase:**
 
@@ -35,8 +35,10 @@ Progress: [███████████████████████
 | 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
 | 7. Burn-to-Unlock | 2/2 | ~6 min | ~3 min |
 
+| 8. Creator Monetization | 1/4 | ~3 min | ~3 min |
+
 **Recent Trend:**
-- Last 5 plans: 06-03 (~1.5 min), 06-04 (~2.5 min), 06-05 (~3.5 min), 07-01 (~3 min), 07-02 (~3 min)
+- Last 5 plans: 06-04 (~2.5 min), 06-05 (~3.5 min), 07-01 (~3 min), 07-02 (~3 min), 08-01 (~3 min)
 
 *Updated after each plan completion*
 
@@ -143,6 +145,9 @@ Recent decisions affecting current work:
 - [07-01]: Burn API returns mintAddress in quote response for frontend trade page linking
 - [07-02]: burn_gated posts use on-chain burn price, no per-post tokenThreshold needed
 - [07-02]: Content refresh after burn via onUnlocked callback chain (PostFeed -> PostCard -> UnlockDialog)
+- [08-01]: VestingAccount reader returns null (not throw) when PDA not found
+- [08-01]: Trade fee revenue = 50% of feeAmount from confirmed trades (matches on-chain split)
+- [08-01]: Burn count is display-only (fees tracked in creatorFeesAccrued on-chain)
 
 ### Pending Todos
 
@@ -168,5 +173,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Phase 7 complete and verified, ready for Phase 8
+Stopped at: Completed 08-01-PLAN.md
 Resume file: None
