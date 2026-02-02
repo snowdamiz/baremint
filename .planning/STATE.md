@@ -131,6 +131,9 @@ Recent decisions affecting current work:
 - [06-03]: Return 200 even on auth mismatch to prevent Helius retry storms (log warning for investigation)
 - [06-03]: Handle both raw and enhanced Helius webhook formats defensively
 - [06-03]: registerTradeWebhook passes HELIUS_WEBHOOK_SECRET as authHeader when configured
+- [06-04]: Dynamic import with ssr:false for lightweight-charts (prevents document/window SSR crash)
+- [06-04]: Inline SVG for bonding curve visualization (no external charting library needed)
+- [06-04]: Collapsible curve viz default-closed to prioritize price chart visibility
 - [06-05]: Holdings P&L uses SQL aggregation of confirmed trades (not on-chain token balance)
 - [06-05]: Relative time formatting uses simple utility function (no date-fns dependency)
 - [06-05]: Holdings card hidden entirely when no confirmed trades exist
