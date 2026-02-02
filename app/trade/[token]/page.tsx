@@ -10,6 +10,7 @@ import {
 } from "@/lib/solana/bonding-curve-read";
 import { TokenStats } from "./token-stats";
 import { TradeForm } from "./trade-form";
+import { TradeHistory } from "./trade-history";
 
 interface TradePageProps {
   params: Promise<{ token: string }>;
@@ -102,10 +103,11 @@ export default async function TradePage({ params }: TradePageProps) {
             Price Chart (coming soon)
           </div>
 
-          {/* Trade history placeholder (Plan 05) */}
-          <div className="flex h-48 items-center justify-center rounded-xl border bg-card text-muted-foreground shadow-card">
-            Trade History (coming soon)
-          </div>
+          {/* Trade history */}
+          <TradeHistory
+            mintAddress={mintAddress}
+            tickerSymbol={tokenData.tickerSymbol}
+          />
         </div>
 
         {/* Right column: Trade form */}
