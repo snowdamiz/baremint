@@ -150,6 +150,8 @@ Recent decisions affecting current work:
 - [08-01]: Burn count is display-only (fees tracked in creatorFeesAccrued on-chain)
 - [08-03]: Extracted pure sendSolTransfer from withdrawal-coupled buildAndSendSolTransfer for donation reuse
 - [08-03]: Self-tip prevention via wallet address comparison before executing transfer
+- [08-02]: Client component wrapper pattern for interactive earnings buttons (server fetches, client handles actions)
+- [08-02]: useTransition for server action loading states (matches existing trade form pattern)
 - [08-04]: Simple button group for SOL/token toggle instead of shadcn Tabs
 - [08-04]: getTipSummary aggregates SOL and token tips separately in earnings-actions.ts
 
@@ -177,5 +179,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 08-04-PLAN.md (Phase 8 complete)
+Stopped at: Completed 08-02-PLAN.md (Phase 8 all plans complete)
 Resume file: None
