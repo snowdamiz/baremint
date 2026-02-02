@@ -87,7 +87,7 @@ export async function GET(
     .where(eq(wallet.userId, session.user.id))
     .limit(1);
 
-  // Check content access
+  // Check content access (pass userId + postId for burn_gated unlock record check)
   const accessResult = await checkContentAccess(
     {
       accessLevel: postData.accessLevel,
@@ -95,6 +95,7 @@ export async function GET(
       creatorTokenId: postData.creatorTokenId,
     },
     viewerWallet?.publicKey ?? null,
+    { viewerUserId: session.user.id, postId },
   );
 
   // Look up creator token for ticker symbol

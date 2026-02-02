@@ -134,14 +134,14 @@ Plans:
 - [x] 06-05-PLAN.md -- Transaction history tab and holdings card with P&L tracking
 
 ### Phase 7: Burn-to-Unlock Premium Content
-**Goal**: Viewers can burn tokens to permanently unlock premium/PPV content, with SOL returned from the curve
+**Goal**: Viewers can burn tokens to permanently unlock premium/PPV content, completing the token economy
 **Depends on**: Phase 5, Phase 6
 **Requirements**: CONT-06, TOKN-06
 **Success Criteria** (what must be TRUE):
-  1. Creator can set a burn cost (in tokens) for premium/PPV posts
-  2. Viewer sees burn cost and estimated SOL return before confirming a burn-to-unlock
+  1. Creator's burn cost is determined by burn_sol_price set at token launch (shared across all burn_gated posts by that creator)
+  2. Viewer sees burn cost in tokens and fee breakdown before confirming a burn-to-unlock
   3. After burning tokens, the premium content is permanently unlocked for that viewer
-  4. SOL is returned from the bonding curve to the viewer's wallet proportional to tokens burned
+  4. Tokens are permanently destroyed (deflationary burn) and fees are extracted from curve reserves (platform + creator split)
 **Plans**: 2 plans
 
 Plans:

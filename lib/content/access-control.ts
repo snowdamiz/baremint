@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { tokenBalanceCache, creatorToken } from "@/lib/db/schema";
+import { tokenBalanceCache, creatorToken, contentUnlock } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getTokenBalance } from "@/lib/solana/token-balance";
 import crypto from "node:crypto";
@@ -67,15 +67,37 @@ export async function getCachedTokenBalance(
 }
 
 /**
+ * Check whether a viewer has a permanent burn unlock record for a post.
+ */
+export async function checkBurnUnlock(
+  userId: string,
+  postId: string,
+): Promise<boolean> {
+  const [unlock] = await db
+    .select()
+    .from(contentUnlock)
+    .where(
+      and(
+        eq(contentUnlock.userId, userId),
+        eq(contentUnlock.postId, postId),
+      ),
+    )
+    .limit(1);
+  return !!unlock;
+}
+
+/**
  * Check whether a viewer has access to a gated post.
  *
  * Access rules:
  * - "public" posts: everyone has access
+ * - "burn_gated" posts: first check permanent unlock record, then fall through to balance check
  * - "hold_gated" / "burn_gated" posts: viewer must hold >= tokenThreshold of the creator's token
- * - No wallet connected: no access to gated content
+ * - No wallet connected: no access to gated content (unless burn-unlocked)
  *
  * @param postData - Post access configuration
  * @param viewerWalletPublicKey - Viewer's connected wallet (null if not connected)
+ * @param options - Optional viewer identity for burn unlock checks (backward-compatible)
  * @returns Whether the viewer has access and their current balance
  */
 export async function checkContentAccess(
@@ -85,10 +107,26 @@ export async function checkContentAccess(
     creatorTokenId: string | null;
   },
   viewerWalletPublicKey: string | null,
+  options: { viewerUserId?: string; postId?: string } = {},
 ): Promise<{ hasAccess: boolean; viewerBalance: string }> {
   // Public posts are always accessible
   if (postData.accessLevel === "public") {
     return { hasAccess: true, viewerBalance: "0" };
+  }
+
+  // For burn_gated posts: check permanent unlock record first
+  if (
+    postData.accessLevel === "burn_gated" &&
+    options.viewerUserId &&
+    options.postId
+  ) {
+    const hasUnlock = await checkBurnUnlock(
+      options.viewerUserId,
+      options.postId,
+    );
+    if (hasUnlock) {
+      return { hasAccess: true, viewerBalance: "0" };
+    }
   }
 
   // Gated post but no wallet connected
