@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 6 - Token Trading
+**Current focus:** Phase 6 - Token Trading (complete)
 
 ## Current Position
 
 Phase: 6 of 9 (Token Trading)
-Plan: 3 of 5 in current phase
-Status: In progress
-Last activity: 2026-02-02 — Completed 06-03-PLAN.md
+Plan: 5 of 5 in current phase
+Status: Phase complete
+Last activity: 2026-02-02 — Completed 06-05-PLAN.md
 
-Progress: [█████████████████████░░░░░░░░░░░░░░░] 21/35 (~60%)
+Progress: [███████████████████████░░░░░░░░░░░░░] 23/35 (~66%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 21
+- Total plans completed: 23
 - Average duration: ~5 minutes
-- Total execution time: ~106 minutes
+- Total execution time: ~113.5 minutes
 
 **By Phase:**
 
@@ -32,10 +32,10 @@ Progress: [█████████████████████░░
 | 3. Creator Onboarding | 4/4 | ~17 min | ~4 min |
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
 | 5. Token-Gated Content | 3/3 | ~9 min | ~3 min |
-| 6. Token Trading | 2/5 | ~7 min | ~3.5 min |
+| 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (~3 min), 05-03 (~3 min), 06-01 (~5 min), 06-03 (~1.5 min)
+- Last 5 plans: 06-01 (~5 min), 06-02 (~2 min), 06-03 (~1.5 min), 06-04 (~2.5 min), 06-05 (~3.5 min)
 
 *Updated after each plan completion*
 
@@ -131,6 +131,9 @@ Recent decisions affecting current work:
 - [06-03]: Return 200 even on auth mismatch to prevent Helius retry storms (log warning for investigation)
 - [06-03]: Handle both raw and enhanced Helius webhook formats defensively
 - [06-03]: registerTradeWebhook passes HELIUS_WEBHOOK_SECRET as authHeader when configured
+- [06-05]: Holdings P&L uses SQL aggregation of confirmed trades (not on-chain token balance)
+- [06-05]: Relative time formatting uses simple utility function (no date-fns dependency)
+- [06-05]: Holdings card hidden entirely when no confirmed trades exist
 
 ### Pending Todos
 
@@ -156,5 +159,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 06-03-PLAN.md
+Stopped at: Completed 06-05-PLAN.md (Phase 6 complete)
 Resume file: None
