@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, PlusSquare, Wallet, Settings, User, Sparkles } from "lucide-react";
+import { Home, Search, PlusSquare, Wallet, Settings, User, Sparkles, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BottomNav } from "@/components/ui/bottom-nav";
 
 const sidebarItems = [
     { href: "/dashboard", icon: Home, label: "Home" },
     { href: "/dashboard/explore", icon: Search, label: "Explore" },
+    { href: "/dashboard/leaderboard", icon: Trophy, label: "Leaderboard" },
     { href: "/dashboard/create", icon: PlusSquare, label: "Create" },
     { href: "/dashboard/withdraw", icon: Wallet, label: "Wallet" },
     { href: "/dashboard/creator", icon: Sparkles, label: "Creator" },
