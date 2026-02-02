@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 9 of 9 (Discovery & Notifications)
-Plan: 2 of 4 in current phase (09-01, 09-03 complete)
+Plan: 3 of 4 in current phase (09-01, 09-02, 09-03 complete)
 Status: In progress
-Last activity: 2026-02-02 — Completed 09-01-PLAN.md
+Last activity: 2026-02-02 — Completed 09-02-PLAN.md
 
-Progress: [██████████████████████████████████░░░░░] 32/35 (~91%)
+Progress: [████████████████████████████████████░░░] 33/35 (~94%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 32
+- Total plans completed: 33
 - Average duration: ~5 minutes
-- Total execution time: ~148 minutes
+- Total execution time: ~151 minutes
 
 **By Phase:**
 
@@ -37,10 +37,10 @@ Progress: [███████████████████████
 
 | 8. Creator Monetization | 4/4 | ~10 min | ~2.5 min |
 
-| 9. Discovery & Notifications | 2/4 | ~4 min | ~2 min |
+| 9. Discovery & Notifications | 3/4 | ~7 min | ~2.3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-03 (~2 min), 08-04 (~2.5 min), 09-03 (~2 min), 09-01 (~2 min)
+- Last 5 plans: 08-04 (~2.5 min), 09-03 (~2 min), 09-01 (~2 min), 09-02 (~3 min)
 
 *Updated after each plan completion*
 
@@ -162,6 +162,9 @@ Recent decisions affecting current work:
 - [09-01]: Server action (not API route) for browse feed keeps data fetching colocated with UI
 - [09-01]: limit+1 pagination trick avoids separate count query
 - [09-01]: useTransition for load-more non-blocking pagination loads
+- [09-02]: Use 'simple' tsvector config for displayName/category (no stemming), 'english' for bio
+- [09-02]: Prefix matching on last word only (:*) for autocomplete-style search
+- [09-02]: 300ms debounce with useTransition for non-blocking search UX
 
 ### Pending Todos
 
@@ -187,5 +190,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 09-01-PLAN.md
+Stopped at: Completed 09-02-PLAN.md
 Resume file: None
