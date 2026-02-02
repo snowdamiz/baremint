@@ -124,6 +124,10 @@ Recent decisions affecting current work:
 - [06-01]: Full GlobalConfig deserialization (all fields, not just fee_bps)
 - [06-01]: Price per token stored as rational string (num/denom) to avoid precision loss
 - [06-01]: getQuote is unauthenticated (public pricing data), executeBuy/executeSell require auth
+- [06-02]: Price display uses Number() division (safe for display only, all math stays BigInt)
+- [06-02]: Review dialog threshold is 0.1 SOL for trade confirmation
+- [06-02]: Slippage default 1% in local state, not persisted
+- [06-02]: Quote debounce 300ms to avoid excessive server action calls
 - [06-03]: Return 200 even on auth mismatch to prevent Helius retry storms (log warning for investigation)
 - [06-03]: Handle both raw and enhanced Helius webhook formats defensively
 - [06-03]: registerTradeWebhook passes HELIUS_WEBHOOK_SECRET as authHeader when configured
