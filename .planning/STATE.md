@@ -19,9 +19,9 @@ Progress: [███████████████████████
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 27
+- Total plans completed: 28
 - Average duration: ~5 minutes
-- Total execution time: ~137 minutes
+- Total execution time: ~139 minutes
 
 **By Phase:**
 
@@ -35,10 +35,10 @@ Progress: [███████████████████████
 | 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
 | 7. Burn-to-Unlock | 2/2 | ~6 min | ~3 min |
 
-| 8. Creator Monetization | 1/4 | ~3 min | ~3 min |
+| 8. Creator Monetization | 2/4 | ~5 min | ~2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-04 (~2.5 min), 06-05 (~3.5 min), 07-01 (~3 min), 07-02 (~3 min), 08-01 (~3 min)
+- Last 5 plans: 06-05 (~3.5 min), 07-01 (~3 min), 07-02 (~3 min), 08-01 (~3 min), 08-03 (~2 min)
 
 *Updated after each plan completion*
 
@@ -148,6 +148,8 @@ Recent decisions affecting current work:
 - [08-01]: VestingAccount reader returns null (not throw) when PDA not found
 - [08-01]: Trade fee revenue = 50% of feeAmount from confirmed trades (matches on-chain split)
 - [08-01]: Burn count is display-only (fees tracked in creatorFeesAccrued on-chain)
+- [08-03]: Extracted pure sendSolTransfer from withdrawal-coupled buildAndSendSolTransfer for donation reuse
+- [08-03]: Self-tip prevention via wallet address comparison before executing transfer
 
 ### Pending Todos
 
@@ -173,5 +175,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 08-01-PLAN.md
+Stopped at: Completed 08-03-PLAN.md
 Resume file: None
