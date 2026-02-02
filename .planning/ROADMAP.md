@@ -158,13 +158,13 @@ Plans:
   3. Creator can withdraw accumulated trade fee earnings (SOL) to their wallet
   4. Viewer can tip a creator in SOL
   5. Viewer can tip a creator in their token
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 08-01: Creator earnings dashboard (aggregated from on-chain data via webhooks)
-- [ ] 08-02: Vested token claiming flow (claim_vested instruction integration)
-- [ ] 08-03: Trade fee withdrawal (withdraw_fees instruction integration)
-- [ ] 08-04: Donation system (SOL tips and token tips via donate instructions)
+- [ ] 08-01-PLAN.md -- Vesting account reader, earnings SQL aggregation, earnings dashboard page
+- [ ] 08-02-PLAN.md -- Claim vested tokens and withdraw trade fees (instruction builders + server actions + UI)
+- [ ] 08-03-PLAN.md -- Donation DB table, SPL token transfer builder, SOL/token donation server actions
+- [ ] 08-04-PLAN.md -- Tip dialog UI, trade page + profile integration, earnings tip history
 
 ### Phase 9: Discovery & Notifications
 **Goal**: Users can find creators through browsing, search, and rankings, and stay informed about activity on tokens they hold
