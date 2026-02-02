@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 7 of 9 (Burn-to-Unlock Premium Content)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-02-02 — Phase 6 complete, verified ✓
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-02 — Completed 07-01-PLAN.md
 
-Progress: [████████████████████████░░░░░░░░░░░░░] 24/35 (~69%)
+Progress: [█████████████████████████░░░░░░░░░░░░] 25/35 (~71%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
+- Total plans completed: 25
 - Average duration: ~5 minutes
-- Total execution time: ~128 minutes
+- Total execution time: ~131 minutes
 
 **By Phase:**
 
@@ -33,9 +33,10 @@ Progress: [███████████████████████
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
 | 5. Token-Gated Content | 3/3 | ~9 min | ~3 min |
 | 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
+| 7. Burn-to-Unlock | 1/2 | ~3 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (~5 min), 06-02 (~2 min), 06-03 (~1.5 min), 06-04 (~2.5 min), 06-05 (~3.5 min)
+- Last 5 plans: 06-02 (~2 min), 06-03 (~1.5 min), 06-04 (~2.5 min), 06-05 (~3.5 min), 07-01 (~3 min)
 
 *Updated after each plan completion*
 
@@ -137,6 +138,9 @@ Recent decisions affecting current work:
 - [06-05]: Holdings P&L uses SQL aggregation of confirmed trades (not on-chain token balance)
 - [06-05]: Relative time formatting uses simple utility function (no date-fns dependency)
 - [06-05]: Holdings card hidden entirely when no confirmed trades exist
+- [07-01]: burn_for_access instruction uses discriminator-only data (no args); on-chain program reads burn_sol_price
+- [07-01]: checkContentAccess backward-compatible via optional 3rd param with = {} default
+- [07-01]: Burn API returns mintAddress in quote response for frontend trade page linking
 
 ### Pending Todos
 
@@ -162,5 +166,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Phase 6 complete and verified, ready for Phase 7
+Stopped at: Completed 07-01-PLAN.md
 Resume file: None
