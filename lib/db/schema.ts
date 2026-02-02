@@ -224,6 +224,30 @@ export const creatorStrike = pgTable("creator_strike", {
 // Token gating tables (Phase 5)
 // ──────────────────────────────────────────────
 
+// ──────────────────────────────────────────────
+// Token Trading tables (Phase 6)
+// ──────────────────────────────────────────────
+
+export const trade = pgTable("trade", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id),
+  creatorTokenId: text("creator_token_id")
+    .notNull()
+    .references(() => creatorToken.id),
+  mintAddress: text("mint_address").notNull(),
+  type: text("type").notNull(), // "buy" | "sell"
+  solAmount: text("sol_amount").notNull(), // lamports as string
+  tokenAmount: text("token_amount").notNull(), // raw token amount as string
+  feeAmount: text("fee_amount").notNull(), // total fee in lamports as string
+  pricePerToken: text("price_per_token"), // SOL per token ratio as string
+  txSignature: text("tx_signature").notNull().unique(),
+  status: text("status").notNull().default("pending"), // pending | confirmed | failed
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  confirmedAt: timestamp("confirmed_at"),
+});
+
 export const tokenBalanceCache = pgTable(
   "token_balance_cache",
   {
