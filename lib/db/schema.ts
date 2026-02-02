@@ -6,7 +6,16 @@ import {
   integer,
   jsonb,
   uniqueIndex,
+  index,
+  customType,
 } from "drizzle-orm/pg-core";
+import { SQL, sql } from "drizzle-orm";
+
+const tsvector = customType<{ data: string }>({
+  dataType() {
+    return "tsvector";
+  },
+});
 
 // ──────────────────────────────────────────────
 // Better Auth tables
@@ -115,28 +124,38 @@ export const withdrawal = pgTable("withdrawal", {
 // Creator tables (Phase 3)
 // ──────────────────────────────────────────────
 
-export const creatorProfile = pgTable("creator_profile", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id)
-    .unique(),
-  displayName: text("display_name").notNull(),
-  bio: text("bio"),
-  avatarUrl: text("avatar_url"),
-  bannerUrl: text("banner_url"),
-  socialTwitter: text("social_twitter"),
-  socialInstagram: text("social_instagram"),
-  socialYoutube: text("social_youtube"),
-  socialWebsite: text("social_website"),
-  category: text("category"), // "Art" | "Music" | "Gaming" | "Education" | "Fitness" | "Tech" | "Other" | null
-  kycStatus: text("kyc_status").notNull().default("none"), // none | pending | approved | rejected
-  kycApplicantId: text("kyc_applicant_id"),
-  kycRejectionReason: text("kyc_rejection_reason"),
-  lastTokenLaunchAt: timestamp("last_token_launch_at"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+export const creatorProfile = pgTable(
+  "creator_profile",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id)
+      .unique(),
+    displayName: text("display_name").notNull(),
+    bio: text("bio"),
+    avatarUrl: text("avatar_url"),
+    bannerUrl: text("banner_url"),
+    socialTwitter: text("social_twitter"),
+    socialInstagram: text("social_instagram"),
+    socialYoutube: text("social_youtube"),
+    socialWebsite: text("social_website"),
+    category: text("category"), // "Art" | "Music" | "Gaming" | "Education" | "Fitness" | "Tech" | "Other" | null
+    kycStatus: text("kyc_status").notNull().default("none"), // none | pending | approved | rejected
+    kycApplicantId: text("kyc_applicant_id"),
+    kycRejectionReason: text("kyc_rejection_reason"),
+    lastTokenLaunchAt: timestamp("last_token_launch_at"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    searchVector: tsvector("search_vector").generatedAlwaysAs(
+      (): SQL =>
+        sql`setweight(to_tsvector('simple', coalesce(${creatorProfile.displayName}, '')), 'A') || setweight(to_tsvector('english', coalesce(${creatorProfile.bio}, '')), 'B') || setweight(to_tsvector('simple', coalesce(${creatorProfile.category}, '')), 'C')`,
+    ),
+  },
+  (table) => [
+    index("idx_creator_search").using("gin", sql`"search_vector"`),
+  ],
+);
 
 export const creatorToken = pgTable("creator_token", {
   id: text("id").primaryKey(),
