@@ -80,6 +80,14 @@ export function PostFeed({
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
 
+  // Re-fetch gated media for a single post (after burn unlock)
+  const handlePostUnlocked = useCallback(async (postId: string) => {
+    const data = await fetchGatedMedia(postId);
+    if (data) {
+      setGatedData((prev) => ({ ...prev, [postId]: data }));
+    }
+  }, []);
+
   // Fetch gated media for posts that need it
   const fetchGatedMediaForPosts = useCallback(async (posts: PostData[]) => {
     const gatedPosts = posts.filter(
@@ -279,6 +287,7 @@ export function PostFeed({
               requiredBalance: gated.requiredBalance,
               viewerBalance: gated.viewerBalance,
               creatorTokenId: postItem.creatorTokenId ?? undefined,
+              onUnlocked: () => handlePostUnlocked(postItem.id),
             }
           : {})}
       />

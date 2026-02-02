@@ -65,7 +65,7 @@ const ACCESS_LEVEL_OPTIONS: {
   {
     value: "burn_gated",
     label: "Burn-Gated",
-    description: "Viewers must burn tokens to unlock (one-time purchase)",
+    description: "Viewers burn tokens for permanent access (cost set by token burn price)",
     icon: Flame,
   },
 ];
@@ -355,8 +355,8 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
   const handlePublish = useCallback(async () => {
     if (isPublishing) return;
 
-    // Validate threshold for gated posts
-    if (accessLevel !== "public" && !isThresholdValid(tokenThreshold)) {
+    // Validate threshold for hold_gated posts (burn_gated uses on-chain burn price)
+    if (accessLevel === "hold_gated" && !isThresholdValid(tokenThreshold)) {
       alert("Please enter a valid positive integer for the token threshold");
       return;
     }
@@ -371,7 +371,7 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             accessLevel,
-            ...(accessLevel !== "public" ? { tokenThreshold: tokenThreshold.trim() } : {}),
+            ...(accessLevel === "hold_gated" ? { tokenThreshold: tokenThreshold.trim() } : {}),
           }),
         },
       );
@@ -417,7 +417,7 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
     !isPublishing;
 
   const canPublish =
-    accessLevel === "public" || isThresholdValid(tokenThreshold);
+    accessLevel === "public" || accessLevel === "burn_gated" || isThresholdValid(tokenThreshold);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
@@ -593,8 +593,8 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
                 })}
               </div>
 
-              {/* Token threshold input (for gated posts) */}
-              {accessLevel !== "public" && (
+              {/* Token threshold input (for hold_gated posts) */}
+              {accessLevel === "hold_gated" && (
                 <div className="space-y-2">
                   <label
                     htmlFor="token-threshold"
@@ -611,9 +611,16 @@ export function PostComposer({ isOpen, onClose, onPublished }: PostComposerProps
                     onChange={(e) => setTokenThreshold(e.target.value)}
                   />
                   <p className="text-xs text-muted-foreground">
-                    {accessLevel === "hold_gated"
-                      ? "How many tokens must viewers hold to access this post?"
-                      : "How many tokens must viewers burn to unlock this post?"}
+                    How many tokens must viewers hold to access this post?
+                  </p>
+                </div>
+              )}
+
+              {/* Burn cost info (for burn_gated posts) */}
+              {accessLevel === "burn_gated" && (
+                <div className="rounded-lg border border-orange-200 bg-orange-50 p-3 dark:border-orange-800 dark:bg-orange-950">
+                  <p className="text-xs text-orange-700 dark:text-orange-300">
+                    Burn cost is determined by your token&apos;s burn price setting (set at token creation). All burn-gated posts share the same burn cost.
                   </p>
                 </div>
               )}

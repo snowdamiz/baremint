@@ -53,6 +53,7 @@ interface PostCardProps {
   requiredBalance?: string;
   viewerBalance?: string;
   creatorTokenId?: string;
+  onUnlocked?: () => void;
 }
 
 const TRUNCATE_LENGTH = 300;
@@ -205,6 +206,7 @@ export function PostCard({
   requiredBalance,
   viewerBalance,
   creatorTokenId,
+  onUnlocked,
 }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [unlockOpen, setUnlockOpen] = useState(false);
@@ -366,6 +368,8 @@ export function PostCard({
           viewerBalance={viewerBalance ?? "0"}
           tokenTicker={tokenTicker}
           creatorTokenId={creatorTokenId}
+          postId={post.id}
+          onUnlocked={onUnlocked}
         />
       )}
     </Card>
