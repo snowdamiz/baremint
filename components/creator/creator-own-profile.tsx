@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckCircle2, ExternalLink, Pencil, Clock } from "lucide-react";
+import { CheckCircle2, ExternalLink, Pencil, Clock, Coins } from "lucide-react";
 import { useMemo } from "react";
 
 const TOTAL_SUPPLY = 1_000_000_000;
@@ -75,6 +75,13 @@ export function CreatorOwnProfile({ profile, token }: CreatorOwnProfileProps) {
           </p>
         </div>
         <div className="flex gap-2">
+          <Link
+            href="/dashboard/creator/earnings"
+            className="inline-flex items-center gap-1.5 rounded-lg border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
+          >
+            <Coins className="h-4 w-4" />
+            Earnings
+          </Link>
           <Link
             href={`/dashboard/creator/${profile.id}`}
             className="inline-flex items-center gap-1.5 rounded-lg border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
