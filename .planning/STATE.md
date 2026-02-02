@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 9 - Discovery & Notifications
+**Current focus:** Phase 9 - Discovery & Notifications (COMPLETE)
 
 ## Current Position
 
 Phase: 9 of 9 (Discovery & Notifications)
-Plan: 3 of 4 in current phase (09-01, 09-02, 09-03 complete)
-Status: In progress
-Last activity: 2026-02-02 — Completed 09-02-PLAN.md
+Plan: 4 of 4 in current phase (09-01, 09-02, 09-03, 09-04 complete)
+Status: Phase complete - ALL PHASES COMPLETE
+Last activity: 2026-02-02 — Completed 09-04-PLAN.md
 
-Progress: [████████████████████████████████████░░░] 33/35 (~94%)
+Progress: [████████████████████████████████████████] 35/35 (100%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 33
-- Average duration: ~5 minutes
-- Total execution time: ~151 minutes
+- Total plans completed: 35
+- Average duration: ~4.5 minutes
+- Total execution time: ~154.5 minutes
 
 **By Phase:**
 
@@ -34,13 +34,11 @@ Progress: [███████████████████████
 | 5. Token-Gated Content | 3/3 | ~9 min | ~3 min |
 | 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
 | 7. Burn-to-Unlock | 2/2 | ~6 min | ~3 min |
-
 | 8. Creator Monetization | 4/4 | ~10 min | ~2.5 min |
-
-| 9. Discovery & Notifications | 3/4 | ~7 min | ~2.3 min |
+| 9. Discovery & Notifications | 4/4 | ~10.5 min | ~2.6 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-04 (~2.5 min), 09-03 (~2 min), 09-01 (~2 min), 09-02 (~3 min)
+- Last 5 plans: 09-01 (~2 min), 09-02 (~3 min), 09-03 (~2 min), 09-04 (~3.5 min)
 
 *Updated after each plan completion*
 
@@ -165,6 +163,9 @@ Recent decisions affecting current work:
 - [09-02]: Use 'simple' tsvector config for displayName/category (no stemming), 'english' for bio
 - [09-02]: Prefix matching on last word only (:*) for autocomplete-style search
 - [09-02]: 300ms debounce with useTransition for non-blocking search UX
+- [09-04]: Polling with jitter (25-35s) for notification count instead of WebSocket/SSE for MVP simplicity
+- [09-04]: Fan-out capped at 1000 holders to prevent unbounded notification inserts
+- [09-04]: Non-fatal notification creation so trade/publish never fail due to notification errors
 
 ### Pending Todos
 
@@ -190,5 +191,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 09-02-PLAN.md
+Stopped at: Completed 09-04-PLAN.md - ALL PHASES COMPLETE
 Resume file: None
