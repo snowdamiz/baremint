@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
 - [x] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
 - [x] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
-- [ ] **Phase 8: Creator Monetization & Donations** - Creators can view earnings, claim vested tokens, withdraw SOL, and receive tips
+- [x] **Phase 8: Creator Monetization & Donations** - Creators can view earnings, claim vested tokens, withdraw SOL, and receive tips
 - [ ] **Phase 9: Discovery & Notifications** - Users can browse, search, and rank creators, and receive activity notifications
 
 ## Phase Details
@@ -161,10 +161,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 08-01-PLAN.md -- Vesting account reader, earnings SQL aggregation, earnings dashboard page
-- [ ] 08-02-PLAN.md -- Claim vested tokens and withdraw trade fees (instruction builders + server actions + UI)
-- [ ] 08-03-PLAN.md -- Donation DB table, SPL token transfer builder, SOL/token donation server actions
-- [ ] 08-04-PLAN.md -- Tip dialog UI, trade page + profile integration, earnings tip history
+- [x] 08-01-PLAN.md -- Vesting account reader, earnings SQL aggregation, earnings dashboard page
+- [x] 08-02-PLAN.md -- Claim vested tokens and withdraw trade fees (instruction builders + server actions + UI)
+- [x] 08-03-PLAN.md -- Donation DB table, SPL token transfer builder, SOL/token donation server actions
+- [x] 08-04-PLAN.md -- Tip dialog UI, trade page + profile integration, earnings tip history
 
 ### Phase 9: Discovery & Notifications
 **Goal**: Users can find creators through browsing, search, and rankings, and stay informed about activity on tokens they hold
@@ -199,5 +199,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 5. Token-Gated Content | 3/3 | Complete | 2026-02-01 |
 | 6. Token Trading | 5/5 | Complete | 2026-02-02 |
 | 7. Burn-to-Unlock Premium Content | 2/2 | Complete | 2026-02-02 |
-| 8. Creator Monetization & Donations | 0/4 | Not started | - |
+| 8. Creator Monetization & Donations | 4/4 | Complete | 2026-02-02 |
 | 9. Discovery & Notifications | 0/4 | Not started | - |

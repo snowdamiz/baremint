@@ -22,9 +22,9 @@
 - [x] **CRTR-03**: Creator can launch their own SPL token on a permanent bonding curve
 - [x] **CRTR-04**: Creator receives 10% token allocation with 30-day cliff + 60-day linear vest
 - [x] **CRTR-05**: Creator cannot launch a new token for 90 days after their last launch
-- [ ] **CRTR-06**: Creator can view earnings dashboard (burns, trade fees, tips, total revenue)
-- [ ] **CRTR-07**: Creator can claim vested tokens according to schedule
-- [ ] **CRTR-08**: Creator can withdraw accumulated trade fee earnings (SOL)
+- [x] **CRTR-06**: Creator can view earnings dashboard (burns, trade fees, tips, total revenue)
+- [x] **CRTR-07**: Creator can claim vested tokens according to schedule
+- [x] **CRTR-08**: Creator can withdraw accumulated trade fee earnings (SOL)
 
 ### Content
 
@@ -50,8 +50,8 @@
 
 ### Donations
 
-- [ ] **DONA-01**: Viewer can tip a creator in SOL
-- [ ] **DONA-02**: Viewer can tip a creator in their token
+- [x] **DONA-01**: Viewer can tip a creator in SOL
+- [x] **DONA-02**: Viewer can tip a creator in their token
 
 ### Discovery
 
@@ -120,9 +120,9 @@
 | CRTR-03 | Phase 3 | Complete |
 | CRTR-04 | Phase 3 | Complete |
 | CRTR-05 | Phase 3 | Complete |
-| CRTR-06 | Phase 8 | Pending |
-| CRTR-07 | Phase 8 | Pending |
-| CRTR-08 | Phase 8 | Pending |
+| CRTR-06 | Phase 8 | Complete |
+| CRTR-07 | Phase 8 | Complete |
+| CRTR-08 | Phase 8 | Complete |
 | CONT-01 | Phase 4 | Complete |
 | CONT-02 | Phase 4 | Complete |
 | CONT-03 | Phase 4 | Complete |
@@ -139,8 +139,8 @@
 | TOKN-06 | Phase 7 | Complete |
 | TOKN-07 | Phase 6 | Complete |
 | TOKN-08 | Phase 6 | Complete |
-| DONA-01 | Phase 8 | Pending |
-| DONA-02 | Phase 8 | Pending |
+| DONA-01 | Phase 8 | Complete |
+| DONA-02 | Phase 8 | Complete |
 | DISC-01 | Phase 9 | Pending |
 | DISC-02 | Phase 9 | Pending |
 | DISC-03 | Phase 9 | Pending |
