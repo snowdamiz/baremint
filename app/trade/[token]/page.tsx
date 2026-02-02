@@ -11,6 +11,8 @@ import {
 import { TokenStats } from "./token-stats";
 import { TradeForm } from "./trade-form";
 import { TradeHistory } from "./trade-history";
+import { PriceChart } from "./price-chart";
+import { CurveViz } from "./curve-viz";
 
 interface TradePageProps {
   params: Promise<{ token: string }>;
@@ -98,10 +100,17 @@ export default async function TradePage({ params }: TradePageProps) {
             tokenTotalSupply={curveData.tokenTotalSupply}
           />
 
-          {/* Chart placeholder (Plan 04) */}
-          <div className="flex h-64 items-center justify-center rounded-xl border bg-card text-muted-foreground shadow-card">
-            Price Chart (coming soon)
-          </div>
+          {/* Price chart */}
+          <PriceChart mintAddress={mintAddress} />
+
+          {/* Bonding curve visualization */}
+          <CurveViz
+            virtualSolReserves={curveData.virtualSolReserves}
+            virtualTokenReserves={curveData.virtualTokenReserves}
+            realSolReserves={curveData.realSolReserves}
+            realTokenReserves={curveData.realTokenReserves}
+            tokenTotalSupply={curveData.tokenTotalSupply}
+          />
 
           {/* Trade history */}
           <TradeHistory
