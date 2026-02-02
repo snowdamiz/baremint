@@ -129,6 +129,7 @@ export const creatorProfile = pgTable("creator_profile", {
   socialInstagram: text("social_instagram"),
   socialYoutube: text("social_youtube"),
   socialWebsite: text("social_website"),
+  category: text("category"), // "Art" | "Music" | "Gaming" | "Education" | "Fitness" | "Tech" | "Other" | null
   kycStatus: text("kyc_status").notNull().default("none"), // none | pending | approved | rejected
   kycApplicantId: text("kyc_applicant_id"),
   kycRejectionReason: text("kyc_rejection_reason"),
