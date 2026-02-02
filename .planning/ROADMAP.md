@@ -176,13 +176,13 @@ Plans:
   3. User can view a token leaderboard ranked by market cap and trading volume
   4. User receives in-app notifications when creators they hold tokens for publish new content
   5. User receives notifications for token activity (trades and burns on tokens they hold)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 09-01: Creator browse feed and homepage layout
-- [ ] 09-02: Creator search (name, category) with Postgres full-text search
-- [ ] 09-03: Token leaderboard (market cap, volume, trending rankings)
-- [ ] 09-04: Notification system (in-app notifications for content and token activity)
+- [ ] 09-01-PLAN.md -- Creator browse feed, category field, dashboard homepage with real data (replaces mock)
+- [ ] 09-02-PLAN.md -- Full-text search with tsvector/GIN index, explore page with debounced search
+- [ ] 09-03-PLAN.md -- Token leaderboard with 24h volume SQL aggregation, sortable rankings
+- [ ] 09-04-PLAN.md -- Notification system (DB table, webhook/publish fan-out, bell badge, polling, notifications page)
 
 ## Progress
 
