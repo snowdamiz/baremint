@@ -311,6 +311,26 @@ export const donation = pgTable("donation", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// ──────────────────────────────────────────────
+// Notification tables (Phase 9)
+// ──────────────────────────────────────────────
+
+export const notification = pgTable("notification", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => user.id),
+  type: text("type").notNull(), // "new_content" | "trade_buy" | "trade_sell" | "token_burn"
+  title: text("title").notNull(),
+  body: text("body"),
+  linkUrl: text("link_url"),
+  relatedMintAddress: text("related_mint_address"),
+  txSignature: text("tx_signature"), // for deduplication of webhook-triggered notifications
+  isRead: boolean("is_read").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+}, (table) => [
+  index("idx_notification_user_unread").on(table.userId, table.isRead),
+  index("idx_notification_tx_sig").on(table.txSignature),
+]);
+
 export const tokenBalanceCache = pgTable(
   "token_balance_cache",
   {
