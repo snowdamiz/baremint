@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 7 - Burn-to-Unlock Premium Content
+**Current focus:** Phase 8 - Discovery/Feed (next)
 
 ## Current Position
 
 Phase: 7 of 9 (Burn-to-Unlock Premium Content)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-02 — Completed 07-01-PLAN.md
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-02-02 — Completed 07-02-PLAN.md
 
-Progress: [█████████████████████████░░░░░░░░░░░░] 25/35 (~71%)
+Progress: [██████████████████████████░░░░░░░░░░░░] 26/35 (~74%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 25
+- Total plans completed: 26
 - Average duration: ~5 minutes
-- Total execution time: ~131 minutes
+- Total execution time: ~134 minutes
 
 **By Phase:**
 
@@ -33,10 +33,10 @@ Progress: [███████████████████████
 | 4. Content Infrastructure | 5/5 | ~22 min | ~4 min |
 | 5. Token-Gated Content | 3/3 | ~9 min | ~3 min |
 | 6. Token Trading | 5/5 | ~14.5 min | ~2.9 min |
-| 7. Burn-to-Unlock | 1/2 | ~3 min | ~3 min |
+| 7. Burn-to-Unlock | 2/2 | ~6 min | ~3 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-02 (~2 min), 06-03 (~1.5 min), 06-04 (~2.5 min), 06-05 (~3.5 min), 07-01 (~3 min)
+- Last 5 plans: 06-03 (~1.5 min), 06-04 (~2.5 min), 06-05 (~3.5 min), 07-01 (~3 min), 07-02 (~3 min)
 
 *Updated after each plan completion*
 
@@ -141,6 +141,8 @@ Recent decisions affecting current work:
 - [07-01]: burn_for_access instruction uses discriminator-only data (no args); on-chain program reads burn_sol_price
 - [07-01]: checkContentAccess backward-compatible via optional 3rd param with = {} default
 - [07-01]: Burn API returns mintAddress in quote response for frontend trade page linking
+- [07-02]: burn_gated posts use on-chain burn price, no per-post tokenThreshold needed
+- [07-02]: Content refresh after burn via onUnlocked callback chain (PostFeed -> PostCard -> UnlockDialog)
 
 ### Pending Todos
 
@@ -166,5 +168,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 07-01-PLAN.md
+Stopped at: Completed 07-02-PLAN.md (Phase 7 complete)
 Resume file: None
