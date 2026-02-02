@@ -124,14 +124,14 @@ Plans:
   4. Viewer can see a token price chart and bonding curve visualization on the creator page
   5. Platform fee is collected on every buy/sell transaction into the platform vault
   6. Creator fee is collected on every buy/sell transaction into the creator vault
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 06-01: Buy/sell Server Actions with transaction signing and Helius submission
-- [ ] 06-02: Trading UI (amount input, fee breakdown, slippage settings, confirmation flow)
-- [ ] 06-03: Helius webhook integration for transaction confirmation and off-chain ledger sync
-- [ ] 06-04: Token price chart and bonding curve visualization
-- [ ] 06-05: Transaction history with human-readable descriptions
+- [ ] 06-01-PLAN.md -- Bonding curve math (TS port), account reader, buy/sell transaction builders, trade DB schema, server actions
+- [ ] 06-02-PLAN.md -- Trading UI (trade page, buy/sell form, fee breakdown, slippage settings, confirmation flow, token stats)
+- [ ] 06-03-PLAN.md -- Helius webhook for trade confirmation and off-chain ledger sync, programmatic webhook registration
+- [ ] 06-04-PLAN.md -- Candlestick price chart (TradingView Lightweight Charts) and bonding curve visualization
+- [ ] 06-05-PLAN.md -- Transaction history tab and holdings card with P&L tracking
 
 ### Phase 7: Burn-to-Unlock Premium Content
 **Goal**: Viewers can burn tokens to permanently unlock premium/PPV content, with SOL returned from the curve
@@ -198,7 +198,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 3. Creator Onboarding & Token Launch | 4/4 | Complete | 2026-02-01 |
 | 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
 | 5. Token-Gated Content | 3/3 | Complete | 2026-02-01 |
-| 6. Token Trading | 0/5 | Not started | - |
+| 6. Token Trading | 0/5 | Planning complete | - |
 | 7. Burn-to-Unlock Premium Content | 0/3 | Not started | - |
 | 8. Creator Monetization & Donations | 0/4 | Not started | - |
 | 9. Discovery & Notifications | 0/4 | Not started | - |
