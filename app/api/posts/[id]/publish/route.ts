@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { creatorProfile, creatorToken } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { publishPost } from "@/lib/content/post-queries";
+import { notifyTokenHoldersByCreator } from "@/lib/notifications/create";
 import { z } from "zod";
 
 const publishBodySchema = z.object({
@@ -106,6 +107,14 @@ export async function POST(
       { status: 404 },
     );
   }
+
+  // Notify token holders about new content (non-fatal)
+  notifyTokenHoldersByCreator(
+    profile.id,
+    "New post from " + profile.displayName,
+    published.content?.substring(0, 100) || "Check out their latest post",
+    `/dashboard/creator/${profile.id}`,
+  ).catch((err) => console.error("Notification fan-out error:", err));
 
   return Response.json({ post: published });
 }

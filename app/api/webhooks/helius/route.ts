@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { trade } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
+import { notifyTokenHolders } from "@/lib/notifications/create";
 
 /**
  * POST /api/webhooks/helius
@@ -108,4 +109,34 @@ async function processTransaction(tx: unknown): Promise<void> {
       confirmedAt: new Date(),
     })
     .where(and(eq(trade.txSignature, signature), eq(trade.status, "pending")));
+
+  // Fan out notifications to token holders (non-fatal)
+  if (status === "confirmed") {
+    try {
+      const [confirmedTrade] = await db
+        .select({
+          userId: trade.userId,
+          mintAddress: trade.mintAddress,
+          type: trade.type,
+          solAmount: trade.solAmount,
+          txSignature: trade.txSignature,
+        })
+        .from(trade)
+        .where(eq(trade.id, pendingTrade.id))
+        .limit(1);
+
+      if (confirmedTrade) {
+        await notifyTokenHolders(
+          confirmedTrade.mintAddress,
+          confirmedTrade.type === "buy" ? "trade_buy" : "trade_sell",
+          confirmedTrade.userId,
+          confirmedTrade.type === "buy" ? "New token purchase" : "Token sold",
+          `Someone ${confirmedTrade.type === "buy" ? "bought" : "sold"} tokens`,
+          confirmedTrade.txSignature,
+        );
+      }
+    } catch (err) {
+      console.error("Notification fan-out error:", err);
+    }
+  }
 }
