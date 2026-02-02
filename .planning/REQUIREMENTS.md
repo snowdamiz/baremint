@@ -39,14 +39,14 @@
 
 ### Token Economy
 
-- [ ] **TOKN-01**: Viewer can buy creator tokens with SOL via bonding curve
-- [ ] **TOKN-02**: Viewer can sell creator tokens back to bonding curve for SOL
-- [ ] **TOKN-03**: Transaction shows fee breakdown (platform fee, creator fee, net amount)
-- [ ] **TOKN-04**: Viewer can view token price chart and bonding curve visualization
+- [x] **TOKN-01**: Viewer can buy creator tokens with SOL via bonding curve
+- [x] **TOKN-02**: Viewer can sell creator tokens back to bonding curve for SOL
+- [x] **TOKN-03**: Transaction shows fee breakdown (platform fee, creator fee, net amount)
+- [x] **TOKN-04**: Viewer can view token price chart and bonding curve visualization
 - [x] **TOKN-05**: Holding sufficient tokens unlocks creator's general feed
 - [ ] **TOKN-06**: Burning tokens unlocks premium/PPV content and returns SOL from curve
-- [ ] **TOKN-07**: Platform collects a fee on every buy/sell transaction
-- [ ] **TOKN-08**: Creator earns a fee on every buy/sell of their token
+- [x] **TOKN-07**: Platform collects a fee on every buy/sell transaction
+- [x] **TOKN-08**: Creator earns a fee on every buy/sell of their token
 
 ### Donations
 

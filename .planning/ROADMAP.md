@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Creator Onboarding & Token Launch** - Creators can verify identity, set up profiles, and launch their own token
 - [x] **Phase 4: Content Infrastructure** - Creators can upload and manage content with automated moderation
 - [x] **Phase 5: Token-Gated Content** - Viewers holding sufficient tokens can access gated creator content
-- [ ] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
+- [x] **Phase 6: Token Trading** - Viewers can buy and sell creator tokens with full trading UI
 - [ ] **Phase 7: Burn-to-Unlock Premium Content** - Viewers can burn tokens to permanently unlock premium/PPV content
 - [ ] **Phase 8: Creator Monetization & Donations** - Creators can view earnings, claim vested tokens, withdraw SOL, and receive tips
 - [ ] **Phase 9: Discovery & Notifications** - Users can browse, search, and rank creators, and receive activity notifications
@@ -127,11 +127,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 06-01-PLAN.md -- Bonding curve math (TS port), account reader, buy/sell transaction builders, trade DB schema, server actions
-- [ ] 06-02-PLAN.md -- Trading UI (trade page, buy/sell form, fee breakdown, slippage settings, confirmation flow, token stats)
-- [ ] 06-03-PLAN.md -- Helius webhook for trade confirmation and off-chain ledger sync, programmatic webhook registration
-- [ ] 06-04-PLAN.md -- Candlestick price chart (TradingView Lightweight Charts) and bonding curve visualization
-- [ ] 06-05-PLAN.md -- Transaction history tab and holdings card with P&L tracking
+- [x] 06-01-PLAN.md -- Bonding curve math (TS port), account reader, buy/sell transaction builders, trade DB schema, server actions
+- [x] 06-02-PLAN.md -- Trading UI (trade page, buy/sell form, fee breakdown, slippage settings, confirmation flow, token stats)
+- [x] 06-03-PLAN.md -- Helius webhook for trade confirmation and off-chain ledger sync, programmatic webhook registration
+- [x] 06-04-PLAN.md -- Candlestick price chart (TradingView Lightweight Charts) and bonding curve visualization
+- [x] 06-05-PLAN.md -- Transaction history tab and holdings card with P&L tracking
 
 ### Phase 7: Burn-to-Unlock Premium Content
 **Goal**: Viewers can burn tokens to permanently unlock premium/PPV content, with SOL returned from the curve
@@ -198,7 +198,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 3. Creator Onboarding & Token Launch | 4/4 | Complete | 2026-02-01 |
 | 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
 | 5. Token-Gated Content | 3/3 | Complete | 2026-02-01 |
-| 6. Token Trading | 0/5 | Planning complete | - |
+| 6. Token Trading | 5/5 | Complete | 2026-02-02 |
 | 7. Burn-to-Unlock Premium Content | 0/3 | Not started | - |
 | 8. Creator Monetization & Donations | 0/4 | Not started | - |
 | 9. Discovery & Notifications | 0/4 | Not started | - |
