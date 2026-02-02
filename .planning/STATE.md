@@ -2,19 +2,19 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-01-31)
+See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Creators can monetize content through their own token economy without viewers needing to understand crypto
-**Current focus:** Phase 9 - Discovery & Notifications (COMPLETE)
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 9 of 9 (Discovery & Notifications)
-Plan: 4 of 4 in current phase (09-01, 09-02, 09-03, 09-04 complete)
-Status: Phase complete - ALL PHASES COMPLETE
-Last activity: 2026-02-02 — Completed 09-04-PLAN.md
+Phase: 9 of 9 (v1.0 complete)
+Plan: N/A
+Status: Milestone v1.0 shipped — ready for next milestone
+Last activity: 2026-02-01 — v1.0 milestone complete
 
-Progress: [████████████████████████████████████████] 35/35 (100%)
+Progress: [████████████████████████████████████████] 35/35 (100%) — v1.0 SHIPPED
 
 ## Performance Metrics
 
@@ -37,135 +37,12 @@ Progress: [███████████████████████
 | 8. Creator Monetization | 4/4 | ~10 min | ~2.5 min |
 | 9. Discovery & Notifications | 4/4 | ~10.5 min | ~2.6 min |
 
-**Recent Trend:**
-- Last 5 plans: 09-01 (~2 min), 09-02 (~3 min), 09-03 (~2 min), 09-04 (~3.5 min)
-
-*Updated after each plan completion*
-
 ## Accumulated Context
 
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-
-- [Roadmap]: 9 phases derived from 42 requirements, comprehensive depth
-- [Roadmap]: Phases 1 and 2 can run in parallel (no mutual dependencies)
-- [01-01]: Used sonner instead of deprecated shadcn toast component
-- [01-01]: Made database connection lazy via Proxy to allow builds without DATABASE_URL
-- [01-01]: Installed all Phase 1 deps upfront (Solana, Helius, QR) to avoid package.json churn
-- [01-02]: Used Node.js crypto for Ed25519 keypair (Web Crypto keys non-extractable)
-- [01-02]: Wallet creation failure does not block user signup (try/catch with logging)
-- [01-02]: BigInt(0) instead of 0n literal due to ES2017 target
-- [01-03]: Used Better Auth socialProviders config for Google/Twitter OAuth
-- [01-03]: 4-step 2FA setup dialog: password -> QR -> verify -> backup codes
-- [01-03]: Server-side auth.api.verifyTOTP before SOL transfer (security-critical)
-- [01-03]: URL search params for withdrawal review page (stateless navigation)
-- [Orchestrator]: Added pg driver for local Postgres dev (auto-detect Neon vs local in lib/db/index.ts)
-- [Orchestrator]: Auth form defaults to login step instead of signup for returning users
-- [02-01]: Pinned blake3=1.5.5 for SBF platform-tools compatibility (edition2024 unsupported)
-- [02-01]: Using Solana CLI v2.3.3 / Anchor CLI v0.32.0 / platform-tools v1.48
-- [02-01]: Program ID: FTAssMPiQ8EQUeJA4Rnu6c71maCrUCdnvGetWnVdTXTG
-- [02-02]: Fee deducted before curve calc on buy, after curve calc on sell
-- [02-02]: All SOL in bonding_curve PDA -- fees tracked via accrual fields, no separate vaults
-- [02-02]: Sell uses lamport manipulation (program owns PDA), buy uses system_program::transfer CPI
-- [02-02]: Buyer must pre-create ATA client-side before buy instruction
-- [02-03]: Burn-for-access is purely deflationary -- no SOL returned to viewer, fees extracted from reserves
-- [02-03]: Fee withdrawal uses lamport manipulation (same pattern as sell)
-- [02-03]: Vesting claims snap to weekly windows (floor division)
-- [02-03]: Revoke vesting is idempotent (returns Ok if already revoked)
-- [02-04]: Constant-product round-trip can return 1 lamport more than deposited (integer rounding)
-- [02-04]: Weekly vesting snapping means max ~93.3% claimable (8 of 8.57 weeks)
-- [02-04]: First claimable vesting window is cliff + 7 days (day 37), not cliff itself
-- [02-04]: Bankrun tests require --runInBand for stability (native code race conditions)
-- [02-04]: Devnet deployment pending SOL funding (airdrop rate-limited)
-- [03-01]: R2 presigned URL upload pattern -- browser uploads directly to R2
-- [03-01]: useState for wizard step management (single-page flow, no route-based steps)
-- [03-01]: Display name immutable after creation to prevent impersonation
-- [03-01]: Image output as WebP at 0.85 quality (avatar 400x400, banner 1200x400)
-- [03-02]: Dynamic import for Sumsub WebSDK to avoid SSR hydration errors
-- [03-02]: User ID as Sumsub externalUserId for applicant mapping
-- [03-02]: Return 200 on webhook processing errors to prevent Sumsub retry storms
-- [03-02]: Timing-safe HMAC comparison for webhook signature verification
-- [03-03]: PDA derivation uses string seeds matching Anchor IDL
-- [03-03]: Anchor IDL discriminator used directly for create_token instruction
-- [03-03]: canvas-confetti loaded via dynamic import() to avoid SSR issues
-- [03-03]: Token image defaults to creator avatar; custom image optional via toggle
-- [03-04]: KYC badge renders nothing for unverified (no stigmatizing "unverified" label)
-- [03-04]: Cooldown/sell restriction info private to creator only (not on public profile)
-- [03-04]: Vesting timeline calculates from launchedAt with 30d cliff + 60d linear
-- [03-04]: Public creator profile is server component for SEO
-- [04-01]: Soft-delete posts (status=removed) for legal compliance -- never hard delete
-- [04-01]: Text-only posts publish immediately; posts with media check all media ready status
-- [04-01]: Draft visibility restricted to owner; published posts are public
-- [04-02]: Synchronous scan+process in confirm request (acceptable for MVP, Sharp < 5s for 25MB)
-- [04-02]: Original image preserved in R2 (never deleted after processing)
-- [04-02]: Responsive variants: sm(400px), md(800px), lg(1200px) as WebP quality 80
-- [04-02]: Content media key pattern: content/{creatorProfileId}/{mediaId}/original.{ext}
-- [04-03]: Two-phase video upload: R2 first (CSAM scan), then Mux (transcoding)
-- [04-03]: video_quality: basic and max_resolution_tier: 1080p for cost control
-- [04-03]: Mux SDK lacks max_duration_seconds on upload params; enforce via dashboard or post-transcoding
-- [04-03]: Always return 200 after Mux webhook signature verification to prevent retry storms
-- [04-04]: XHR for media uploads instead of fetch to enable progress tracking
-- [04-04]: Poll GET /api/media/[id] every 5s for video processing status
-- [04-04]: Used existing /dashboard/creator/[id] route instead of plan's /creator/[slug]
-- [04-05]: Reuse kycStatus="suspended" for strike 3 consequence (no new schema column)
-- [04-05]: Admin check via ADMIN_EMAILS env var for MVP (no roles table)
-- [04-05]: Soft-delete cascade marks attached media as "failed" (preserved in R2)
-- [04-05]: 3-strike system: warning -> 7-day restriction -> suspension
-- [05-01]: Access level defaults to public; gated requires threshold + launched token
-- [05-01]: Token threshold stored as text (BigInt string) matching amountLamports pattern
-- [05-01]: Two-step publish dialog: compose content -> select access level
-- [05-02]: Video blur generation is non-fatal in webhook (try/catch, continues on error)
-- [05-02]: Mux JWT signing keys optional -- client works without them for non-gated video
-- [05-02]: MUX_PRIVATE_KEY stored as base64, decoded to ASCII at runtime
-- [05-03]: Gated media API never returns original variant URLs or playback IDs to unauthorized viewers
-- [05-03]: Unlock dialog buy/burn buttons show sonner toast "coming soon" (not disabled)
-- [05-03]: PostFeed fetches gated media data lazily after initial post list load
-- [05-03]: Locked media uses native img for blur URLs (public CDN, no Next Image optimization needed)
-- [06-01]: All trading math uses BigInt (no floating point) to match on-chain Rust precision
-- [06-01]: Full GlobalConfig deserialization (all fields, not just fee_bps)
-- [06-01]: Price per token stored as rational string (num/denom) to avoid precision loss
-- [06-01]: getQuote is unauthenticated (public pricing data), executeBuy/executeSell require auth
-- [06-02]: Price display uses Number() division (safe for display only, all math stays BigInt)
-- [06-02]: Review dialog threshold is 0.1 SOL for trade confirmation
-- [06-02]: Slippage default 1% in local state, not persisted
-- [06-02]: Quote debounce 300ms to avoid excessive server action calls
-- [06-03]: Return 200 even on auth mismatch to prevent Helius retry storms (log warning for investigation)
-- [06-03]: Handle both raw and enhanced Helius webhook formats defensively
-- [06-03]: registerTradeWebhook passes HELIUS_WEBHOOK_SECRET as authHeader when configured
-- [06-04]: Dynamic import with ssr:false for lightweight-charts (prevents document/window SSR crash)
-- [06-04]: Inline SVG for bonding curve visualization (no external charting library needed)
-- [06-04]: Collapsible curve viz default-closed to prioritize price chart visibility
-- [06-05]: Holdings P&L uses SQL aggregation of confirmed trades (not on-chain token balance)
-- [06-05]: Relative time formatting uses simple utility function (no date-fns dependency)
-- [06-05]: Holdings card hidden entirely when no confirmed trades exist
-- [07-01]: burn_for_access instruction uses discriminator-only data (no args); on-chain program reads burn_sol_price
-- [07-01]: checkContentAccess backward-compatible via optional 3rd param with = {} default
-- [07-01]: Burn API returns mintAddress in quote response for frontend trade page linking
-- [07-02]: burn_gated posts use on-chain burn price, no per-post tokenThreshold needed
-- [07-02]: Content refresh after burn via onUnlocked callback chain (PostFeed -> PostCard -> UnlockDialog)
-- [08-01]: VestingAccount reader returns null (not throw) when PDA not found
-- [08-01]: Trade fee revenue = 50% of feeAmount from confirmed trades (matches on-chain split)
-- [08-01]: Burn count is display-only (fees tracked in creatorFeesAccrued on-chain)
-- [08-03]: Extracted pure sendSolTransfer from withdrawal-coupled buildAndSendSolTransfer for donation reuse
-- [08-03]: Self-tip prevention via wallet address comparison before executing transfer
-- [08-02]: Client component wrapper pattern for interactive earnings buttons (server fetches, client handles actions)
-- [08-02]: useTransition for server action loading states (matches existing trade form pattern)
-- [08-04]: Simple button group for SOL/token toggle instead of shadcn Tabs
-- [08-04]: getTipSummary aggregates SOL and token tips separately in earnings-actions.ts
-- [09-03]: Volume displayed as SOL (lamports / 1e9) with 2 decimal places
-- [09-03]: LEFT JOIN volume subquery so tokens with zero trades still appear
-- [09-03]: Trades column hidden on mobile for responsive layout
-- [09-01]: Server action (not API route) for browse feed keeps data fetching colocated with UI
-- [09-01]: limit+1 pagination trick avoids separate count query
-- [09-01]: useTransition for load-more non-blocking pagination loads
-- [09-02]: Use 'simple' tsvector config for displayName/category (no stemming), 'english' for bio
-- [09-02]: Prefix matching on last word only (:*) for autocomplete-style search
-- [09-02]: 300ms debounce with useTransition for non-blocking search UX
-- [09-04]: Polling with jitter (25-35s) for notification count instead of WebSocket/SSE for MVP simplicity
-- [09-04]: Fan-out capped at 1000 holders to prevent unbounded notification inserts
-- [09-04]: Non-fatal notification creation so trade/publish never fail due to notification errors
+All v1.0 decisions have outcomes recorded.
 
 ### Pending Todos
 
@@ -184,12 +61,11 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- Phase 4 needs phase-level research (PhotoDNA access, NCMEC reporting, video transcoding)
-- Audit firm selection needed before Phase 2 smart contract can go to mainnet
-- Vesting weekly snapping leaves ~6.7% of allocation permanently locked (design decision to document)
+- Audit firm selection needed before smart contract can go to mainnet
+- Vesting weekly snapping leaves ~6.7% of allocation permanently locked (design decision)
 
 ## Session Continuity
 
-Last session: 2026-02-02
-Stopped at: Phase 9 complete and verified ✓ — ALL PHASES COMPLETE, MILESTONE READY
+Last session: 2026-02-01
+Stopped at: v1.0 milestone archived and shipped
 Resume file: None
