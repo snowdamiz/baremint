@@ -271,6 +271,26 @@ export const contentUnlock = pgTable(
   ],
 );
 
+// ──────────────────────────────────────────────
+// Donation tables (Phase 8)
+// ──────────────────────────────────────────────
+
+export const donation = pgTable("donation", {
+  id: text("id").primaryKey(),
+  fromUserId: text("from_user_id")
+    .notNull()
+    .references(() => user.id),
+  toCreatorProfileId: text("to_creator_profile_id")
+    .notNull()
+    .references(() => creatorProfile.id),
+  type: text("type").notNull(), // "sol" | "token"
+  amount: text("amount").notNull(), // lamports (SOL) or raw token amount as BigInt string
+  mintAddress: text("mint_address"), // null for SOL tips, mint address for token tips
+  txSignature: text("tx_signature").notNull(),
+  status: text("status").notNull().default("confirmed"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const tokenBalanceCache = pgTable(
   "token_balance_cache",
   {
