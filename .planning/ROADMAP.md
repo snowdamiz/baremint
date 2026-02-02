@@ -142,12 +142,11 @@ Plans:
   2. Viewer sees burn cost and estimated SOL return before confirming a burn-to-unlock
   3. After burning tokens, the premium content is permanently unlocked for that viewer
   4. SOL is returned from the bonding curve to the viewer's wallet proportional to tokens burned
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: Burn-gated post creation with burn cost setting
-- [ ] 07-02: Burn-to-unlock flow (burn_for_access transaction, confirmation, permanent access grant)
-- [ ] 07-03: Burn UI with SOL return estimate and unlock confirmation
+- [ ] 07-01-PLAN.md -- Schema (content_unlock), burn math, transaction builder, burn API routes, access control updates
+- [ ] 07-02-PLAN.md -- Unlock dialog burn flow, post composer burn_gated updates, content refresh after unlock
 
 ### Phase 8: Creator Monetization & Donations
 **Goal**: Creators can view all revenue streams, claim vested tokens, withdraw earnings, and receive tips from viewers
@@ -199,6 +198,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 4. Content Infrastructure | 5/5 | Complete | 2026-02-01 |
 | 5. Token-Gated Content | 3/3 | Complete | 2026-02-01 |
 | 6. Token Trading | 5/5 | Complete | 2026-02-02 |
-| 7. Burn-to-Unlock Premium Content | 0/3 | Not started | - |
+| 7. Burn-to-Unlock Premium Content | 0/2 | Not started | - |
 | 8. Creator Monetization & Donations | 0/4 | Not started | - |
 | 9. Discovery & Notifications | 0/4 | Not started | - |
