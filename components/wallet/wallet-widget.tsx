@@ -1,7 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { BalanceDisplay } from "./balance-display";
-import { AddressDisplay } from "./address-display";
-import { Wallet } from "lucide-react";
+import { DollarSign } from "lucide-react";
 
 interface WalletWidgetProps {
   publicKey: string;
@@ -10,20 +7,24 @@ interface WalletWidgetProps {
 }
 
 export function WalletWidget({
-  publicKey,
-  solBalance,
   usdBalance,
 }: WalletWidgetProps) {
+  const formattedBalance = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(usdBalance);
+
   return (
-    <Card className="gap-4 py-4">
-      <CardContent className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Wallet className="text-muted-foreground h-4 w-4" />
-          <span className="text-sm font-medium">Wallet</span>
-        </div>
-        <BalanceDisplay usdBalance={usdBalance} solBalance={solBalance} />
-        <AddressDisplay address={publicKey} />
-      </CardContent>
-    </Card>
+    <div className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-2.5">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-success/10">
+        <DollarSign className="h-4 w-4 text-success" />
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground">Balance</p>
+        <p className="font-semibold">{formattedBalance}</p>
+      </div>
+    </div>
   );
 }

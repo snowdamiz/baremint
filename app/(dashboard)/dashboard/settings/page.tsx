@@ -5,6 +5,9 @@ import { db } from "@/lib/db";
 import { account } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { SecuritySettings } from "./security-settings";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function SettingsPage() {
   const session = await auth.api.getSession({
@@ -29,13 +32,20 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground mt-1">
-          Manage your account settings and security
-        </p>
+      {/* Header */}
+      <div className="flex items-center gap-4">
+        <Link href="/dashboard">
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+        </Link>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+          <p className="text-muted-foreground">Manage your account and security</p>
+        </div>
       </div>
 
+      {/* Security Section */}
       <SecuritySettings
         twoFactorEnabled={twoFactorEnabled}
         hasPassword={hasPassword}
